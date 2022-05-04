@@ -1,0 +1,601 @@
+
+/**
+ * Do not edit directly
+ * Generated on Fri, 01 Apr 2022 20:22:31 GMT
+ */
+
+$link-color-base: hsl(213, 66%, 45%) !default;
+$link-color-hover: hsl(0, 0%, 25%) !default;
+$link-styles-underline-transform: scale(1, 1) !default;
+$link-styles-underline-transform-hover: scale(0, 1) !default;
+$link-styles-underline-bg-color: hsl(213, 66%, 45%) !default;
+$link-styles-no-underline-transform: scale(0, 1) !default;
+$link-styles-no-underline-transform-hover: scale(1, 1) !default;
+$link-styles-no-underline-bg-color: hsl(0, 0%, 25%) !default;
+$break-s: 576px !default;
+$break-m: 768px !default;
+$break-l: 992px !default;
+$break-xl: 1200px !default;
+$break-2xl: 1400px !default;
+$break-max-width: 2400px !default;
+$break-mobile: 992px !default;
+$break-mobile-max: 992px - 0.05 !default;
+$component-themes-gray-800-background: hsl(0, 0%, 13%) !default;
+$component-themes-gray-800-text: hsl(0, 0%, 100%) !default;
+$component-themes-gray-800-heading: hsl(0, 0%, 100%) !default;
+$component-themes-gray-700-background: hsl(0, 0%, 25%) !default;
+$component-themes-gray-700-text: hsl(0, 0%, 100%) !default;
+$component-themes-gray-700-heading: hsl(0, 0%, 100%) !default;
+$component-themes-gray-200-background: hsl(0, 0%, 85%) !default;
+$component-themes-gray-200-text: hsl(0, 0%, 25%) !default;
+$component-themes-gray-200-heading: hsl(0, 0%, 13%) !default;
+$component-themes-gray-100-background: hsl(0, 0%, 97%) !default;
+$component-themes-gray-100-text: hsl(0, 0%, 25%) !default;
+$component-themes-gray-100-heading: hsl(0, 0%, 13%) !default;
+$component-themes-beige-background: hsl(35, 74%, 95%) !default;
+$component-themes-beige-text: hsl(0, 0%, 25%) !default;
+$component-themes-beige-heading: hsl(0, 0%, 13%) !default;
+$component-themes-white-background: hsl(0, 0%, 100%) !default;
+$component-themes-white-text: hsl(0, 0%, 25%) !default;
+$component-themes-white-heading: hsl(0, 0%, 13%) !default;
+$component-themes-blue-yale-background: hsl(210, 100%, 21%) !default;
+$component-themes-blue-yale-text: hsl(0, 0%, 100%) !default;
+$component-themes-blue-yale-heading: hsl(0, 0%, 100%) !default;
+$layout-width-25: 25% !default;
+$layout-width-50: 50% !default;
+$layout-width-75: 75% !default;
+$layout-width-100: 100% !default;
+$layout-flex-position-left: flex-start !default;
+$layout-flex-position-center: center !default;
+$layout-flex-position-right: flex-end !default;
+$layout-flex-position-baseline: baseline !default;
+$layout-flex-position-space-between: space-between !default;
+$size-component-layout-width-max: 150rem !default;
+$size-component-layout-width-feature: 84rem !default;
+$size-component-layout-width-highlight: 65rem !default;
+$size-component-layout-width-content: 49.375rem !default;
+$size-click-target-minimum: 2.75rem !default;
+$size-spacing-0: 0rem !default;
+$size-spacing-1: 0.125rem !default;
+$size-spacing-2: 0.25rem !default;
+$size-spacing-3: 0.5rem !default;
+$size-spacing-4: 0.75rem !default;
+$size-spacing-5: 1rem !default;
+$size-spacing-6: 1.5rem !default;
+$size-spacing-7: 2rem !default;
+$size-spacing-8: 2.5rem !default;
+$size-spacing-9: 3rem !default;
+$size-spacing-10: 4rem !default;
+$size-spacing-11: 5rem !default;
+$size-spacing-12: 6rem !default;
+$size-spacing-13: 10rem !default;
+$size-thickness-0: 0rem !default;
+$size-thickness-1: 0.063rem !default;
+$size-thickness-2: 0.125rem !default;
+$size-thickness-4: 0.25rem !default;
+$size-thickness-6: 0.375rem !default;
+$size-thickness-8: 0.5rem !default;
+$size-thickness-hairline: 0.031rem !default;
+$border-thickness-0: 0rem !default;
+$border-thickness-1: 0.063rem !default;
+$border-thickness-2: 0.125rem !default;
+$border-thickness-4: 0.25rem !default;
+$border-thickness-6: 0.375rem !default;
+$border-thickness-8: 0.5rem !default;
+$border-thickness-hairline: 0.031rem !default;
+$color-alert-emergency-background-color: hsl(0, 74%, 48%) !default;
+$color-alert-emergency-text: hsl(0, 0%, 100%) !default;
+$color-alert-emergency-border-color: hsl(0, 0%, 100%) !default;
+$color-alert-announcement-background-color: hsl(50, 99%, 61%) !default;
+$color-alert-announcement-border-color: hsl(0, 0%, 46%) !default;
+$color-alert-marketing-background-color: hsl(198, 100%, 85%) !default;
+$color-alert-marketing-border-color: hsl(0, 0%, 46%) !default;
+$color-blue-yale: hsl(210, 100%, 21%) !default;
+$color-blue-medium: hsl(213, 66%, 45%) !default;
+$color-blue-light: hsl(213, 100%, 69%) !default;
+$color-basic-white: hsl(0, 0%, 100%) !default;
+$color-basic-black: hsl(0, 0%, 0%) !default;
+$color-basic-beige: hsl(35, 74%, 95%) !default;
+$color-basic-brown-gray: hsl(28, 7%, 44%) !default;
+$color-gray-100: hsl(0, 0%, 97%) !default;
+$color-gray-200: hsl(0, 0%, 85%) !default;
+$color-gray-300: hsl(0, 0%, 73%) !default;
+$color-gray-400: hsl(0, 0%, 61%) !default;
+$color-gray-500: hsl(0, 0%, 46%) !default;
+$color-gray-600: hsl(0, 0%, 37%) !default;
+$color-gray-700: hsl(0, 0%, 25%) !default;
+$color-gray-800: hsl(0, 0%, 13%) !default;
+$callout-themes-blue-yale-background-color: hsl(210, 100%, 21%) !default;
+$callout-themes-gray-700-background-color: hsl(0, 0%, 25%) !default;
+$callout-themes-beige-background-color: hsl(35, 74%, 95%) !default;
+$font-style-nav-primary-0: 400 1.25rem/1.65 'Mallory Compact', sans-serif !default;
+$font-style-nav-primary-1: 400 1.1875rem/1.65 'Mallory Compact', sans-serif !default;
+$font-style-nav-primary-2: 400 1.0625rem/1.18 'Mallory Compact', sans-serif !default;
+$font-style-heading-h1-yale-new: 400 clamp(2.6875rem, calc(2.18vw + 1.9011rem), 3.8125rem)/1 YaleNew, serif !default;
+$font-style-heading-h2-yale-new: 400 clamp(2.25rem, calc(1.58vw + 1.6820rem), 3.0625rem)/1 YaleNew, serif !default;
+$font-style-heading-h3-yale-new: 400 clamp(1.875rem, calc(1.09vw + 1.4818rem), 2.4375rem)/1.14 YaleNew, serif !default;
+$font-style-heading-h4-yale-new: 400 clamp(1.5625rem, calc(0.61vw + 1.3441rem), 1.875rem)/1.14 YaleNew, serif !default;
+$font-style-heading-h5-yale-new: 400 clamp(1.375rem, calc(0.49vw + 1.2002rem), 1.625rem)/1.14 YaleNew, serif !default;
+$font-style-heading-h6-yale-new: 400 clamp(1rem, calc(0.36vw + 0.8689rem), 1.1875rem)/1.05 YaleNew, serif !default;
+$font-style-heading-h1-mallory-compact-medium: 500 clamp(2.5625rem, calc(2.06vw + 1.8198rem), 3.625rem)/1 'Mallory Compact', sans-serif !default;
+$font-style-heading-h2-mallory-compact-medium: 500 clamp(2.0625rem, calc(1.58vw + 1.4945rem), 2.875rem)/1 'Mallory Compact', sans-serif !default;
+$font-style-heading-h3-mallory-compact-medium: 500 clamp(1.6875rem, calc(1.09vw + 1.2943rem), 2.25rem)/1.05 'Mallory Compact', sans-serif !default;
+$font-style-heading-h4-mallory-compact-medium: 500 clamp(1.4375rem, calc(0.61vw + 1.2191rem), 1.75rem)/1.10 'Mallory Compact', sans-serif !default;
+$font-style-heading-h5-mallory-compact-medium: 500 clamp(1.1875rem, calc(0.61vw + 0.9691rem), 1.5rem)/1.15 'Mallory Compact', sans-serif !default;
+$font-style-heading-h6-mallory-compact-medium: 500 clamp(0.9375rem, calc(0.36vw + 0.8064rem), 1.125rem)/1.05 'Mallory Compact', sans-serif !default;
+$font-style-heading-h1-mallory-compact-book: 400 clamp(2.5625rem, calc(2.06vw + 1.8198rem), 3.625rem)/1 'Mallory Compact', sans-serif !default;
+$font-style-heading-h2-mallory-compact-book: 400 clamp(2.0625rem, calc(1.58vw + 1.4945rem), 2.875rem)/1 'Mallory Compact', sans-serif !default;
+$font-style-heading-h3-mallory-compact-book: 400 clamp(1.6875rem, calc(1.09vw + 1.2943rem), 2.25rem)/1.05 'Mallory Compact', sans-serif !default;
+$font-style-heading-h4-mallory-compact-book: 400 clamp(1.4375rem, calc(0.61vw + 1.2191rem), 1.75rem)/1.10 'Mallory Compact', sans-serif !default;
+$font-style-heading-h5-mallory-compact-book: 400 clamp(1.1875rem, calc(0.61vw + 0.9691rem), 1.5rem)/1.15 'Mallory Compact', sans-serif !default;
+$font-style-heading-h6-mallory-compact-book: 400 clamp(0.9375rem, calc(0.36vw + 0.8064rem), 1.125rem)/1.05 'Mallory Compact', sans-serif !default;
+$font-style-body-xl: 400 clamp(1.4375rem, calc(0.61vw + 1.2191rem), 1.75rem)/1.4 'Mallory Compact', sans-serif !default;
+$font-style-body-l: 400 clamp(1.1875rem, calc(0.61vw + 0.9691rem), 1.5rem)/1.45 'Mallory Compact', sans-serif !default;
+$font-style-body-default: 400 clamp(1.0625rem, calc(0.36vw + 0.9314rem), 1.25rem)/1.65 'Mallory Compact', sans-serif !default;
+$font-style-body-default-condensed: 400 clamp(1.0625rem, calc(0.36vw + 0.9314rem), 1.25rem)/1.29 'Mallory Compact', sans-serif !default;
+$font-style-body-s: 400 clamp(0.9375rem, calc(0.12vw + 0.8938rem), 1rem)/1.60 'Mallory Compact', sans-serif !default;
+$font-style-body-s-condensed: 400 clamp(0.9375rem, calc(0.12vw + 0.8938rem), 1rem)/1.29 'Mallory Compact', sans-serif !default;
+$font-style-body-xs: 400 clamp(0.8125rem, calc(0.12vw + 0.7688rem), 0.875rem)/1.45 'Mallory Compact', sans-serif !default;
+$font-style-branding-yale: 400 clamp(1.0625rem, calc(0.36vw + 0.9314rem), 1.25rem)/1.05 YaleNew, serif !default;
+$font-style-branding-site: 400 clamp(2.25rem, calc(1.58vw + 1.6820rem), 3.0625rem)/1 YaleNew, serif !default;
+$font-weights-mallory-book: 400 !default;
+$font-weights-mallory-medium: 500 !default;
+$font-weights-yalenew-roman: 400 !default;
+$font-weights-yalenew-bold: 700 !default;
+$font-scale-43-61: clamp(2.6875rem, calc(2.18vw + 1.9011rem), 3.8125rem) !default;
+$font-scale-41-58: clamp(2.5625rem, calc(2.06vw + 1.8198rem), 3.625rem) !default;
+$font-scale-38-55: clamp(2.375rem, calc(2.06vw + 1.6323rem), 3.4375rem) !default;
+$font-scale-36-49: clamp(2.25rem, calc(1.58vw + 1.6820rem), 3.0625rem) !default;
+$font-scale-33-46: clamp(2.0625rem, calc(1.58vw + 1.4945rem), 2.875rem) !default;
+$font-scale-30-39: clamp(1.875rem, calc(1.09vw + 1.4818rem), 2.4375rem) !default;
+$font-scale-27-36: clamp(1.6875rem, calc(1.09vw + 1.2943rem), 2.25rem) !default;
+$font-scale-25-30: clamp(1.5625rem, calc(0.61vw + 1.3441rem), 1.875rem) !default;
+$font-scale-23-28: clamp(1.4375rem, calc(0.61vw + 1.2191rem), 1.75rem) !default;
+$font-scale-22-26: clamp(1.375rem, calc(0.49vw + 1.2002rem), 1.625rem) !default;
+$font-scale-19-24: clamp(1.1875rem, calc(0.61vw + 0.9691rem), 1.5rem) !default;
+$font-scale-17-20: clamp(1.0625rem, calc(0.36vw + 0.9314rem), 1.25rem) !default;
+$font-scale-16-19: clamp(1rem, calc(0.36vw + 0.8689rem), 1.1875rem) !default;
+$font-scale-15-18: clamp(0.9375rem, calc(0.36vw + 0.8064rem), 1.125rem) !default;
+$font-scale-15-16: clamp(0.9375rem, calc(0.12vw + 0.8938rem), 1rem) !default;
+$font-scale-13-14: clamp(0.8125rem, calc(0.12vw + 0.7688rem), 0.875rem) !default;
+$font-letter-spacing-h6-yale-new: 0.03em !default;
+$font-letter-spacing-h1-mallory-compact-medium: -0.01em !default;
+$font-letter-spacing-h2-mallory-compact-medium: -0.01em !default;
+$font-letter-spacing-h6-mallory-compact-medium: 0.02em !default;
+$font-letter-spacing-h1-mallory-compact-book: -0.01em !default;
+$font-letter-spacing-h2-mallory-compact-book: -0.01em !default;
+$font-letter-spacing-h6-mallory-compact-book: 0.02em !default;
+$font-text-transform-h6-yale-new: uppercase !default;
+$font-text-transform-h6-mallory-compact-medium: uppercase !default;
+$font-text-transform-h6-mallory-compact-book: uppercase !default;
+$site-footer-themes-blue-yale-border-color: hsl(213, 100%, 69%) !default;
+$site-footer-themes-gray-800-border-color: hsl(213, 100%, 69%) !default;
+$site-footer-themes-gray-700-border-color: hsl(213, 100%, 69%) !default;
+$site-footer-themes-gray-100-border-color: hsl(210, 100%, 21%) !default;
+$site-footer-themes-white-border-color: hsl(210, 100%, 21%) !default;
+$site-header-themes-gray-100-background: hsl(0, 0%, 97%) !default;
+$site-header-themes-gray-100-yale-branding: hsl(210, 100%, 21%) !default;
+$site-header-themes-gray-100-site-branding: hsl(210, 100%, 21%) !default;
+$site-header-themes-gray-100-border-color: hsl(210, 100%, 21%) !default;
+$site-header-themes-gray-100-divider-color: hsl(0, 0%, 73%) !default;
+$site-header-themes-white-background: hsl(0, 0%, 100%) !default;
+$site-header-themes-white-yale-branding: hsl(210, 100%, 21%) !default;
+$site-header-themes-white-site-branding: hsl(210, 100%, 21%) !default;
+$site-header-themes-white-border-color: hsl(210, 100%, 21%) !default;
+$site-header-themes-white-divider-color: hsl(0, 0%, 73%) !default;
+$site-header-themes-blue-yale-background: hsl(210, 100%, 21%) !default;
+$site-header-themes-blue-yale-yale-branding: hsl(213, 100%, 69%) !default;
+$site-header-themes-blue-yale-site-branding: hsl(0, 0%, 100%) !default;
+$site-header-themes-blue-yale-border-color: hsl(213, 100%, 69%) !default;
+$site-header-themes-blue-yale-divider-color: hsl(0, 0%, 46%) !default;
+$site-header-layout-left-justify: flex-start !default;
+$site-header-layout-left-align: flex-start !default;
+$site-header-layout-left-flex-direction: column !default;
+$site-header-layout-center-justify: center !default;
+$site-header-layout-center-align: center !default;
+$site-header-layout-center-flex-direction: column !default;
+$site-header-layout-right-justify: space-between !default;
+$site-header-layout-right-align: baseline !default;
+$site-header-layout-right-flex-direction: row !default;
+$font-families-mallory-compact: 'Mallory Compact', sans-serif !default;
+$font-families-mallory: Mallory, sans-serif !default;
+$font-families-yalenew: YaleNew, serif !default;
+$font-size-13: 0.8125rem !default;
+$font-size-14: 0.875rem !default;
+$font-size-15: 0.9375rem !default;
+$font-size-16: 1rem !default;
+$font-size-17: 1.0625rem !default;
+$font-size-18: 1.125rem !default;
+$font-size-19: 1.1875rem !default;
+$font-size-20: 1.25rem !default;
+$font-size-22: 1.375rem !default;
+$font-size-23: 1.4375rem !default;
+$font-size-24: 1.5rem !default;
+$font-size-25: 1.5625rem !default;
+$font-size-26: 1.625rem !default;
+$font-size-27: 1.6875rem !default;
+$font-size-28: 1.75rem !default;
+$font-size-30: 1.875rem !default;
+$font-size-33: 2.0625rem !default;
+$font-size-36: 2.25rem !default;
+$font-size-38: 2.375rem !default;
+$font-size-39: 2.4375rem !default;
+$font-size-41: 2.5625rem !default;
+$font-size-43: 2.6875rem !default;
+$font-size-46: 2.875rem !default;
+$font-size-49: 3.0625rem !default;
+$font-size-55: 3.4375rem !default;
+$font-size-58: 3.625rem !default;
+$font-size-61: 3.8125rem !default;
+$drop-shadow-level-1: 0px 1px 2px 0px #00000029,0px 4px 4px 0px #00000017,0px 6px 8px 0px #00000021 !default;
+$drop-shadow-level-2: 0px 0.5985091924667358px 0.7980122566223145px 0px #00000014,0px 2.010267734527588px 2.680356979370117px 0px #0000001c,0px 9px 12px 0px #00000030 !default;
+$drop-shadow-level-3: 0px 0.33000001311302185px 1.7290265560150146px 0px #0000001a,0px 2.4700000286102295px 2.809999942779541px 0px #0000001f,0px 16px 23px 0px #00000038 !default;
+$drop-shadow-level-4: 0px 0.9975153207778931px 1.9285296201705933px 0px #00000012,0px 3.3504464626312256px 6.477529525756836px 0px #00000012,0px 15px 28px 0px #00000059 !default;
+$radius-0: 0rem !default;
+$radius-4: 0.25rem !default;
+$radius-10: 0.625rem !default;
+$radius-20: 1.25rem !default;
+
+$tokens: (
+  'link': (
+    'color': (
+      'base': $link-color-base,
+      'hover': $link-color-hover
+    ),
+    'styles': (
+      'underline': (
+        'transform': $link-styles-underline-transform,
+        'transform-hover': $link-styles-underline-transform-hover,
+        'bg-color': $link-styles-underline-bg-color
+      ),
+      'no-underline': (
+        'transform': $link-styles-no-underline-transform,
+        'transform-hover': $link-styles-no-underline-transform-hover,
+        'bg-color': $link-styles-no-underline-bg-color
+      )
+    )
+  ),
+  'break': (
+    's': $break-s,
+    'm': $break-m,
+    'l': $break-l,
+    'xl': $break-xl,
+    '2xl': $break-2xl,
+    'max-width': $break-max-width,
+    'mobile': $break-mobile,
+    'mobile-max': $break-mobile-max
+  ),
+  'component-themes': (
+    'gray-800': (
+      'background': $component-themes-gray-800-background,
+      'text': $component-themes-gray-800-text,
+      'heading': $component-themes-gray-800-heading
+    ),
+    'gray-700': (
+      'background': $component-themes-gray-700-background,
+      'text': $component-themes-gray-700-text,
+      'heading': $component-themes-gray-700-heading
+    ),
+    'gray-200': (
+      'background': $component-themes-gray-200-background,
+      'text': $component-themes-gray-200-text,
+      'heading': $component-themes-gray-200-heading
+    ),
+    'gray-100': (
+      'background': $component-themes-gray-100-background,
+      'text': $component-themes-gray-100-text,
+      'heading': $component-themes-gray-100-heading
+    ),
+    'beige': (
+      'background': $component-themes-beige-background,
+      'text': $component-themes-beige-text,
+      'heading': $component-themes-beige-heading
+    ),
+    'white': (
+      'background': $component-themes-white-background,
+      'text': $component-themes-white-text,
+      'heading': $component-themes-white-heading
+    ),
+    'blue-yale': (
+      'background': $component-themes-blue-yale-background,
+      'text': $component-themes-blue-yale-text,
+      'heading': $component-themes-blue-yale-heading
+    )
+  ),
+  'layout': (
+    'width': (
+      '25': $layout-width-25,
+      '50': $layout-width-50,
+      '75': $layout-width-75,
+      '100': $layout-width-100
+    ),
+    'flex-position': (
+      'left': $layout-flex-position-left,
+      'center': $layout-flex-position-center,
+      'right': $layout-flex-position-right,
+      'baseline': $layout-flex-position-baseline,
+      'space-between': $layout-flex-position-space-between
+    )
+  ),
+  'size': (
+    'component-layout': (
+      'width': (
+        'max': $size-component-layout-width-max,
+        'feature': $size-component-layout-width-feature,
+        'highlight': $size-component-layout-width-highlight,
+        'content': $size-component-layout-width-content
+      )
+    ),
+    'click-target-minimum': $size-click-target-minimum,
+    'spacing': (
+      '0': $size-spacing-0,
+      '1': $size-spacing-1,
+      '2': $size-spacing-2,
+      '3': $size-spacing-3,
+      '4': $size-spacing-4,
+      '5': $size-spacing-5,
+      '6': $size-spacing-6,
+      '7': $size-spacing-7,
+      '8': $size-spacing-8,
+      '9': $size-spacing-9,
+      '10': $size-spacing-10,
+      '11': $size-spacing-11,
+      '12': $size-spacing-12,
+      '13': $size-spacing-13
+    ),
+    'thickness': (
+      '0': $size-thickness-0,
+      '1': $size-thickness-1,
+      '2': $size-thickness-2,
+      '4': $size-thickness-4,
+      '6': $size-thickness-6,
+      '8': $size-thickness-8,
+      'hairline': $size-thickness-hairline
+    )
+  ),
+  'border': (
+    'thickness': (
+      '0': $border-thickness-0,
+      '1': $border-thickness-1,
+      '2': $border-thickness-2,
+      '4': $border-thickness-4,
+      '6': $border-thickness-6,
+      '8': $border-thickness-8,
+      'hairline': $border-thickness-hairline
+    )
+  ),
+  'color': (
+    'alert': (
+      'emergency': (
+        'background-color': $color-alert-emergency-background-color,
+        'text': $color-alert-emergency-text,
+        'border-color': $color-alert-emergency-border-color
+      ),
+      'announcement': (
+        'background-color': $color-alert-announcement-background-color,
+        'border-color': $color-alert-announcement-border-color
+      ),
+      'marketing': (
+        'background-color': $color-alert-marketing-background-color,
+        'border-color': $color-alert-marketing-border-color
+      )
+    ),
+    'blue': (
+      'yale': $color-blue-yale,
+      'medium': $color-blue-medium,
+      'light': $color-blue-light
+    ),
+    'basic': (
+      'white': $color-basic-white,
+      'black': $color-basic-black,
+      'beige': $color-basic-beige,
+      'brown-gray': $color-basic-brown-gray
+    ),
+    'gray': (
+      '100': $color-gray-100,
+      '200': $color-gray-200,
+      '300': $color-gray-300,
+      '400': $color-gray-400,
+      '500': $color-gray-500,
+      '600': $color-gray-600,
+      '700': $color-gray-700,
+      '800': $color-gray-800
+    )
+  ),
+  'callout-themes': (
+    'blue-yale': (
+      'background-color': $callout-themes-blue-yale-background-color
+    ),
+    'gray-700': (
+      'background-color': $callout-themes-gray-700-background-color
+    ),
+    'beige': (
+      'background-color': $callout-themes-beige-background-color
+    )
+  ),
+  'font': (
+    'style': (
+      'nav': (
+        'primary': (
+          '0': $font-style-nav-primary-0,
+          '1': $font-style-nav-primary-1,
+          '2': $font-style-nav-primary-2
+        )
+      ),
+      'heading': (
+        'h1-yale-new': $font-style-heading-h1-yale-new,
+        'h2-yale-new': $font-style-heading-h2-yale-new,
+        'h3-yale-new': $font-style-heading-h3-yale-new,
+        'h4-yale-new': $font-style-heading-h4-yale-new,
+        'h5-yale-new': $font-style-heading-h5-yale-new,
+        'h6-yale-new': $font-style-heading-h6-yale-new,
+        'h1-mallory-compact-medium': $font-style-heading-h1-mallory-compact-medium,
+        'h2-mallory-compact-medium': $font-style-heading-h2-mallory-compact-medium,
+        'h3-mallory-compact-medium': $font-style-heading-h3-mallory-compact-medium,
+        'h4-mallory-compact-medium': $font-style-heading-h4-mallory-compact-medium,
+        'h5-mallory-compact-medium': $font-style-heading-h5-mallory-compact-medium,
+        'h6-mallory-compact-medium': $font-style-heading-h6-mallory-compact-medium,
+        'h1-mallory-compact-book': $font-style-heading-h1-mallory-compact-book,
+        'h2-mallory-compact-book': $font-style-heading-h2-mallory-compact-book,
+        'h3-mallory-compact-book': $font-style-heading-h3-mallory-compact-book,
+        'h4-mallory-compact-book': $font-style-heading-h4-mallory-compact-book,
+        'h5-mallory-compact-book': $font-style-heading-h5-mallory-compact-book,
+        'h6-mallory-compact-book': $font-style-heading-h6-mallory-compact-book
+      ),
+      'body': (
+        'xl': $font-style-body-xl,
+        'l': $font-style-body-l,
+        'default': $font-style-body-default,
+        'default-condensed': $font-style-body-default-condensed,
+        's': $font-style-body-s,
+        's-condensed': $font-style-body-s-condensed,
+        'xs': $font-style-body-xs
+      ),
+      'branding': (
+        'yale': $font-style-branding-yale,
+        'site': $font-style-branding-site
+      )
+    ),
+    'weights': (
+      'mallory-book': $font-weights-mallory-book,
+      'mallory-medium': $font-weights-mallory-medium,
+      'yalenew-roman': $font-weights-yalenew-roman,
+      'yalenew-bold': $font-weights-yalenew-bold
+    ),
+    'scale': (
+      '43-61': $font-scale-43-61,
+      '41-58': $font-scale-41-58,
+      '38-55': $font-scale-38-55,
+      '36-49': $font-scale-36-49,
+      '33-46': $font-scale-33-46,
+      '30-39': $font-scale-30-39,
+      '27-36': $font-scale-27-36,
+      '25-30': $font-scale-25-30,
+      '23-28': $font-scale-23-28,
+      '22-26': $font-scale-22-26,
+      '19-24': $font-scale-19-24,
+      '17-20': $font-scale-17-20,
+      '16-19': $font-scale-16-19,
+      '15-18': $font-scale-15-18,
+      '15-16': $font-scale-15-16,
+      '13-14': $font-scale-13-14
+    ),
+    'letterSpacing': (
+      'h6-yale-new': $font-letter-spacing-h6-yale-new,
+      'h1-mallory-compact-medium': $font-letter-spacing-h1-mallory-compact-medium,
+      'h2-mallory-compact-medium': $font-letter-spacing-h2-mallory-compact-medium,
+      'h6-mallory-compact-medium': $font-letter-spacing-h6-mallory-compact-medium,
+      'h1-mallory-compact-book': $font-letter-spacing-h1-mallory-compact-book,
+      'h2-mallory-compact-book': $font-letter-spacing-h2-mallory-compact-book,
+      'h6-mallory-compact-book': $font-letter-spacing-h6-mallory-compact-book
+    ),
+    'textTransform': (
+      'h6-yale-new': $font-text-transform-h6-yale-new,
+      'h6-mallory-compact-medium': $font-text-transform-h6-mallory-compact-medium,
+      'h6-mallory-compact-book': $font-text-transform-h6-mallory-compact-book
+    )
+  ),
+  'site-footer-themes': (
+    'blue-yale': (
+      'border-color': $site-footer-themes-blue-yale-border-color
+    ),
+    'gray-800': (
+      'border-color': $site-footer-themes-gray-800-border-color
+    ),
+    'gray-700': (
+      'border-color': $site-footer-themes-gray-700-border-color
+    ),
+    'gray-100': (
+      'border-color': $site-footer-themes-gray-100-border-color
+    ),
+    'white': (
+      'border-color': $site-footer-themes-white-border-color
+    )
+  ),
+  'site-header-themes': (
+    'gray-100': (
+      'background': $site-header-themes-gray-100-background,
+      'yale-branding': $site-header-themes-gray-100-yale-branding,
+      'site-branding': $site-header-themes-gray-100-site-branding,
+      'border-color': $site-header-themes-gray-100-border-color,
+      'divider-color': $site-header-themes-gray-100-divider-color
+    ),
+    'white': (
+      'background': $site-header-themes-white-background,
+      'yale-branding': $site-header-themes-white-yale-branding,
+      'site-branding': $site-header-themes-white-site-branding,
+      'border-color': $site-header-themes-white-border-color,
+      'divider-color': $site-header-themes-white-divider-color
+    ),
+    'blue-yale': (
+      'background': $site-header-themes-blue-yale-background,
+      'yale-branding': $site-header-themes-blue-yale-yale-branding,
+      'site-branding': $site-header-themes-blue-yale-site-branding,
+      'border-color': $site-header-themes-blue-yale-border-color,
+      'divider-color': $site-header-themes-blue-yale-divider-color
+    )
+  ),
+  'site-header-layout': (
+    'left': (
+      'justify': $site-header-layout-left-justify,
+      'align': $site-header-layout-left-align,
+      'flex-direction': $site-header-layout-left-flex-direction
+    ),
+    'center': (
+      'justify': $site-header-layout-center-justify,
+      'align': $site-header-layout-center-align,
+      'flex-direction': $site-header-layout-center-flex-direction
+    ),
+    'right': (
+      'justify': $site-header-layout-right-justify,
+      'align': $site-header-layout-right-align,
+      'flex-direction': $site-header-layout-right-flex-direction
+    )
+  ),
+  'fontFamilies': (
+    'mallory-compact': $font-families-mallory-compact,
+    'mallory': $font-families-mallory,
+    'yalenew': $font-families-yalenew
+  ),
+  'fontSize': (
+    '13': $font-size-13,
+    '14': $font-size-14,
+    '15': $font-size-15,
+    '16': $font-size-16,
+    '17': $font-size-17,
+    '18': $font-size-18,
+    '19': $font-size-19,
+    '20': $font-size-20,
+    '22': $font-size-22,
+    '23': $font-size-23,
+    '24': $font-size-24,
+    '25': $font-size-25,
+    '26': $font-size-26,
+    '27': $font-size-27,
+    '28': $font-size-28,
+    '30': $font-size-30,
+    '33': $font-size-33,
+    '36': $font-size-36,
+    '38': $font-size-38,
+    '39': $font-size-39,
+    '41': $font-size-41,
+    '43': $font-size-43,
+    '46': $font-size-46,
+    '49': $font-size-49,
+    '55': $font-size-55,
+    '58': $font-size-58,
+    '61': $font-size-61
+  ),
+  'dropShadow': (
+    'Level 1': $drop-shadow-level-1,
+    'Level 2': $drop-shadow-level-2,
+    'Level 3': $drop-shadow-level-3,
+    'Level 4': $drop-shadow-level-4
+  ),
+  'radius': (
+    '0': $radius-0,
+    '4': $radius-4,
+    '10': $radius-10,
+    '20': $radius-20
+  )
+);
