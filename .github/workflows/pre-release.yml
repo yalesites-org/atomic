@@ -1,12 +1,13 @@
 name: Create Pre-release
 
 on:
-  pull_request:
-    types:
-      - opened
-      - reopened
-      - edited
-      - synchronize
+  # pull_request:
+  #   types:
+  #     - opened
+  #     - reopened
+  #     - edited
+  #     - synchronize
+  push:
     branches:
       - 'YALB-*'
 jobs:
