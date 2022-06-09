@@ -1,0 +1,7 @@
+{# @TODO: This isn't styled correctly. #}
+{% include "@atoms/typography/headings/heading.twig" with {
+  heading__level: '2',
+  heading: content.field_heading.0,
+} %}
+
+{{ drupal_view('events', 'upcoming_events') }}
