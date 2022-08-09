@@ -1,3 +1,7 @@
 {{ attach_library('atomic/breadcrumbs' ) }}
 
+{# only displays breadcrumbs if 3 lines deep #}
+
+{% if items.2 %}
 {% include '@organisms/menu/breadcrumbs/breadcrumbs.twig' %}
+{% endif %}
