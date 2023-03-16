@@ -1,0 +1,15 @@
+<div{{ add_attributes() }}>
+
+  {{ title_prefix }}
+  {{ title_suffix }}
+
+  {% embed "@molecules/video/yds-video.twig" with {
+    video__heading: content.field_heading,
+    video__text: content.field_text,
+  } %}
+    {% block video__video %}
+      {{ content.field_media }}
+    {% endblock %}
+  {% endembed %}
+
+</div>
