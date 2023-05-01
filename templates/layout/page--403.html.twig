@@ -6,6 +6,7 @@
     {{ page.system }}
   {% endblock %}
   {% block page__content %}
+    {{ attach_library('ys_themes/ys_themes') }}
     <div class="layout--centered">
       {{ page.content }}
     </div>
