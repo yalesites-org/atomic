@@ -5,7 +5,10 @@
       media_grid__variation: 'interactive',
     } %}
       {% block media_grid_item__media %}
-        {{ drupal_entity('media', item.entity.field_media.0.entity.mid.value, 'card_secondary_3_2') }}
+        {% if not item.entity.id.0.value %}
+          <p>Preview will be available after save.</p>
+        {% endif %}
+        {{ drupal_entity('paragraph', item.entity.id.0.value|default(''), 'gallery_thumbnail') }}
       {% endblock %}
     {% endembed %}
   {% endfor %}
