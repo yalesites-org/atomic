@@ -13,6 +13,10 @@
     pull_quote__quote: content.field_text,
     pull_quote__attribution: content.field_caption.0,
     pull_quote__style: content.field_style_variation.0['#markup'],
+    animate__item: ["true"]
   } %}
 
 {% endblock %}
+
+{# @todo: replace animate__item with global theme setting #}
+{# animate__item: getThemeSetting('animation_style') == 'artistic' #}
