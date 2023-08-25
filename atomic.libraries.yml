@@ -9,6 +9,7 @@ global:
   js:
     node_modules/@yalesites-org/component-library-twig/dist/js/02-molecules/menu/menu-toggle/yds-menu-toggle.js: {}
     node_modules/@yalesites-org/component-library-twig/dist/js/00-tokens/layout/yds-layout.js: {}
+    node_modules/@yalesites-org/component-library-twig/dist/js/00-tokens/effects/yds-animate.js: {}
   dependencies:
     - core/drupal
 

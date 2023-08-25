@@ -1,5 +1,7 @@
 {% extends "@atomic/block/layout-builder/_layout-builder-block-template.twig" %}
 
+{% set animate = getThemeSetting('animation_style') == 'artistic' %}
+
 {% block content %}
     {% if parentNode == 'post' or parentNode == 'event' %}
       {% set pull_quote__width = "content" %}
@@ -13,10 +15,7 @@
     pull_quote__quote: content.field_text,
     pull_quote__attribution: content.field_caption.0,
     pull_quote__style: content.field_style_variation.0['#markup'],
-    animate__item: ["true"]
+    animate__item: animate ? ["true"] : ["false"]
   } %}
 
 {% endblock %}
-
-{# @todo: replace animate__item with global theme setting #}
-{# animate__item: getThemeSetting('animation_style') == 'artistic' #}
