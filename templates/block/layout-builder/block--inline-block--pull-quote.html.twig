@@ -1,6 +1,11 @@
 {% extends "@atomic/block/layout-builder/_layout-builder-block-template.twig" %}
 
-{% set animate = getThemeSetting('animation_style') == 'artistic' %}
+{# Animations allowed if set in the global theme setting and not disabled. #}
+{% set animation_enabled = getThemeSetting('animation_style') == 'artistic' ? ["true"] : ["false"] %}
+{% if content.field_style_motion.0['#markup'] == 'minimal' %}
+  {% set animation_enabled = ["false"] %}
+
+{% endif %}
 
 {% block content %}
     {% if parentNode == 'post' or parentNode == 'event' %}
@@ -15,7 +20,9 @@
     pull_quote__quote: content.field_text,
     pull_quote__attribution: content.field_caption.0,
     pull_quote__style: content.field_style_variation.0['#markup'],
-    animate__item: animate ? ["true"] : ["false"]
+    animate__item: animation_enabled
   } %}
+  {{ dump(content.field_style_motion) }}
 
 {% endblock %}
+

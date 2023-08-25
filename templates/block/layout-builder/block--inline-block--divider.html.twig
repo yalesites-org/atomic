@@ -1,13 +1,17 @@
 {% extends "@atomic/block/layout-builder/_layout-builder-block-template.twig" %}
 
-{% set animate = getThemeSetting('animation_style') == 'artistic' %}
+{# Animations allowed if set in the global theme setting and not disabled. #}
+{% set animation_enabled = getThemeSetting('animation_style') == 'artistic' ? ["true"] : ["false"] %}
+{% if content.field_style_motion.0['#markup'] == 'minimal' %}
+  {% set animation_enabled = ["false"] %}
+{% endif %}
 
 {% block content %}
 
   {% include "@atoms/divider/yds-divider.twig" with {
     divider__position: content.field_style_position.0['#markup'],
     divider__width: content.field_style_width.0['#markup'],
-    animate__item: animate ? ["true"] : ["false"]
+    animate__item: animation_enabled
   } %}
 
 {% endblock %}
