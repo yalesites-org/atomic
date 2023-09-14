@@ -606,12 +606,12 @@ input[type="search"]::placeholder {
 }
 
 /* Secondary buttons */ 
-.gin--dark-mode .form-actions .button {
+.gin--dark-mode .gin-sidebar .form-actions .button {
   color: var(--gin-color-primary);
   background-color: var(--darkest-gray);
 }
 
-.gin--dark-mode .form-actions .button:focus {
+.gin--dark-mode .gin-sidebar .form-actions .button:focus {
   background-color: var(--wool);
 }
 
