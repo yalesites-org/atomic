@@ -13,7 +13,7 @@
     pull_quote__quote: content.field_text,
     pull_quote__attribution: content.field_caption.0,
     pull_quote__style: content.field_style_variation.0['#markup'],
-    animate__item: allowAnimation(content.field_style_motion.0['#markup'])
+    animate__item: animateItem(content.field_style_motion.0['#markup'])
   } %}
 
 {% endblock %}
