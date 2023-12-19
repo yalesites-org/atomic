@@ -1,5 +1,12 @@
 /* CKEditor 5 overrides */
 
+:root {
+/* drupal displace variables for ckeditor5 */
+  --drupal-displace-offset-top: 35rem;
+  --drupal-displace-offset-bottom: 35rem;
+}
+
+
 .ck-content {
   background-color: var(--wool) !important;
 }
