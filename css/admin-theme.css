@@ -5,6 +5,7 @@
   --gin-font-size-h2: 1.5rem;
   --gin-font-size-h3: 1.25rem;
   --gin-border-m: 0.313rem;
+  --jui-dropdown-bg-color: var(--gin-bg-layer);
 }
 
 
@@ -98,4 +99,21 @@
   display: flex;
   align-items: center;
   padding-inline: 2rem;
+}
+
+/*
+// theme headings/text in glb-tables to override site style sheets
+*/
+
+.glb-table th > * {
+  color: var(--gin-color-text);
+}
+
+/*
+// Autocomplete styles (linkit)
+*/
+.ui-autocomplete .ui-menu-item-wrapper:focus, 
+.ui-autocomplete .ui-menu-item-wrapper:hover {
+  background-color: var(--gin-color-primary);
+  color: var(--gin-bg-layer3);
 }
