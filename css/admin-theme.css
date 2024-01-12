@@ -109,6 +109,11 @@
   color: var(--gin-color-text);
 }
 
+/* Tables */
+.glb-table tr:nth-child(2n) {
+  background-color: transparent;
+}
+
 /*
 // Autocomplete styles (linkit)
 */
@@ -116,4 +121,17 @@
 .ui-autocomplete .ui-menu-item-wrapper:hover {
   background-color: var(--gin-color-primary);
   color: var(--gin-bg-layer3);
+}
+
+/*
+// Offcanvas toolbar styles
+*/
+#drupal-off-canvas-wrapper {
+  color: var(--gin-color-text) !important;
+  background-color: var(--gin-bg-layer) !important;
+}
+
+#drupal-off-canvas-wrapper .ui-dialog-titlebar {
+  background-color: var(--gin-bg-layer2) !important;
+  color: var(--gin-color-text) !important;
 }
