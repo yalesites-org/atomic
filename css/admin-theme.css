@@ -135,3 +135,12 @@
   background-color: var(--gin-bg-layer2) !important;
   color: var(--gin-color-text) !important;
 }
+
+
+/* 
+// CK Editor styles
+*/
+
+.glb-form-textarea-wrapper {
+  background-color: white;
+}
