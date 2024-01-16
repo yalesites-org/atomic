@@ -1,7 +1,12 @@
 /* CKEditor 5 overrides */
 
 .ck-content {
-  background-color: var(--wool) !important;
+  background-color: var(--gin-bg-layer);
+}
+
+.ck.ck-editor__main > .ck-editor__editable {
+  color: var(--gin-color-text) !important;
+  background-color: var(--gin-bg-layer) !important;
 }
 
 .ck-content > *,
@@ -12,14 +17,14 @@
   .ui-widget-content.ui-dialog-content
   .ck-content
   > * {
-  color: var(--darkest-gray);
+  color: var(--gin-color-text) !important;
 }
 
 .ck-content a,
 .ui-widget-content .ck-content a,
 .ui-widget-content .ck-content a strong,
 .ui-widget-content .ck-content a em {
-  color: var(--mediterranean-blue);
+  color: var(--gin-color-primary);
 }
 
 .ck-content .table {
@@ -30,11 +35,11 @@
 .glb-table .ck-content * {
   padding: 0;
   height: unset;
-  color: var(--darkest-gray);
+  color: var(--gin-color-text);
 }
 
 .glb-table .ck-content tr:nth-child(2n) {
-  background-color: var(--wool);
+  background-color: var(--gin-bg-layer);
 }
 
 .field-multiple-table tr.draggable .ck-content td:nth-of-type(2),
@@ -46,4 +51,10 @@
 .glb-table .draggable-table .ck-content thead th:not(:first-of-type)::before,
 .glb-table .draggable-table .ck-content thead th:not(:first-of-type)::after {
   content: unset;
+}
+
+#drupal-off-canvas-wrapper [data-drupal-ck-style-fence] .ck.ck-content.ck-editor__editable *,
+.gin-dark-mode #drupal-off-canvas-wrapper [data-drupal-ck-style-fence] .ck.ck-content.ck-editor__editable * {
+  color: unset !important;
+  color: var(--gin-color-text) !important;
 }
