@@ -127,3 +127,18 @@ display: flex;
 .layout-builder__section .js-layout-builder-region {
   padding: 1rem;
 }
+
+.layout-builder-components-table th {
+  background-color: transparent;
+  border: none;
+}
+
+.layout-builder-components-table tr:nth-child(2n) {
+  background-color: var(--gin-bg-layer);
+}
+
+
+#drupal-off-canvas-wrapper .draggable:hover, 
+#drupal-off-canvas-wrapper .draggable:focus-within {
+  background-color: var(--gin-bg-layer2);
+}
