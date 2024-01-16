@@ -100,3 +100,7 @@ display: flex;
 .gin--dark-mode [data-gin-accent="light_blue"] .layout-builder__link--add:not(:focus) {
   color: var(--color-gray-800) !important;
 }
+
+.gin--dark-mode .ws-lb-link__label {
+  background-color: var(--gin-bg-layer);
+}
