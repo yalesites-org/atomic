@@ -95,3 +95,8 @@ display: flex;
 #block-yalesitesfooterblock {
   margin-top: auto;
 }
+
+/* Override layout builder buttons in dark mode */
+.gin--dark-mode [data-gin-accent="light_blue"] .layout-builder__link--add:not(:focus) {
+  color: var(--color-gray-800) !important;
+}

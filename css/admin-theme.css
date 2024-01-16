@@ -9,7 +9,6 @@
   --input-fg-color--placeholder: var(--gin-color-text);
 }
 
-
 /* affect admin paths only */
 :root .path-admin h1,
 :root .path-admin h2 {
