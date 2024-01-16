@@ -6,6 +6,7 @@
   --gin-font-size-h3: 1.25rem;
   --gin-border-m: 0.313rem;
   --jui-dropdown-bg-color: var(--gin-bg-layer);
+  --input-fg-color--placeholder: var(--gin-color-text);
 }
 
 
@@ -136,11 +137,8 @@
   color: var(--gin-color-text) !important;
 }
 
-
-/* 
-// CK Editor styles
-*/
-
-.glb-form-textarea-wrapper {
-  background-color: white;
+#drupal-off-canvas-wrapper [data-drupal-ck-style-fence] .ck.ck-content *,
+.gin-dark-mode #drupal-off-canvas-wrapper [data-drupal-ck-style-fence] .ck.ck-content *{
+  color: unset !important;
+  color: var(--gin-color-text) !important;
 }
