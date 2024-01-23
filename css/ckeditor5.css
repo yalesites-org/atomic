@@ -31,6 +31,12 @@
   width: 100%;
 }
 
+div[contenteditable="true"] .ck-anchor, 
+div[contenteditable="true"] #drupal-off-canvas [data-drupal-ck-style-fence] .ck-anchor {
+  color: var(--gin-color-primary) !important;
+  text-decoration: underline;
+}
+
 /* Overrides tab and accordion component table styling */
 .glb-table .ck-content * {
   padding: 0;
@@ -54,7 +60,6 @@
 }
 
 #drupal-off-canvas-wrapper [data-drupal-ck-style-fence] .ck.ck-content.ck-editor__editable *,
-.gin-dark-mode #drupal-off-canvas-wrapper [data-drupal-ck-style-fence] .ck.ck-content.ck-editor__editable * {
-  color: unset !important;
+.gin--dark-mode #drupal-off-canvas-wrapper [data-drupal-ck-style-fence] .ck.ck-content.ck-editor__editable * {
   color: var(--gin-color-text) !important;
 }
