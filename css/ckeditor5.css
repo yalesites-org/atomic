@@ -1,17 +1,16 @@
 /* CKEditor 5 overrides */
 
-
 /* override link colors to use gin primary color */
 .ck-content a,
 .ui-widget-content .ck-content a,
 .ui-widget-content .ck-content a strong,
 .ui-widget-content .ck-content a em {
-  color: var(--gin-color-primary);
+  color: var(--gin-bg-green);
 }
 
 div[contenteditable="true"] .ck-anchor, 
 div[contenteditable="true"] #drupal-off-canvas [data-drupal-ck-style-fence] .ck-anchor {
-  color: var(--gin-color-primary) !important;
+  color: var(--gin-bg-green) !important;
   text-decoration: underline;
 }
 
@@ -23,7 +22,7 @@ div[contenteditable="true"] #drupal-off-canvas [data-drupal-ck-style-fence] .ck-
 .glb-table .ck-content * {
   padding: 0;
   height: unset;
-  color: var(--gin-color-text);
+  color: black;
 }
 
 .glb-table .ck-content tr:nth-child(2n) {
