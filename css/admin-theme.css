@@ -135,11 +135,12 @@
   background-color: var(--gin-bg-layer2) !important;
   color: var(--gin-color-text) !important;
 }
-
+/* 
+#drupal-off-canvas-wrapper [data-drupal-ck-style-fence] .ck.ck-content *,
 #drupal-off-canvas-wrapper [data-drupal-ck-style-fence] .ck.ck-content.ck-editor__editable *,
 .gin--dark-mode #drupal-off-canvas-wrapper [data-drupal-ck-style-fence] .ck.ck-content.ck-editor__editable * {
   color: var(--gin-color-text) !important;
-}
+} */
 
 /* 
 // Image crop vertical tabs override

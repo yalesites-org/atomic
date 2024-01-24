@@ -1,15 +1,15 @@
 /* CKEditor 5 overrides */
 
-.ck-content {
+/* .ck-content {
   background-color: var(--gin-bg-layer);
 }
 
 .ck.ck-editor__main > .ck-editor__editable {
   color: var(--gin-color-text) !important;
   background-color: var(--gin-bg-layer) !important;
-}
+} */
 
-.ck-content > *,
+/* .ck-content > *,
 .glb-table .ck-content tr,
 .glb-table .ck-content tr:hover,
 .gin--dark-mode
@@ -18,17 +18,15 @@
   .ck-content
   > * {
   color: var(--gin-color-text) !important;
-}
+} */
 
+
+/* override link colors to use gin primary color */
 .ck-content a,
 .ui-widget-content .ck-content a,
 .ui-widget-content .ck-content a strong,
 .ui-widget-content .ck-content a em {
   color: var(--gin-color-primary);
-}
-
-.ck-content .table {
-  width: 100%;
 }
 
 div[contenteditable="true"] .ck-anchor, 
@@ -38,6 +36,10 @@ div[contenteditable="true"] #drupal-off-canvas [data-drupal-ck-style-fence] .ck-
 }
 
 /* Overrides tab and accordion component table styling */
+.ck-content .table {
+  width: 100%;
+}
+
 .glb-table .ck-content * {
   padding: 0;
   height: unset;
@@ -59,7 +61,9 @@ div[contenteditable="true"] #drupal-off-canvas [data-drupal-ck-style-fence] .ck-
   content: unset;
 }
 
-#drupal-off-canvas-wrapper [data-drupal-ck-style-fence] .ck.ck-content.ck-editor__editable *,
-.gin--dark-mode #drupal-off-canvas-wrapper [data-drupal-ck-style-fence] .ck.ck-content.ck-editor__editable * {
-  color: var(--gin-color-text) !important;
+/* CKEditor background color and text */
+.ck.ck-editor__main,
+.ck.ck-editor__main > .ck-editor__editable {
+  background-color: white !important;
+  color: black !important;
 }
