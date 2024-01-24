@@ -135,12 +135,6 @@
   background-color: var(--gin-bg-layer2) !important;
   color: var(--gin-color-text) !important;
 }
-/* 
-#drupal-off-canvas-wrapper [data-drupal-ck-style-fence] .ck.ck-content *,
-#drupal-off-canvas-wrapper [data-drupal-ck-style-fence] .ck.ck-content.ck-editor__editable *,
-.gin--dark-mode #drupal-off-canvas-wrapper [data-drupal-ck-style-fence] .ck.ck-content.ck-editor__editable * {
-  color: var(--gin-color-text) !important;
-} */
 
 /* 
 // Image crop vertical tabs override
@@ -162,4 +156,9 @@
 /* row weights link on tabs, accordions, callouts, etc. */
 .glb-form-item button.link {
   color: var(--gin-color-primary);
+}
+
+/* set summary-content equal to gin-color-text */
+.js.gin--dark-mode .paragraphs-description .summary-content {
+  color: var(--gin-color-text) !important;
 }

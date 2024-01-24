@@ -1,25 +1,5 @@
 /* CKEditor 5 overrides */
 
-/* .ck-content {
-  background-color: var(--gin-bg-layer);
-}
-
-.ck.ck-editor__main > .ck-editor__editable {
-  color: var(--gin-color-text) !important;
-  background-color: var(--gin-bg-layer) !important;
-} */
-
-/* .ck-content > *,
-.glb-table .ck-content tr,
-.glb-table .ck-content tr:hover,
-.gin--dark-mode
-  .ui-dialog
-  .ui-widget-content.ui-dialog-content
-  .ck-content
-  > * {
-  color: var(--gin-color-text) !important;
-} */
-
 
 /* override link colors to use gin primary color */
 .ck-content a,
