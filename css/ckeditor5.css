@@ -46,3 +46,8 @@ div[contenteditable="true"] #drupal-off-canvas [data-drupal-ck-style-fence] .ck-
   background-color: white !important;
   color: black !important;
 }
+
+#drupal-off-canvas-wrapper .ui-dialog-content div:not([data-drupal-ck-style-fence] *) {
+  width: 100%;
+  max-width: 100%;
+}
