@@ -91,11 +91,6 @@ display: flex;
   margin: 0;
 } 
 
-/* Get sticky footer to work in Layout Builder */
-#block-yalesitesfooterblock {
-  margin-top: auto;
-}
-
 /* Override layout builder buttons in dark mode */
 .gin--dark-mode [data-gin-accent="light_blue"] .layout-builder__link--add:not(:focus) {
   color: var(--color-gray-800) !important;
@@ -166,41 +161,68 @@ display: flex;
   font-size: 1rem;
 }
 
-/* layout builder block categories */
-.glb-layout-builder-browser .glb-claro-details__wrapper {
-  display: flex;
-  flex-flow: row wrap;
-  margin-left: 0;
-  margin-right: 0;
-  gap: 0.6rem;
-}
-
-.glb-grid-item,
-.layout-builder-browser-block-item,
-.glb-layout-builder-browser .layout-builder-browser-block-item {
-  width: 100%;
-  max-width: calc(33% - 2.4rem);
-  flex: 1 auto;
-  padding: 1rem;
-  border: 0.15rem solid;
-  margin: 1rem 0 0 !important;
-}
-
-.layout-builder-browser-block-item img {
-  width: 100%;
-  margin-bottom: 0.5rem;
-}
-
-/* Override gin invert filter */
-
-.gin--dark-mode .glb-grid-item img, 
-.gin--dark-mode .layout-builder-browser-block-item img {
-  filter: unset;
-}
-
 /* Override layout builder block categories hover state in dark mode */
 .gin--dark-mode .glb-grid-item:hover, 
 .gin--dark-mode .layout-builder-browser-block-item:hover {
   color: white;
   background-color: var(--gin-color-primary-light-rgb) !important;
+}
+
+
+/* Wingsuit layout builder styles */
+
+.block-categories .layout-builder-browser-block-item img {
+  width: 100%;
+  margin-bottom: 1rem;
+  filter: unset;
+}
+
+.block-categories.glb-layout-builder-browser .glb-claro-details__wrapper {
+  gap: 0.5rem;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.block-categories .layout-builder-browser-block-item {
+  width: 100%;
+  max-width: calc(50% - 1.30rem);
+  border: 0.15rem solid;
+}
+
+@media screen and (min-width: 500px) {
+  .block-categories .layout-builder-browser-block-item {
+    max-width: calc(33% - 1.30rem);
+  }
+
+}
+
+.layout-builder-browser-reusable-block {
+  text-decoration: none;
+  line-height: 1.5rem;
+}
+
+.layout-builder-browser-reusable-block .underlined-title {
+  text-decoration: underline;
+}
+
+.glb-canvas-form__settings {
+  flex-grow: unset;
+}
+
+/*
+Used with patch to add reusable blocks from within layout builder
+Note: div[data-drupal-selector="edit-block-form"] is for reusable block editing
+area needed more padding.
+*/
+
+.layout-builder-configure-block .form-item-reusable,
+.layout-builder-configure-block .form-item-reusable + .form-type--textfield,
+div[data-drupal-selector="edit-block-form"] {
+  padding-left: 20px;
+  padding-right: 21px;
+}
+
+/* Get sticky footer to work in Layout Builder */
+#block-yalesitesfooterblock {
+  margin-top: auto;
 }
