@@ -143,17 +143,17 @@ display: flex;
   background-color: var(--gin-bg-layer2);
 }
 
-.layout-builder__link--configure:hover {
+.gin--dark-mode .layout-builder__link--configure:hover {
   background-color: var(--gin-bg-layer) !important;
 }
 
-.layout-builder__section:hover .layout-builder__link--configure {
+.gin--dark-mode .layout-builder__section:hover .layout-builder__link--configure {
   background-color: var(--gin-bg-layer) !important;
   color: var(--gin-color-primary) !important;
 }
 
-.layout-builder__section:hover .layout-builder__link--add-section-to-library,
-.layout-builder__section:hover .layout-builder__link--remove {
+.gin--dark-mode .layout-builder__section:hover .layout-builder__link--add-section-to-library,
+.gin--dark-mode .layout-builder__section:hover .layout-builder__link--remove {
   background-color: var(--gin-bg-layer) !important;
   color: var(--gin-color-primary) !important;
 }
