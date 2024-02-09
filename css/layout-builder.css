@@ -182,3 +182,17 @@ display: flex;
   width: 100%;
   margin-bottom: 0.5rem;
 }
+
+/* Override gin invert filter */
+
+.gin--dark-mode .glb-grid-item img, 
+.gin--dark-mode .layout-builder-browser-block-item img {
+  filter: unset;
+}
+
+/* Override layout builder block categories hover state in dark mode */
+.gin--dark-mode .glb-grid-item:hover, 
+.gin--dark-mode .layout-builder-browser-block-item:hover {
+  color: white;
+  background-color: var(--gin-color-primary-light-rgb) !important;
+}
