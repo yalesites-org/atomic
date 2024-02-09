@@ -143,6 +143,7 @@ display: flex;
   background-color: var(--gin-bg-layer2);
 }
 
+/* Change layoutbuilder configure/UI element colors in dark mode because the defaults don't look good */
 .gin--dark-mode .layout-builder__link--configure:hover {
   background-color: var(--gin-bg-layer) !important;
 }
