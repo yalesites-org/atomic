@@ -158,6 +158,9 @@ display: flex;
   color: var(--gin-color-primary) !important;
 }
 
+.layout-builder__section .layout-builder__link--add-section-to-library {
+  font-size: 1rem;
+}
 
 /* layout builder block categories */
 .glb-layout-builder-browser .glb-claro-details__wrapper {
