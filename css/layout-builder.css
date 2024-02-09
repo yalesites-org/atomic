@@ -159,6 +159,9 @@ display: flex;
 }
 
 .layout-builder__section .layout-builder__link--add-section-to-library {
+  position: absolute;
+  top: -24px;
+  left: 275px;
   font-size: 1rem;
 }
 
