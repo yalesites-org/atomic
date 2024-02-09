@@ -156,3 +156,29 @@ display: flex;
 .layout-builder__section:hover .layout-builder__link--remove {
   background-color: var(--gin-bg-layer) !important;
 }
+
+
+/* layout builder block categories */
+.glb-layout-builder-browser .glb-claro-details__wrapper {
+  display: flex;
+  flex-flow: row wrap;
+  margin-left: 0;
+  margin-right: 0;
+  gap: 0.6rem;
+}
+
+.glb-grid-item,
+.layout-builder-browser-block-item,
+.glb-layout-builder-browser .layout-builder-browser-block-item {
+  width: 100%;
+  max-width: calc(33% - 2.4rem);
+  flex: 1 auto;
+  padding: 1rem;
+  border: 0.15rem solid;
+  margin: 1rem 0 0 !important;
+}
+
+.layout-builder-browser-block-item img {
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
