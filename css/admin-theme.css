@@ -176,3 +176,7 @@ html:not(.gin--dark-mode) #drupal-off-canvas:not(.drupal-off-canvas-reset).ui-di
 #drupal-off-canvas-wrapper .moderation-sidebar-container .moderation-sidebar-revision-log {
   border: 1px solid var(--gin-color-text);
 }
+
+.gin--dark-mode #drupal-off-canvas-wrapper .moderation-sidebar-container .moderation-sidebar-revision-log {
+  color: var(--drupal-off-canvas-input-text-color);
+}
