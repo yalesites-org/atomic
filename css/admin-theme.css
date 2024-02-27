@@ -117,7 +117,7 @@
 /*
 // Autocomplete styles (linkit)
 */
-.ui-autocomplete .ui-menu-item-wrapper:focus, 
+.ui-autocomplete .ui-menu-item-wrapper:focus,
 .ui-autocomplete .ui-menu-item-wrapper:hover {
   background-color: var(--gin-color-primary);
   color: var(--gin-bg-layer3);
@@ -136,7 +136,7 @@
   color: var(--gin-color-text) !important;
 }
 
-/* 
+/*
 // Image crop vertical tabs override
 */
 
@@ -163,8 +163,16 @@
   color: var(--gin-color-text) !important;
 }
 
-/* In light mode, gin is displaying a mustard background with a black 
+/* In light mode, gin is displaying a mustard background with a black
 foreground. This causes contrast issues.  */
 html:not(.gin--dark-mode) #drupal-off-canvas:not(.drupal-off-canvas-reset).ui-dialog-content div:not([data-drupal-ck-style-fence] *), #drupal-off-canvas-wrapper .ui-dialog-content div:not([data-drupal-ck-style-fence] *) {
   color: var(--color-basic-white);
+}
+
+#drupal-off-canvas-wrapper .moderation-sidebar-container * {
+  color: var(--gin-color-text);
+}
+
+#drupal-off-canvas-wrapper .moderation-sidebar-container .moderation-sidebar-revision-log {
+  border: 1px solid var(--gin-color-text);
 }
