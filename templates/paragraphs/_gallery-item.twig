@@ -7,6 +7,8 @@
       {% block media_grid_item__media %}
         {% if (item.entity.field_media.0.entity.mid != NULL) %}
           {{ drupal_entity('media', item.entity.field_media.0.entity.mid.value, 'card_secondary_3_2') }}
+        {% elseif getCoreSetting('image_fallback.teaser') %}
+          {{ drupal_entity('media', getCoreSetting('image_fallback.teaser'), 'card_list_3_2') }}
         {% else %}
           {{ "Missing image" }}
         {% endif %}
