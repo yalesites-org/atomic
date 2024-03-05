@@ -1,7 +1,5 @@
 {% if (content.field_media.0) %}
   {{ content }}
-{% elseif getCoreSetting('image_fallback.teaser') %}
-  {{ drupal_entity('media', getCoreSetting('image_fallback.teaser'), 'card_secondary_3_2') }}
 {% else %}
-    {{ "Missing image" }}
+    Missing image
 {% endif %}
