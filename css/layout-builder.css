@@ -278,3 +278,8 @@ div[data-drupal-selector="edit-block-form"] {
 #block-yalesitesfooterblock {
   margin-top: auto;
 }
+
+/* Two column layout */
+.yds-two-column__secondary .text-field .text {
+  overflow: visible;
+}
