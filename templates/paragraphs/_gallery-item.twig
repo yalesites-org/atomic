@@ -8,7 +8,7 @@
         {% if (item.entity.field_media.0.entity.mid != NULL) %}
           {{ drupal_entity('media', item.entity.field_media.0.entity.mid.value, 'card_secondary_3_2') }}
         {% else %}
-          Missing image
+          {% include "@atoms/images/image/_image.twig" %}
         {% endif %}
       {% endblock %}
     {% endembed %}
