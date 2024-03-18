@@ -168,3 +168,9 @@ foreground. This causes contrast issues.  */
 html:not(.gin--dark-mode) #drupal-off-canvas:not(.drupal-off-canvas-reset).ui-dialog-content div:not([data-drupal-ck-style-fence] *), #drupal-off-canvas-wrapper .ui-dialog-content div:not([data-drupal-ck-style-fence] *) {
   color: var(--color-basic-white);
 }
+
+/* GinLB has a spinning animation of text that we didn't care for. */
+#drupal-off-canvas-wrapper .ajax-progress-throbber {
+  animation: none;
+  display: inline;
+}
