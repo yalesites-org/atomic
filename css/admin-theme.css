@@ -176,4 +176,9 @@ html:not(.gin--dark-mode)
 #drupal-off-canvas-wrapper .ajax-progress-throbber {
   animation: none;
   display: inline;
+  z-index: 10;
+}
+
+.ajax-progress-throbber .message {
+  display: block;
 }
