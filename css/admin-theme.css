@@ -180,7 +180,19 @@ html:not(.gin--dark-mode)
  * the message being displayed to the user.  This ensures that the z-index is
  * respected such that the message will show and the buttons will not be shown
  * during the throbber.
+ *
+ * We then do the same for the ui-dialog version since it also was clipping the
+ * text with link icons.
  */
+.ui-dialog .ajax-progress,
+.ui-dialog .ajax-progress-throbber {
+  background-color: var(--gin-bg-layer) !important;
+  border-radius: unset !important;
+  display: block;
+  height: var(--spacing-component-gutter);
+  z-index: 10;
+}
+
 #drupal-off-canvas-wrapper .ajax-progress,
 #drupal-off-canvas-wrapper .ajax-progress-throbber {
   animation: none;
