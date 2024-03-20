@@ -174,7 +174,7 @@ html:not(.gin--dark-mode)
 
 /*
  * GinLB has a spinning text that we do not want in our system, so we disabled
-* the animation of the throbber wrapper.
+ * the animation of the throbber wrapper.
  *
  * By attempting to hide this, the delete and edit links were appearing above
  * the message being displayed to the user.  This ensures that the z-index is
@@ -187,8 +187,15 @@ html:not(.gin--dark-mode)
 .ui-dialog .ajax-progress,
 .ui-dialog .ajax-progress-throbber {
   background-color: var(--gin-bg-layer) !important;
+
+  /* For some reason the throbber container had a border-radius? */
   border-radius: unset !important;
   display: block;
+
+  /*
+   * Setting a height of 100 in this case will cover the image.  So we set a
+   * lower height that will still cover the links
+   */
   height: var(--spacing-component-gutter);
   z-index: 10;
 }
