@@ -172,13 +172,27 @@ html:not(.gin--dark-mode)
   color: var(--color-basic-white);
 }
 
-/* GinLB has a spinning animation of text that we didn't care for. */
+/*
+ * GinLB has a spinning text that we do not want in our system, so we disabled
+* the animation of the throbber wrapper.
+ *
+ * By attempting to hide this, the delete and edit links were appearing above
+ * the message being displayed to the user.  This ensures that the z-index is
+ * respected such that the message will show and the buttons will not be shown
+ * during the throbber.
+ */
+#drupal-off-canvas-wrapper .ajax-progress,
 #drupal-off-canvas-wrapper .ajax-progress-throbber {
   animation: none;
-  display: inline;
+  background-color: var(--gin-bg-layer) !important;
+
+  /* For some reason the throbber container had a border-radius? */
+  border-radius: unset;
+  display: block;
+  height: 100%;
   z-index: 10;
 }
 
-.ajax-progress-throbber .message {
-  display: block;
+.ajax-progress-throbber::before {
+  right: 0;
 }
