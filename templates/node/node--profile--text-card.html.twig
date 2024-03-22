@@ -1,0 +1,13 @@
+{{ attach_library('atomic/reference-card') }}
+
+{% set heading = content.field_teaser_title.0 ? content.field_teaser_title : label %}
+{% set url = content.field_external_source[0]['#url']|render ? content.field_external_source[0]['#url']|render : url %}
+
+{% embed "@molecules/cards/reference-card/yds-reference-card.twig" with {
+  reference_card__heading: heading,
+  reference_card__subheading: content.field_position,
+  reference_card__url: url,
+  reference_card__snippet: content.field_subtitle,
+  reference_card__image: 'false',
+} %}
+{% endembed %}
