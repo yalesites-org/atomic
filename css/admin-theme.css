@@ -15,7 +15,9 @@
 }
 
 /* embed headers need gin's color text to look good in dark mode */
-html.gin--dark-mode #ajax-embed-instructions {
+html.gin--dark-mode #ajax-embed-instructions,
+/* Any configure block should be using this as well */
+html.gin--dark-mode form.layout-builder-configure-block.glb-form {
   --color-heading: var(--gin-color-text);
 }
 
