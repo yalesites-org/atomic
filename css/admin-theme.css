@@ -174,7 +174,7 @@ html:not(.gin--dark-mode)
 #drupal-off-canvas-wrapper
   .ui-dialog-content
   div:not([data-drupal-ck-style-fence] *) {
-  color: var(--color-basic-white);
+  color: var(--gin-color-text);
 }
 
 /*
