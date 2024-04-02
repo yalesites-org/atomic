@@ -13,7 +13,6 @@ site header and site footer, respectively.
 ****************
 */
 
-
 /* This `layout-banner override, overrides the .main-content > *:first-child
 statement in web/themes/contrib/atomic/_yale-packages/component-library-twig/components/04-page-layouts/page-layouts.scss
 
@@ -38,18 +37,39 @@ would be used instead resulting in top margin of size-spacing-6.  */
 // `$flush-bottom` above. Then it will have no bottom-margin separating it from
 / the site footer.
 */
-.main-content .layout.layout--onecol:last-of-type .layout__region--content > *:last-child {
+.main-content
+  .layout.layout--onecol:last-of-type
+  .layout__region--content
+  > *:last-child {
   margin-bottom: var(--main-content-bottom-margin, var(--size-spacing-13));
 }
 
 /* Here we need to specify which components in the main content layout div
 need to have margin-bottom set to 0 */
-.main-content .layout.layout--onecol:last-of-type .layout__region--content:last-child .callouts:last-child,
-.main-content .layout.layout--onecol:last-of-type .layout__region--content:last-child .cta-banner:last-child,
-.main-content .layout.layout--onecol:last-of-type .layout__region--content:last-child .grand-hero-banner:last-child,
-.main-content .layout.layout--onecol:last-of-type .layout__region--content:last-child .quick-links:last-child,
-.main-content .layout.layout--onecol:last-of-type .layout__region--content:last-child .text-with-image:not([data-component-theme='default']):last-child, 
-.main-content .layout.layout--onecol:last-of-type .layout__region--content:last-child .content-spotlight-portrait:not([data-component-theme='default']):last-child {
+.main-content
+  .layout.layout--onecol:last-of-type
+  .layout__region--content:last-child
+  .callouts:last-child,
+.main-content
+  .layout.layout--onecol:last-of-type
+  .layout__region--content:last-child
+  .cta-banner:last-child,
+.main-content
+  .layout.layout--onecol:last-of-type
+  .layout__region--content:last-child
+  .grand-hero-banner:last-child,
+.main-content
+  .layout.layout--onecol:last-of-type
+  .layout__region--content:last-child
+  .quick-links:last-child,
+.main-content
+  .layout.layout--onecol:last-of-type
+  .layout__region--content:last-child
+  .text-with-image:not([data-component-theme="default"]):last-child,
+.main-content
+  .layout.layout--onecol:last-of-type
+  .layout__region--content:last-child
+  .content-spotlight-portrait:not([data-component-theme="default"]):last-child {
   margin-bottom: 0;
 }
 
@@ -75,7 +95,6 @@ display: flex;
   margin-top: 0;
   margin-bottom: 0;
 }
-
 
 /* Fix for breadcrumb spacing on profile nodes */
 .ys-content-type-profile .main-content .breadcrumbs__wrapper {
@@ -114,7 +133,6 @@ display: flex;
   .block-categories .layout-builder-browser-block-item {
     max-width: calc(33% - 1rem);
   }
-
 }
 
 .layout-builder-browser-reusable-block {
@@ -144,7 +162,9 @@ div[data-drupal-selector="edit-block-form"] {
 }
 
 /* Override layout builder buttons in dark mode */
-.gin--dark-mode [data-gin-accent="light_blue"] .layout-builder__link--add:not(:focus) {
+.gin--dark-mode
+  [data-gin-accent="light_blue"]
+  .layout-builder__link--add:not(:focus) {
   color: var(--color-gray-800) !important;
 }
 
@@ -154,9 +174,9 @@ div[data-drupal-selector="edit-block-form"] {
 
 /* layout builder section borders */
 .layout-builder__section:not(.gin-lb--disable-section-focus)::after {
-  border: 0.35rem solid  hsl(180, 7%, 75%) !important;
+  border: 0.35rem solid hsl(180, 7%, 75%) !important;
   position: absolute;
-  content: '';
+  content: "";
   width: 100%;
   height: 100%;
   left: 0;
@@ -164,7 +184,7 @@ div[data-drupal-selector="edit-block-form"] {
 }
 
 .layout-builder__section:not(.gin-lb--disable-section-focus):hover::after {
-  border: 0.35rem solid  hsl(180, 7%, 20%) !important;
+  border: 0.35rem solid hsl(180, 7%, 20%) !important;
 }
 
 .layout-builder__section {
@@ -184,8 +204,7 @@ div[data-drupal-selector="edit-block-form"] {
   background-color: var(--gin-bg-layer);
 }
 
-
-#drupal-off-canvas-wrapper .draggable:hover, 
+#drupal-off-canvas-wrapper .draggable:hover,
 #drupal-off-canvas-wrapper .draggable:focus-within {
   background-color: var(--gin-bg-layer2);
 }
@@ -195,12 +214,16 @@ div[data-drupal-selector="edit-block-form"] {
   background-color: var(--gin-bg-layer) !important;
 }
 
-.gin--dark-mode .layout-builder__section:hover .layout-builder__link--configure {
+.gin--dark-mode
+  .layout-builder__section:hover
+  .layout-builder__link--configure {
   background-color: var(--gin-bg-layer) !important;
   color: var(--gin-color-primary) !important;
 }
 
-.gin--dark-mode .layout-builder__section:hover .layout-builder__link--add-section-to-library,
+.gin--dark-mode
+  .layout-builder__section:hover
+  .layout-builder__link--add-section-to-library,
 .gin--dark-mode .layout-builder__section:hover .layout-builder__link--remove {
   background-color: var(--gin-bg-layer) !important;
   color: var(--gin-color-primary) !important;
@@ -214,12 +237,11 @@ div[data-drupal-selector="edit-block-form"] {
 }
 
 /* Override layout builder block categories hover state in dark mode */
-.gin--dark-mode .glb-grid-item:hover, 
+.gin--dark-mode .glb-grid-item:hover,
 .gin--dark-mode .layout-builder-browser-block-item:hover {
   color: white;
   background-color: var(--gin-color-primary-light-rgb) !important;
 }
-
 
 /* Wingsuit layout builder styles */
 
@@ -237,15 +259,14 @@ div[data-drupal-selector="edit-block-form"] {
 
 .block-categories .layout-builder-browser-block-item {
   width: 100%;
-  max-width: calc(50% - 1.30rem);
+  max-width: calc(50% - 1.3rem);
   border: 0.15rem solid;
 }
 
 @media screen and (min-width: 500px) {
   .block-categories .layout-builder-browser-block-item {
-    max-width: calc(33% - 1.30rem);
+    max-width: calc(33% - 1.3rem);
   }
-
 }
 
 .layout-builder-browser-reusable-block {
@@ -279,3 +300,21 @@ div[data-drupal-selector="edit-block-form"] {
   margin-top: auto;
 }
 
+/* Breadcrumb spacing issue */
+/* https://yaleits.atlassian.net/browse/YSP-427 */
+
+.banner-heading-is-h1 .layout--onecol.has-breadcrumbs + .layout--onecol {
+  margin-top: 4rem;
+}
+
+@media (max-width: 992px) {
+  .banner-heading-is-h1 .layout--onecol.has-breadcrumbs + .layout--onecol {
+    margin-top: 2.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .banner-heading-is-h1 .layout--onecol.has-breadcrumbs + .layout--onecol {
+    margin-top: 2rem;
+  }
+}

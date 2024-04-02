@@ -87,3 +87,7 @@ spotlights:
   js:
     node_modules/@yalesites-org/component-library-twig/dist/js/02-molecules/content-spotlight-portrait/content-spotlights.js:
       {}
+heading-level-check:
+  js:
+    node_modules/@yalesites-org/component-library-twig/dist/js/02-molecules/banner/banner-heading.js:
+      {}
