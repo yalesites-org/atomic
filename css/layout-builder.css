@@ -302,19 +302,24 @@ div[data-drupal-selector="edit-block-form"] {
 
 /* Breadcrumb spacing issue */
 /* https://yaleits.atlassian.net/browse/YSP-427 */
+/* see component-library-twig/components/02-molecules/banner/banner-heading.js */
 
-.banner-heading-is-h1 .layout--onecol.has-breadcrumbs + .layout--onecol {
+[data-banner-has-h1="true"] .layout--onecol.has-breadcrumbs + .layout--onecol {
   margin-top: 4rem;
 }
 
 @media (max-width: 992px) {
-  .banner-heading-is-h1 .layout--onecol.has-breadcrumbs + .layout--onecol {
+  [data-banner-has-h1="true"]
+    .layout--onecol.has-breadcrumbs
+    + .layout--onecol {
     margin-top: 2.5rem;
   }
 }
 
 @media (max-width: 576px) {
-  .banner-heading-is-h1 .layout--onecol.has-breadcrumbs + .layout--onecol {
+  [data-banner-has-h1="true"]
+    .layout--onecol.has-breadcrumbs
+    + .layout--onecol {
     margin-top: 2rem;
   }
 }
