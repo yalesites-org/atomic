@@ -299,33 +299,3 @@ div[data-drupal-selector="edit-block-form"] {
 #block-yalesitesfooterblock {
   margin-top: auto;
 }
-
-/* Breadcrumb spacing issue */
-/* https://yaleits.atlassian.net/browse/YSP-427 */
-/* See component-library-twig/components/02-molecules/banner/banner-heading.js */
-/* If the banner hero has an H1, the body gets a data-attribute set */
-/* And we also need to adjust the margin-bottom of the breadcrumbs wrapper */
-/* Layout Builder has wrapping divs without anything to differentiate one from another */
-/* We need to target the specific div that has the breadcrumbs__wrapper inside of it and
-then add a class to create a CSS rule to apply bottom margin
-which pushes down any element that comes next and prevents the breadcrumbs from running 
-into other elements */
-/* We could instead apply margin-bottom to the breadcrumbs__wrapper directly 
-if it's parent has [data-banner-has-h1="true"], but because this is a Layout Builder issue, 
-we should likely handle it here, in this file instead of in the component-library */
-
-[data-banner-has-h1="true"] .layout--onecol.has-breadcrumbs {
-  margin-bottom: 4rem;
-}
-
-@media (max-width: 992px) {
-  [data-banner-has-h1="true"] .layout--onecol.has-breadcrumbs {
-    margin-bottom: 2.5rem;
-  }
-}
-
-@media (max-width: 576px) {
-  [data-banner-has-h1="true"] .layout--onecol.has-breadcrumbs {
-    margin-bottom: 2rem;
-  }
-}
