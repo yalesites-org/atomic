@@ -1,12 +1,6 @@
 {% extends "@atomic/block/layout-builder/_layout-builder-block-template.twig" %}
 
 {% block content %}
-
-  {# If heading__level is equal to 1, load JS to add class to layout-builder div #}
-  {% if content.field_heading_level.0['#markup'] == 1 %}
-    {{ attach_library('atomic/heading-level-check') }}
-  {% endif %}
-
   {% embed "@molecules/banner/grand-hero/yds-grand-hero.twig" with {
     grand_hero__heading: content.field_heading,
     grand_hero__heading__level: content.field_heading_level.0['#markup'],
