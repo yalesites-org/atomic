@@ -1,0 +1,7 @@
+{% for item in items %}
+  {% embed "@organisms/galleries/media-grid/_yds-media-grid-item.twig" %}
+    {% block media_grid_item__media %}
+      {{item.content}}
+    {% endblock %}
+  {% endembed %}
+{% endfor %}
