@@ -1,5 +1,4 @@
-{# TODO: wire this to a variable check for multiple events #}
-{% if multi_day_event == true %}
+{% if event_dates|length > 1 %}
   {% set multi_day_text %}
     {% include "@atoms/typography/text/yds-text.twig" with {
       text__base_class: 'multi-day-event',
