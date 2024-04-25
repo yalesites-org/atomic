@@ -1,4 +1,7 @@
 
+Fields for Joe:
+<a href="{{ ics_url }}">Buy tickets link</a>
+{# Use event_dates array to print any event dates - look inside array for formatted options #}
 {% set date__formatted %}
   {% include "@atoms/date-time/yds-date-time.twig" with {
     date_time__start: content.field_event_date.0.start_time['#markup'],

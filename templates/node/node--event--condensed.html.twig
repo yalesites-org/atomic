@@ -1,3 +1,7 @@
+
+Fields for Joe:
+<a href="{{ ics_url }}">Buy tickets link</a>
+{# Use event_dates array to print any event dates - look inside array for formatted options #}
 {% if event_dates|length > 1 %}
   {% set multi_day_text %}
     {% include "@atoms/typography/text/yds-text.twig" with {
