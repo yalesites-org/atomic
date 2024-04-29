@@ -1,6 +1,3 @@
-
-Fields for Joe:
-<a href="{{ ics_url }}">Buy tickets link</a>
 {# Use event_dates array to print any event dates - look inside array for formatted options #}
 {% if event_dates|length > 1 %}
   {% set multi_day_text %}
@@ -35,6 +32,10 @@ Fields for Joe:
   reference_card__url: url,
   reference_card__snippet: content.field_teaser_text,
   reference_card__image: 'true',
+  reference_card__cta_primary__href: ticket_url ? ticket_url : event_meta__cta_primary__href,
+  reference_card__cta_primary__content: 'Buy Tickets',
+  reference_card__cta_secondary__content: 'Add to Calendar',
+  reference_card__cta_secondary__href: ics_url,
 } %}
   {% block reference_card__image %}
 

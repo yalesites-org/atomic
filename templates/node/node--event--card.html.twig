@@ -1,6 +1,3 @@
-
-Fields for Joe:
-<a href="{{ ics_url }}">Buy tickets link</a>
 {# Use event_dates array to print any event dates - look inside array for formatted options #}
 {% set date__formatted %}
   {% include "@atoms/date-time/yds-date-time.twig" with {
@@ -20,15 +17,21 @@ Fields for Joe:
 
 {% set url = content.field_external_source[0]['#url']|render ? content.field_external_source[0]['#url']|render : url %}
 
+
+{# field_ticket_registration_url #}
+{# field_external_source #}
 {% embed "@molecules/cards/reference-card/yds-reference-card.twig" with {
   reference_card__heading: heading,
   reference_card__subheading: date__formatted,
   reference_card__url: url,
   reference_card__snippet: content.field_teaser_text,
   reference_card__image: 'true',
+  reference_card__cta_primary__href: ticket_url ? ticket_url : event_meta__cta_primary__href,
+  reference_card__cta_primary__content: 'Buy Tickets',
+  reference_card__cta_secondary__content: 'Add to Calendar',
+  reference_card__cta_secondary__href: ics_url,
 } %}
   {% block reference_card__image %}
-
     {% if content.field_teaser_media[0] %}
       {{ content.field_teaser_media }}
     {% elseif getCoreSetting('image_fallback.teaser') %}
