@@ -14,10 +14,10 @@
   } %} {{ multi_day_text }}
 {% endset %}
 
-{% if content.field_event_type %}
+{% if content.field_localist_event_experience.0 %}
   {% set reference_card__overline -%}
     {% include "@molecules/cards/reference-card/event/_yds-event-format.twig" with {
-      format: content.field_event_type,
+      format: content.field_localist_event_experience,
     } %}
   {%- endset %}
 {% endif %}
