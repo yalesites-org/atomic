@@ -14,8 +14,8 @@
 
 {% set date__formatted %}
   {% include "@atoms/date-time/yds-date-time.twig" with {
-    date_time__start: content.field_event_date.0.start_time['#markup'] ~ multi_day_text,
-  } %}
+    date_time__start: content.field_event_date.0.start_time['#markup'],
+  } %} {{multi_day_text}}
 {% endset %}
 
 {% embed "@molecules/cards/reference-card/yds-reference-card.twig" with {
