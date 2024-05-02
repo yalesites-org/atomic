@@ -32,13 +32,12 @@
   reference_card__cta_secondary__href: ics_url,
 } %}
   {% block reference_card__image %}
-  {% if localist_image_url %}
-    {{localist_image_url}}
-    {% elseif content.field_teaser_media[0] %}
-      {{ content.field_teaser_media }}
-    {% elseif getCoreSetting('image_fallback.teaser') %}
-      {{ drupal_entity('media', getCoreSetting('image_fallback.teaser'), 'card_secondary_3_2') }}
+    {% if localist_image_url %}
+      {{localist_image_url}}
+      {% elseif content.field_teaser_media[0] %}
+        {{ content.field_teaser_media }}
+      {% elseif getCoreSetting('image_fallback.teaser') %}
+        {{ drupal_entity('media', getCoreSetting('image_fallback.teaser'), 'card_secondary_3_2') }}
     {% endif %}
-
   {% endblock %}
 {% endembed %}
