@@ -39,7 +39,10 @@
 } %}
   {% block reference_card__image %}
     {% if localist_image_url %}
-      {{localist_image_url}}
+      {% include "@atoms/images/image/_responsive-image.twig" with {
+        image__src: localist_image_url,
+        image__alt: localist_image_alt,
+      }%}
       {% elseif content.field_teaser_media[0] %}
         {{ content.field_teaser_media }}
       {% elseif getCoreSetting('image_fallback.teaser') %}
