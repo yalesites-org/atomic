@@ -19,8 +19,21 @@ jobs:
         run: npm ci
         env:
           YALESITES_BUILD_TOKEN: ${{ secrets.YALESITES_BUILD_TOKEN }}
+      - name: Commit Compiled Component Library
+        uses: EndBug/add-and-commit@v7
+        with:
+          author_name: github-actions[bot]
+          author_email: github-actions[bot]@users.noreply.github.com
+          add: "node_modules/@yalesites-org/component-library-twig -f"
+          message: "build: commit compiled component library"
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           YALESITES_BUILD_TOKEN: ${{ secrets.YALESITES_BUILD_TOKEN }}
         run: npx semantic-release
+      - name: Commit and Push Changes
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git reset --hard HEAD~1
+          git push --force
