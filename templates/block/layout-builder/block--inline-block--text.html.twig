@@ -3,7 +3,6 @@
 {% block content %}
 
   {{ attach_library('atomic/text') }}
-  {{ 'hello from the block.' }}
 
   {% if parentNode == 'post' or parentNode == 'event' %}
     {% set text_field__width = "content" %}
