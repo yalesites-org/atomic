@@ -1,3 +1,5 @@
+{% set event_has_passed = event_dates is empty %}
+
 {# Use event_dates array to print any event dates - look inside array for formatted options #}
 {% set date__formatted %}
   {% include "@atoms/date-time/yds-date-time.twig" with {
