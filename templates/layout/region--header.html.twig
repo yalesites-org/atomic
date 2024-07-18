@@ -9,8 +9,8 @@
 {# this is necessary to pass the truthiness of the elements to the site-header organism #}
 {# which will set {% set site_header__hamburger = 'yes' %} #}
 {# and render the hamburger icon if the primary nav exists or the ulitity nav exists #}
-{% set primary_nav__items = elements.main_navigation.content['#items'] %}
-{% set utility_nav__items = elements.utility_navigation.content['#items'] %}
+{% set primary_nav__items = elements.main_navigation.content['#items'] is not empty %}
+{% set utility_nav__items = elements.utility_navigation.content['#items'] is not empty %}
 
 {% embed "@organisms/site-header/yds-site-header.twig" with {
   site_name: site_name,
