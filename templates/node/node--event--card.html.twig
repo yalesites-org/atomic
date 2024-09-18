@@ -11,6 +11,8 @@
   {% endset %}
 {% endif %}
 
+{{ kint() }}
+
 {% set date__formatted %}
   {% include "@atoms/date-time/yds-date-time.twig" with {
     date_time__start: content.field_event_date.0.start_time['#markup'],
