@@ -1,6 +1,8 @@
 {% extends "@atomic/block/layout-builder/_layout-builder-block-template.twig" %}
 
 {% block content %}
+  {{ attach_library('atomic/callout') }}
+
   {% embed "@molecules/callout/yds-callout.twig" with {
       callout__background_color: content.field_style_color.0['#markup'],
       callout__alignment: content.field_style_alignment.0['#markup'],
