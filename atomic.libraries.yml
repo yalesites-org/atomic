@@ -15,12 +15,12 @@ global:
 accordion:
   js:
     node_modules/@yalesites-org/component-library-twig/dist/js/02-molecules/accordion/yds-accordion.js: {}
-alert:
-  js:
-    node_modules/@yalesites-org/component-library-twig/dist/js/02-molecules/alert/yds-alert.js: {}
 callout:
   js:
     node_modules/@yalesites-org/component-library-twig/dist/js/02-molecules/callout/callout.js: {}
+alert:
+  js:
+    node_modules/@yalesites-org/component-library-twig/dist/js/02-molecules/alert/yds-alert.js: {}
 primary-nav:
   js:
     node_modules/@yalesites-org/component-library-twig/dist/js/03-organisms/menu/primary-nav/yds-primary-nav.js: {}
