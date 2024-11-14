@@ -5,6 +5,10 @@
  * Functions to support theming.
  */
 
+use Drupal\Core\Form\FormState;
+use Drupal\block_content\Entity\BlockContent;
+use Drupal\views\Views;
+
 /**
  * Implements hook_preprocess_region().
  */
@@ -103,5 +107,54 @@ function atomic_theme_suggestions_field_alter(array &$suggestions, array $variab
 
     // Add a theme suggestion for the field based on the parent node's view mode.
     $suggestions[] = 'field__' . $variables['element']['#entity_type'] . '__' . $field_name . '__' . $view_mode;
+  }
+}
+
+/**
+ * Implements hook_preprocess_block().
+ */
+function atomic_preprocess_block(&$variables) {
+  if (isset($variables['elements']['#configuration']['provider']) && $variables['elements']['#configuration']['provider'] === 'layout_builder') {
+    if ($variables['elements']['#configuration']['id'] == "inline_block:search_resources" && !empty($variables['elements']['content']['#block_content']->id())) {
+      $block_content_id = $variables['elements']['content']['#block_content']->id();
+      // Load the block content entity.
+      $block_content = BlockContent::load($block_content_id);
+      if ($block_content) {
+        if ($block_content->hasField('field_search_display') && !$block_content->get('field_search_display')->isEmpty()) {
+          $resource_id = $block_content->get('field_tags')->target_id;
+          $resource_view_id = 'explore_resources';
+          $resource_view_display = 'block_1';
+          if ($block_content->get('field_search_display')->value == "compact") {
+            $variables['compactresources_form'] = '';
+            $variables['popular_resources'] = '';
+            $resource_view = Views::getView($resource_view_id);
+            if ($resource_view) {
+              $resource_view->setDisplay($resource_view_display);
+              $resource_view->initHandlers();
+              $form_state = new FormState();
+              $form_state->setFormState([
+                'view' => $resource_view,
+                'display' => $resource_view->display_handler->display,
+                'exposed_form_plugin' => $resource_view->display_handler->getPlugin('exposed_form'),
+                'rerender' => TRUE,
+                'no_redirect' => TRUE,
+                'always_process' => TRUE, // This is important for handle the form status.
+              ]);
+              $form_state->setMethod('get');
+              $form = \Drupal::formBuilder()->buildForm('Drupal\views\Form\ViewsExposedForm', $form_state);
+              $form['#action'] = $block_content->get('field_link')->first()->getUrl()->toString();
+              $variables['compactresources_form'] = $form;
+            }
+            $popular_resourses = views_embed_view('popular_resources', 'block_1', $resource_id);
+            $variables['popular_resources'] = $popular_resourses;
+          }
+          else {
+            $variables['fullresources'] = '';
+            $explore_resourses = views_embed_view($resource_view_id, $resource_view_display, $resource_id);
+            $variables['fullresources'] = $explore_resourses;
+          }
+        }
+      }
+    }
   }
 }
