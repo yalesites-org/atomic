@@ -80,12 +80,18 @@ function atomic_preprocess_node(&$variables) {
     $date = strtotime($variables['node']->field_publish_date->first()->getValue()['value']);
     $variables['date_formatted'] = \Drupal::service('date.formatter')->format($date, '', 'c');
   }
-  if ($variables['node']->getType() == "event" && $variables['node']->hasField('field_event_source')) {
-    $event_source_name = $variables[‘node’]->field_event_source->entity->label();
-    $config = \Drupal::config(‘ys_campus_group.settings’);
-    $variables[‘is_external_redirect’] = 0;
-    if ($event_source_name == ‘Campus Groups’ && $config->get(‘enable_campus_group_redirect’) == TRUE) {
-      $variables[‘is_external_redirect’] = 1;
+  if ($variables['node']->getType() == "event") {
+    $variables['is_external_redirect'] = 0;
+    if ($variables['node']->hasField('field_event_source') && !empty($variables['node']->field_event_source->target_id)) {
+      $event_source_name = $variables['node']->field_event_source->entity->label();
+      $config = \Drupal::config('ys_campus_group.settings');
+      if ($event_source_name == 'Campus Groups' && $config->get('enable_campus_group_redirect') == TRUE
+        && $variables['node']->hasField('field_external_source') && !empty($variables['node']->get('field_external_source')->first())) {
+        $variables['is_external_redirect'] = 1;
+      }
+    }
+    elseif ($variables['node']->hasField('field_external_source')  && !empty($variables['node']->get('field_external_source')->first())) {
+      $variables['is_external_redirect'] = 1;
     }
   }
 }
