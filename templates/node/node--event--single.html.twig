@@ -2,7 +2,7 @@
 
 {% set date__formatted %}
   {% include "@atoms/date-time/yds-date-time.twig" with {
-    date_time__start: content.field_event_date.0.start_time['#markup']|default(content.field_event_date.0['#value']),
+    date_time__start: content.field_event_date.0.start_time['#markup'],
   } %}
 {% endset %}
 
@@ -16,7 +16,11 @@
 
 {% set heading = content.field_teaser_title.0 ? content.field_teaser_title : label %}
 
-{% set url = content.field_external_source[0]['#url']|render ? content.field_external_source[0]['#url']|render : url %}
+{% if is_external_redirect == 1 %}
+  {% set url = content.field_external_source[0]['#url']|render ? content.field_external_source[0]['#url']|render : url %}
+{% else %}
+  {% set url = url %}
+{% endif %}
 
 {% embed "@molecules/cards/reference-card/yds-reference-card.twig" with {
   reference_card__heading: heading,
