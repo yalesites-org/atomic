@@ -12,7 +12,11 @@
 
 {% set heading = content.field_teaser_title.0 ? content.field_teaser_title : label %}
 {% set reference_card__image = 'false' %}
-{% set url = content.field_external_source[0]['#url']|render ? content.field_external_source[0]['#url']|render : url %}
+{% if is_external_redirect == 1 %}
+  {% set url = content.field_external_source[0]['#url']|render ? content.field_external_source[0]['#url']|render : url %}
+{% else %}
+  {% set url = url %}
+{% endif %}
 
 {# Set the event title prefix based on event status #}
 {% set event_title__prefix = event_has_passed ? 'Past Event: ' : '' %}

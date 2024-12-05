@@ -1,0 +1,22 @@
+{% extends "@atomic/block/layout-builder/_layout-builder-block-template.twig" %}
+
+{% block content %}
+
+  {{ attach_library('atomic/text') }}
+
+  {% if parentNode == 'post' or parentNode == 'event' %}
+    {% set resource_tag__width = "content" %}
+    {% set resource_tag__alignment = "center" %}
+  {% else %}
+    {% set resource_tag__width = "site" %}
+    {% set resource_tag__alignment = "left" %}
+  {% endif %}
+
+  {% embed "@molecules/resource-tag/yds-resource-tag.twig" with {
+    resource_tag__content: content,
+    resource_tag__width: resource_tag__width,
+    resource_tag__alignment: resource_tag__alignment,
+  } %}
+  {% endembed %}
+
+{% endblock %}
