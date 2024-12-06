@@ -1,0 +1,38 @@
+{% extends "@atomic/block/layout-builder/_layout-builder-block-template.twig" %}
+
+{% block content %}
+
+	{# Check if the link field has content #}
+	{% if content.field_link.0 %}
+		{# Get the URL and the link text separately #}
+		{% set link_url = content.field_link.0['#url'].toString %}
+		{% set link_text = content.field_link.0['#title'] %}
+	{% endif %}
+	{% set display_mode = content.field_search_display.0['#markup'] %}
+	{% if display_mode == 'Compact' %}
+		{% if popular_resources %}
+			{# Embed resources-block for compact layout #}
+			{% include "@organisms/resources-block/yds-resources-block.twig" with {
+        resources_block__group__heading: content.field_heading,
+        resources_block__group__content: content.field_text,
+        resources_block__group__type: 'compact',
+        resources_block__group__form: compactresources_form,  
+        resource_card_collection: popular_resources, 
+				resources_block__form__heading: content.field_search_form_heading.0,
+				resources_block__card__heading: content.field_popular_resources_heading.0,
+				resources_block__group__link__content: link_text,
+				resources_block__group__link__url: link_url
+      } %}
+		{% endif %}
+		{% else %}
+		{% if fullresources %}
+			{# Embed resources-block for full layout #}
+			{% include "@organisms/resources-block/yds-resources-block.twig" with {
+			resources_block__group__heading: content.field_heading,
+			resources_block__group__content: content.field_text,
+			resources_block__group__type: 'full',
+			resource_card_collection: fullresources
+			} %}
+		{% endif %}
+	{% endif %}
+{% endblock %}

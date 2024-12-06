@@ -1,0 +1,16 @@
+{% set heading = content.field_teaser_title.0 ? content.field_teaser_title : label %}
+{% set url = content.field_external_source[0]['#url']|render ? content.field_external_source[0]['#url']|render : url %}
+
+
+{% embed "@molecules/cards/reference-card/resource-card/yds-resource-card.twig" with {
+  reference_card__heading: heading,
+  reference_card__url: url,
+  reference_card__snippet: content.field_teaser_text.0,
+  reference_card__flag: 'default',
+} %}
+
+  {% block reference_card__categories %}
+    {{ content.field_category }}
+  {% endblock %}
+
+{% endembed %}
