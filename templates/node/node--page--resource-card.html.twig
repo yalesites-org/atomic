@@ -1,0 +1,30 @@
+{% set heading = content.field_teaser_title.0 ? content.field_teaser_title : label %}
+{% set url = content.field_external_source[0]['#url']|render ? content.field_external_source[0]['#url']|render : url %}
+
+
+{% if node.sticky.value == 1 and node.field_series.value == 1%}
+  {% set flag_type = "popular-series" %}
+{% elseif node.sticky.value == 1 %}
+  {% set flag_type = "popular" %}
+{% elseif node.field_series.value == 1 %}
+  {% set flag_type = "series" %}
+{% else %}
+  {% set flag_type = "default" %}
+{% endif %}
+
+{# {% set flag_type = node.sticky.value ? node.field_flag.entity.label|lower : 'default' %} #}
+{% embed "@molecules/cards/reference-card/resource-card/yds-resource-card.twig" with {
+  reference_card__heading: heading,
+  reference_card__url: url,
+  reference_card__snippet: content.field_teaser_text.0,
+  reference_card__flag: flag_type,
+  show_categories: node.show_categories,
+  highlight_pinned_content: node.highlight_pinned_content,
+  highlight_content_label: node.highlighted_content_label,
+} %}
+  {# reference_card__pinned_text: 'test' #}
+  {% block reference_card__categories %}
+    {{ content.field_category }}
+  {% endblock %}
+
+{% endembed %}
