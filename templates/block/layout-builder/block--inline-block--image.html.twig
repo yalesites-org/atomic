@@ -1,8 +1,11 @@
 {% extends "@atomic/block/layout-builder/_layout-builder-block-template.twig" %}
 
 {% block content %}
-  {% if parentNode == 'post' or parentNode == 'event' %}
+  {% if parentNode == 'post' %}
     {% set content_image__width = content.field_style_width.0 ? content.field_style_width.0['#markup'] : "content" %}
+    {% set content_image__alignment = "center" %}
+  {% elseif parentNode == 'event' %}
+    {% set content_image__width = "content" %}
     {% set content_image__alignment = "center" %}
   {% else %}
     {% set content_image__width = "site" %}
