@@ -1,0 +1,23 @@
+{% extends "@atomic/block/layout-builder/_layout-builder-block-template.twig" %}
+
+{% block content %}
+
+  {% if parentNode == 'post' or parentNode == 'event' %}
+    {% set audio_embed__width = "content" %}
+    {% set audio_embed__alignment = "center" %}
+  {% else %}
+    {% set audio_embed__width = "site" %}
+    {% set audio_embed__alignment = "left" %}
+  {% endif %}
+
+  {% embed "@atoms/audio/yds-audio.twig" with {
+    audio_embed__width: audio_embed__width,
+    audio_embed__content: content.field_media.entity.field_file_title.value,
+  } %}
+    {% block audio_embed__source %}
+      {% if content.field_media.0['#media'].field_media_audio_file.entity.uri.value is not empty %}
+        {{ content.field_media }}
+      {% endif %}
+    {% endblock %}
+  {% endembed %}
+{% endblock %}
