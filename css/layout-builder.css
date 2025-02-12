@@ -324,3 +324,8 @@ th.field-label {
 .has-multiple-fields-remove-button .js .paragraphs-collapsed-description:after {
   display: none;
 }
+
+/* Fix for .layout-builder-block word-break */
+.audio-embed.layout-builder-block {
+  word-break: normal;
+}
