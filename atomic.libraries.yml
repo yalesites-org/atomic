@@ -79,3 +79,6 @@ calendar:
 audio-player:
   js:
     node_modules/@yalesites-org/component-library-twig/dist/js/01-atoms/audio/yds-audio-player.js: {}
+ys_embed:
+  dependencies:
+    - core/jquery
