@@ -60,7 +60,7 @@ need to have margin-bottom set to 0 */
 .main-content .layout.layout--onecol:last-of-type .layout__region--content:last-child .grand-hero-banner:last-child,
 .main-content .layout.layout--onecol:last-of-type .layout__region--content:last-child .image-banner:last-child,
 .main-content .layout.layout--onecol:last-of-type .layout__region--content:last-child .quick-links:last-child,
-.main-content .layout.layout--onecol:last-of-type .layout__region--content:last-child .text-with-image:not([data-component-theme='default']):last-child, 
+.main-content .layout.layout--onecol:last-of-type .layout__region--content:last-child .text-with-image:not([data-component-theme='default']):last-child,
 .main-content .layout.layout--onecol:last-of-type .layout__region--content:last-child .content-spotlight-portrait:not([data-component-theme='default']):last-child {
   margin-bottom: 0;
 }
@@ -201,9 +201,25 @@ div[data-drupal-selector="edit-block-form"] {
 }
 
 
-#drupal-off-canvas-wrapper .draggable:hover, 
+#drupal-off-canvas-wrapper .draggable:hover,
 #drupal-off-canvas-wrapper .draggable:focus-within {
   background-color: var(--gin-bg-layer2);
+}
+
+
+/* Layout component layout-builder link overrides. */
+.yds-layout.layout-builder__layout[data-component-theme="one"] .layout-builder__link.layout-builder__link--add,
+.yds-layout.layout-builder__layout[data-component-theme="three"] .layout-builder__link.layout-builder__link--add,
+.yds-layout.layout-builder__layout[data-component-theme="four"] .layout-builder__link.layout-builder__link--add {
+  background-color: white !important;
+  border-color: transparent !important;
+}
+
+.yds-layout.layout-builder__layout[data-component-theme="one"] .layout-builder__link.layout-builder__link--add:hover,
+.yds-layout.layout-builder__layout[data-component-theme="three"] .layout-builder__link.layout-builder__link--add:hover,
+.yds-layout.layout-builder__layout[data-component-theme="four"] .layout-builder__link.layout-builder__link--add:hover {
+  background-color: var(--gin-color-primary-hover) !important;
+  border-color: white !important;
 }
 
 /* Change layoutbuilder configure/UI element colors in dark mode because the defaults don't look good */
@@ -230,7 +246,7 @@ div[data-drupal-selector="edit-block-form"] {
 }
 
 /* Override layout builder block categories hover state in dark mode */
-.gin--dark-mode .glb-grid-item:hover, 
+.gin--dark-mode .glb-grid-item:hover,
 .gin--dark-mode .layout-builder-browser-block-item:hover {
   color: white;
   background-color: var(--gin-color-primary-light-rgb) !important;
@@ -328,4 +344,26 @@ th.field-label {
 /* Fix for .layout-builder-block word-break */
 .audio-embed.layout-builder-block {
   word-break: normal;
+}
+/* Fix for caption in image banner */
+/* This is an override for a core CSS file for tables which has too broad styles for .caption */
+.js-layout-builder-block .image-banner__image figcaption.caption  {
+  margin-block-end: 0;
+}
+
+/* Adjust bottom-margin if an element with [data-spotlights-position="first-and-last"] is the last element on the page */
+/* Or if [data-spotlights-position="last"] is the last element in main content */
+.main-content [data-spotlights-position="first-and-last"]:last-child,
+.main-content [data-spotlights-position="last"]:last-child {
+  margin-bottom: 0;
+}
+
+/* Adjust top-margin if an element with an [data-spotlights-position="first" or data-spotlights-position="first-and-last"
+// is the first element in main content */
+.main-content [data-spotlights-position="first"]:first-child,
+.main-content [data-spotlights-position="first-and-last"]:first-child,
+/* page-meta will almost always be the first element in main content, so we need a condition for it */
+.main-content > .page-meta + [data-spotlights-position="first-and-last"],
+.main-content > .page-meta + [data-spotlights-position="first"] {
+  margin-top: 0;
 }
