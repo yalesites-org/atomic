@@ -12,7 +12,7 @@
 
   {% embed "@atoms/audio/yds-audio.twig" with {
     audio_embed__width: audio_embed__width,
-    audio_embed__content: content.field_media.entity.field_file_title.value,
+    audio_embed__content: content.field_audio_label.0,
   } %}
     {% block audio_embed__source %}
       {% if content.field_media.0['#media'].field_media_audio_file.entity.uri.value is not empty %}
