@@ -31,7 +31,7 @@
     ]
   },
   "dependencies": {
-    "@yalesites-org/component-library-twig": "^1.44.0",
+    "@yalesites-org/component-library-twig": "yalesites-org/component-library-twig#ysp-738-hide-hamburger",
     "linkpurpose": "github:itmaybejj/linkpurpose"
   },
   "bundleDependencies": [
