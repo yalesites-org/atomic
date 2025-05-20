@@ -4,40 +4,50 @@
  * Default theme implementation to display a unified search block.
  *
  * Available variables:
- * - settings: The block settings containing:
- *   - search_options: Array of search options with label and url
- * - attributes: HTML attributes for the containing element
- * - title_prefix: Additional output populated by modules, intended to be
- *   displayed in front of the main title tag that appears in the template
- * - title_suffix: Additional output populated by modules, intended to be
- *   displayed after the main title tag that appears in the template
- * - content: The block content
- *
- * @ingroup themeable
+ * - content: The content of the block.
+ * - attributes: HTML attributes for the containing element.
  */
 #}
-{% if settings.search_options %}
-<div{{ attributes.addClass('unified-search-block') }}>
-  {{ title_prefix }}
-  {{ title_suffix }}
-  <form class="inline-search-form" action="#" method="get" onsubmit="return false;">
-    <input type="text" name="query" placeholder="Search..." class="search-input" />
-    
-    <span class="separator">/</span>
-    
-    <div class="custom-select-wrapper">
-      <select name="scope" class="search-dropdown">
-        {% for option in settings.search_options %}
-          <option value="{{ option.url }}">{{ option.label }}</option>
-        {% endfor %}
-      </select>
-    </div>
+{{ attach_library('atomic/unified-search') }}
 
-    <button type="submit" class="search-button" aria-label="Search">
-      <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-        <path d="M10 2a8 8 0 105.293 14.293l4.707 4.707 1.414-1.414-4.707-4.707A8 8 0 0010 2zm0 2a6 6 0 110 12A6 6 0 0110 4z"/>
-      </svg>
-    </button>
-  </form>
+<div{{ attributes.addClass('unified-search-block') }}>
+  <div class="component-wrapper" data-component-width="site" data-component-alignment="center">
+    <div class="component-wrapper__inner">
+      <form class="ys-unified-search" action="#" method="get">
+        <input type="text" name="query" placeholder="Search..." class="search-input" />
+        
+        <span class="separator">/</span>
+        
+        <div class="custom-select-wrapper">
+          <select name="scope" class="search-dropdown">
+            {% for option in content['#settings'].search_options %}
+              <option value="{{ option.value }}" data-url="{{ option.url }}">{{ option.label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <button type="button" class="search-button" aria-label="Search">
+          <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+            <path d="M10 2a8 8 0 105.293 14.293l4.707 4.707 1.414-1.414-4.707-4.707A8 8 0 0010 2zm0 2a6 6 0 110 12A6 6 0 0110 4z"/>
+          </svg>
+        </button>
+      </form>
+    </div>
+  </div>
 </div>
-{% endif %} 
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelector('.search-button').addEventListener('click', () => {
+    const form = document.querySelector('.ys-unified-search');
+    const input = form.querySelector('.search-input');
+    const select = form.querySelector('.search-dropdown');
+    const query = input.value.trim();
+    const url = select.selectedOptions[0].dataset.url;
+
+    if (query && url) {
+      window.location.href = url.replace(/\{\{query\}\}/g, encodeURIComponent(query));
+    }
+  });
+});
+</script> 

@@ -93,3 +93,7 @@ ys_embed:
 read-time:
   js:
     node_modules/@yalesites-org/component-library-twig/dist/js/02-molecules/read-time/yds-read-time.js: {}
+unified-search:
+  css:
+    theme:
+      css/unified-search.css: {}
