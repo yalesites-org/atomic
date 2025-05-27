@@ -380,4 +380,25 @@ th.field-label {
 .main-content > .page-meta:not(:has(.in-this-section)) + [data-spotlights-position="first-and-last"],
 .main-content > .page-meta:not(:has(.in-this-section)) + [data-spotlights-position="first"] {
   margin-top: 0;
+}
+
+/* Fixes dark mode weight links to have better contrast. */
+.gin--dark-mode button.tabledrag-toggle-weight {
+  color: var(--gin-color-text);
+}
+
+/*
+ * For layout builder paragraph tables, we need to override the default in dark mode.
+ * This is due to otehr things overloading it in the wrong way, like our _table.css,
+ * gin, and ckeditor.
+ */
+.gin--dark-mode .field-multiple-table.glb-table tr.draggable > td {
+  background-color: var(--gin-bg-layer); 
+  color: var(--gin-color-text); 
 } 
+
+.gin--dark-mode .field-multiple-table.glb-table tr.draggable:nth-child(odd) > td { 
+  background-color: var(--gin-bg-layer2); 
+  color: var(--gin-color-text); 
+} 
+
