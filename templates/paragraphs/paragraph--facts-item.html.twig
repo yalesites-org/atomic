@@ -7,6 +7,18 @@
   facts_and_figures__alignment: parent.fields.field_style_alignment.0.value,
   facts_and_figures__presentation_style: 'basic',
   facts_and_figures__theme: 'none',
+  facts_and_figures__has_icon: true,
   }
 %}
+  {% block facts_and_figures__icon %}
+    <div {{ bem('icon', [], facts_and_figures__base_class) }}>
+      {% include "@atoms/images/icons/_yds-icon.twig" with {
+        icon__name: content.field_icon.0['#fontawesome_name'],
+        icon__base_class: 'facts-and-figures-icon',
+        icon__blockname: facts_and_figures__base_class,
+        icon__decorative: true,
+        directory: 'themes/contrib/atomic'
+      } %}
+    </div>
+  {% endblock %}
 {% endembed %}
