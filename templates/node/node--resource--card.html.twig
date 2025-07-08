@@ -11,8 +11,7 @@
 {% set heading = content.field_teaser_title.0 ? content.field_teaser_title : label %}
 
 {% set publish_date %}
-  {{ 'Published On'|t }}: &nbsp;
-
+  <strong>{{ 'Published On'|t }}:</strong>
   {% include "@atoms/date-time/yds-date-time.twig" with {
     date_time__start: date_formatted,
     date_time__format: 'date',
@@ -22,7 +21,7 @@
 {% embed "@molecules/cards/reference-card/yds-reference-card.twig" with {
   reference_card__heading: heading,
   reference_card__url: url,
-  reference_card__subheading: publish_date,
+  reference_card__overline: publish_date,
   reference_card__image: node.show_thumbnail ? 'true' : 'false',
   reference_card__snippet: content.field_teaser_text,
   reference_card__image_aria: heading[0]['#context'].value,
