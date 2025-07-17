@@ -164,7 +164,7 @@ function atomic_preprocess_node__resource(array &$variables) {
   $variables['responsive_media_thumbnail'] = [
     '#theme' => 'responsive_image',
     '#uri' => $file->getFileUri(),
-    '#responsive_image_style_id' => 'card_list_3_2',
+    '#responsive_image_style_id' => 'resource_thumbnail',
     '#height' => $thumbnail?->height,
     '#width' => $thumbnail?->width,
     '#attributes' => [
