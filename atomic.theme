@@ -76,8 +76,11 @@ function atomic_theme_suggestions_container_alter(array &$suggestions, array &$v
 function atomic_preprocess_node(&$variables) {
   // Allows for multiple node types to use the formatted publish date.
   if (in_array($variables['node']->getType(), ['post', 'resource'])) {
-    $date = strtotime($variables['node']->field_publish_date->first()->getValue()['value']);
-    $variables['date_formatted'] = \Drupal::service('date.formatter')->format($date, '', 'c');
+    $date = strtotime($variables['node']->field_publish_date?->first()?->getValue()['value']);
+
+    if ($date) {
+      $variables['date_formatted'] = \Drupal::service('date.formatter')->format($date, '', 'c');
+    }
   }
 }
 
