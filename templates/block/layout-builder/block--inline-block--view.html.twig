@@ -3,8 +3,7 @@
 {% block content %}
 
   {% set view__base_class = 'ys-view' %}
-  {% set view__parent_node = parentNode|default('collection') %}
-  {% set view__aria_label = view__parent_node|capitalize ~ " view" %}
+  {% set view__aria_label = "Unknown view" %}
   {% set view__component_width = 'site' %}
 
   {% if parentNode == 'post' or parentNode == 'event' %}
