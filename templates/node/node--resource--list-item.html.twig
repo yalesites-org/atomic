@@ -9,13 +9,16 @@
 #}
 
 {% set heading = content.field_teaser_title.0 ? content.field_teaser_title : label %}
+{% set date_format = content.field_date_format.0 ? content.field_date_format.0['#markup'] : '' %}
 
 {% set publish_date %}
-  <strong>{{ 'Published On'|t }}:</strong>
-  {% include "@atoms/date-time/yds-date-time.twig" with {
-    date_time__start: date_formatted,
-    date_time__format: 'date',
-  } %}
+  {% if date_format %}
+    <strong>{{ 'Published'|t }}:</strong>
+    {% include "@atoms/date-time/yds-date-time.twig" with {
+      date_time__start: date_formatted,
+      date_time__format: date_format,
+    } %}
+  {% endif %}
 {% endset %}
 
 {% embed "@molecules/cards/reference-card/yds-reference-card.twig" with {
