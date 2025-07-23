@@ -3,12 +3,14 @@
 {% block content %}
 
   {% set view__base_class = 'ys-view' %}
+  {% set view__aria_label = parentNode ~ " view" %}
 
   {% if parentNode == 'post' or parentNode == 'event' %}
     {% set view__attibutes = {
       'data-component-width': 'content',
       'data-embedded-components': 'true',
       'role': 'group',
+      'aria-label': view__aria_label,
       class: bem(view__base_class, view__modifiers),
     } %}
     {% else %}
@@ -16,6 +18,7 @@
         'data-component-width': 'site',
         'data-embedded-components': 'true',
         'role': 'group',
+        'aria-label': view__aria_label,
         class: bem(view__base_class, view__modifiers),
       } %}
   {% endif %}
