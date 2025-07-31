@@ -389,10 +389,11 @@ th.field-label {
 } 
 
 /*
- * The footer is displaying the contextual menu for admins when it should not.
+ * There are places where the contextual menu is showing when it should not.
  * This hides this from the users while giving us the flexibility to get to it
  * should we ever need it.
  */
+#block-atomic-custombooknavigation .contextual,
 #block-yalesitesfooterblock .contextual,
 #block-yalesitesfooterblock .contextual-region {
   display: none;
