@@ -98,9 +98,13 @@ function atomic_theme_suggestions_container_alter(array &$suggestions, array &$v
  * Implements hook_preprocess_node().
  */
 function atomic_preprocess_node(&$variables) {
-  if ($variables['node']->getType() == 'post') {
-    $date = strtotime($variables['node']->field_publish_date->first()->getValue()['value']);
-    $variables['date_formatted'] = \Drupal::service('date.formatter')->format($date, '', 'c');
+  // Allows for multiple node types to use the formatted publish date.
+  if (in_array($variables['node']->getType(), ['post', 'resource'])) {
+    $date = strtotime($variables['node']->field_publish_date?->first()?->getValue()['value']);
+
+    if ($date) {
+      $variables['date_formatted'] = \Drupal::service('date.formatter')->format($date, '', 'c');
+    }
   }
 }
 
@@ -191,4 +195,49 @@ function atomic_preprocess_html(array &$variables) {
       }
     }
   }
+}
+
+/**
+ * Implements hook_preprocess_node__resource().
+ * 
+ * Since thumbnails in media are just files, we need to manually create a
+ * render array using "responsive_image".
+ */
+function atomic_preprocess_node__resource(array &$variables) {
+  /** @var \Drupal\node\Entity\Node $node */
+  $node = $variables['node'];
+  
+  $fieldMedia = $node?->field_media;
+  
+  if (!$fieldMedia) {
+    return;
+  }
+
+  /** @var \Drupal\media\Entity\Media $media */
+  $media = reset($fieldMedia?->referencedEntities());
+  $thumbnail = $media?->thumbnail;
+    
+  if (!$thumbnail) {
+    return;
+  }
+
+  /** @var \Drupal\file\Entity\File $file */
+  $file = reset($thumbnail->referencedEntities());
+
+  if (!$file) {
+    return;
+  }
+
+  // Create responsive_image render array using the thumbnail uri.
+  $variables['responsive_media_thumbnail'] = [
+    '#theme' => 'responsive_image',
+    '#uri' => $file->getFileUri(),
+    '#responsive_image_style_id' => 'resource_thumbnail',
+    '#height' => $thumbnail?->height,
+    '#width' => $thumbnail?->width,
+    '#attributes' => [
+      'loading' => 'lazy',
+      'alt' => $media->label(),
+    ],
+  ];
 }
