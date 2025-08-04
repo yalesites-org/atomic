@@ -133,6 +133,47 @@ function atomic_theme_suggestions_field_alter(array &$suggestions, array $variab
 }
 
 /**
+ * Implements hook_preprocess_views_view().
+ *
+ * Adds section wrapper and aria-label for YS Views Basic views.
+ */
+function atomic_preprocess_views_view(&$variables) {
+  $view = $variables['view'];
+
+  // Only process views_basic_scaffold and views_basic_scaffold_events views.
+  if (!in_array($view->id(), ['views_basic_scaffold', 'views_basic_scaffold_events'])) {
+    return;
+  }
+
+  // Content type labels for aria-label.
+  $content_type_labels = [
+    'post' => 'Posts',
+    'event' => 'Events',
+    'page' => 'Pages',
+    'profile' => 'Profiles',
+  ];
+
+  // Default aria-label.
+  $aria_label = 'Content';
+
+  // Extract content type from view arguments if available.
+  if (!empty($view->args)) {
+    // Views basic passes JSON parameters in the arguments.
+    // The content type filter is typically in the first argument.
+    $first_arg = reset($view->args);
+    if ($first_arg && is_string($first_arg)) {
+      if (isset($content_type_labels[$first_arg])) {
+        $aria_label = $content_type_labels[$first_arg] . " collection";
+      }
+    }
+  }
+
+  // Add section wrapper variables.
+  $variables['use_section_wrapper'] = TRUE;
+  $variables['section_aria_label'] = $aria_label;
+}
+
+/**
  * Implements hook_preprocess_HOOK().
  *
  * Attempt to pre-set the main content ID based on whether
