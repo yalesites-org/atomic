@@ -96,3 +96,7 @@ ys_embed:
 read-time:
   js:
     node_modules/@yalesites-org/component-library-twig/dist/js/02-molecules/read-time/yds-read-time.js: {}
+tokens:
+  css:
+    theme:
+      node_modules/@yalesites-org/tokens/build/css/tokens.css: {}
