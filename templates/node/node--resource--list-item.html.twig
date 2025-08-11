@@ -10,6 +10,7 @@
 
 {% set heading = content.field_teaser_title.0 ? content.field_teaser_title : label %}
 {% set date_format = content.field_date_format.0 ? content.field_date_format.0['#markup'] : '' %}
+{% set url = content.field_external_source[0]['#url']|render ? content.field_external_source[0]['#url']|render : url %}
 
 {% set publish_date %}
   {% if date_format %}
