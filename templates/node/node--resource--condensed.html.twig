@@ -29,7 +29,7 @@
   reference_card__image: 'false',
   reference_card__image_aria: heading[0]['#context'].value,
   reference_card__overlay: node.pin_label,
-  show_categories: 'true',
+  show_categories: node.show_category,
 } %}
   {% block reference_card__categories %}
     {{ content.field_category }}
