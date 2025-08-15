@@ -45,6 +45,30 @@ function atomic_preprocess_menu(&$variables, $hook) {
 }
 
 /**
+ * Implements hook_preprocess_pager().
+ *
+ * Adds total pages to the pager variables.
+ */
+function atomic_preprocess_pager(array &$variables) {
+  $element = $variables['pager']['#element'];
+  $pager_manager = \Drupal::service('pager.manager');
+  $pager = $pager_manager->getPager($element);
+  $variables['pager']['#total_pages'] = $pager->getTotalPages();
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter() for pager.
+ */
+function atomic_theme_suggestions_pager_alter(array &$suggestions, array $variables) {
+  // Remove gin-lb suggestion(s).
+  foreach ($suggestions as $key => $suggestion) {
+    if ($suggestion === 'pager__gin_lb' || $suggestion === 'pager--gin-lb') {
+      unset($suggestions[$key]);
+    }
+  }
+}
+
+/**
  * Implements hook_theme_suggestions_hook_alter() for containers.
  */
 function atomic_theme_suggestions_container_alter(array &$suggestions, array &$variables) {
@@ -110,6 +134,47 @@ function atomic_theme_suggestions_field_alter(array &$suggestions, array $variab
     // Add a theme suggestion for the field based on the parent node's view mode.
     $suggestions[] = 'field__' . $variables['element']['#entity_type'] . '__' . $field_name . '__' . $view_mode;
   }
+}
+
+/**
+ * Implements hook_preprocess_views_view().
+ *
+ * Adds section wrapper and aria-label for YS Views Basic views.
+ */
+function atomic_preprocess_views_view(&$variables) {
+  $view = $variables['view'];
+
+  // Only process views_basic_scaffold and views_basic_scaffold_events views.
+  if (!in_array($view->id(), ['views_basic_scaffold', 'views_basic_scaffold_events'])) {
+    return;
+  }
+
+  // Content type labels for aria-label.
+  $content_type_labels = [
+    'post' => 'Posts',
+    'event' => 'Events',
+    'page' => 'Pages',
+    'profile' => 'Profiles',
+  ];
+
+  // Default aria-label.
+  $aria_label = 'Content';
+
+  // Extract content type from view arguments if available.
+  if (!empty($view->args)) {
+    // Views basic passes JSON parameters in the arguments.
+    // The content type filter is typically in the first argument.
+    $first_arg = reset($view->args);
+    if ($first_arg && is_string($first_arg)) {
+      if (isset($content_type_labels[$first_arg])) {
+        $aria_label = $content_type_labels[$first_arg] . " collection";
+      }
+    }
+  }
+
+  // Add section wrapper variables.
+  $variables['use_section_wrapper'] = TRUE;
+  $variables['section_aria_label'] = $aria_label;
 }
 
 /**
