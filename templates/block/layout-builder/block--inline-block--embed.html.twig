@@ -10,6 +10,7 @@
 
   {% embed "@molecules/embed/yds-embed.twig" with {
     embed__width: embed__width,
+    embed__padding_options: padding_options|default('default'),
   }%}
 
     {% block embed__block %}
