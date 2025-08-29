@@ -8,12 +8,14 @@
     {% set view__attibutes = {
       'data-component-width': 'content',
       'data-embedded-components': 'true',
+      'data-padding-options': padding_options|default('default'),
       class: bem(view__base_class, view__modifiers),
     } %}
     {% else %}
       {% set view__attibutes = {
         'data-component-width': 'site',
         'data-embedded-components': 'true',
+        'data-padding-options': padding_options|default('default'),
         class: bem(view__base_class, view__modifiers),
       } %}
   {% endif %}

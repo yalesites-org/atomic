@@ -10,6 +10,7 @@
   {% embed "@organisms/galleries/media-grid/yds-media-grid.twig" with {
     media_grid__heading: content.field_heading.0,
     media_grid__width: media_grid__width,
+    media_grid__padding_options: padding_options|default('default'),
   } %}
     {% block media_grid__items %}
       {% for item in content.field_media_grid_items['#items'] %}

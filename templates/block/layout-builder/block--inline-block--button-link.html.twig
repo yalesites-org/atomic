@@ -22,6 +22,7 @@
           cta__content: content.field_button_link.0['#title'],
           cta__href: content.field_button_link.0['#url_title'],
           cta__component_theme: cta__component_theme|default('one'),
+          cta__padding_options: padding_options|default('default'),
         }%}
         {% if content.field_button_link.1['#url_title'] is not empty %}
           {% include "@atoms/controls/cta/yds-cta.twig" with {
@@ -30,6 +31,7 @@
             cta__href: content.field_button_link.1['#url_title'],
             cta__component_theme: cta__component_theme|default('one'),
             cta__style: 'outline',
+            cta__padding_options: padding_options|default('default'),
           }%}
         {% endif %}
       </div>
