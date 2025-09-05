@@ -5,6 +5,7 @@
   {% embed "@organisms/component-wrapper/yds-component-wrapper.twig" with {
     component_width: 'site',
     component_wrapper__label: content.field_heading,
+    component_wrapper__padding_options: padding_options|default('default'),
   } %}
 
     {% block component_wrapper_inner %}
@@ -14,7 +15,6 @@
             inline_message__content: content['#configuration_issue'],
             inline_message__type: 'info',
             inline_message__theme: 'two',
-            inline_message__padding_options: padding_options|default('default'),
           } %}
       {% endif %}
 
