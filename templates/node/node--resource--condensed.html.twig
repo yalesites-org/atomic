@@ -1,0 +1,37 @@
+{#
+/**
+ * Available Variables:
+ * - responsive_media_thumbnail: A responsive image using the thumbnail file.
+ * - date_formatted: The publish_date in ISO 8601 format.
+ *
+ * @see atomic_preprocess_node()
+ * @see atomic_preprocess_node__resource()
+#}
+
+{% set heading = content.field_teaser_title.0 ? content.field_teaser_title : label %}
+{% set date_format = content.field_date_format.0 ? content.field_date_format.0['#markup'] : '' %}
+{% set url = content.field_external_source[0]['#url']|render ? content.field_external_source[0]['#url']|render : url %}
+
+{% set publish_date %}
+  {% if date_format %}
+    <strong>{{ 'Published'|t }}:</strong>
+    {% include "@atoms/date-time/yds-date-time.twig" with {
+      date_time__start: date_formatted,
+      date_time__format: date_format,
+    } %}
+  {% endif %}
+{% endset %}
+
+{% embed "@molecules/cards/reference-card/yds-reference-card.twig" with {
+  reference_card__heading: heading,
+  reference_card__url: url,
+  reference_card__overline: publish_date,
+  reference_card__image: 'false',
+  reference_card__image_aria: heading[0]['#context'].value,
+  reference_card__overlay: node.pin_label,
+  show_categories: node.show_category,
+} %}
+  {% block reference_card__categories %}
+    {{ content.field_category }}
+  {% endblock %}
+{% endembed %}
