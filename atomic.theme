@@ -214,7 +214,8 @@ function atomic_preprocess_node__resource(array &$variables) {
   }
 
   /** @var \Drupal\media\Entity\Media $media */
-  $media = reset($fieldMedia?->referencedEntities());
+  $referenced_entities = $fieldMedia?->referencedEntities() ?? [];
+  $media = reset($referenced_entities);
   $thumbnail = $media?->thumbnail;
     
   if (!$thumbnail) {
@@ -222,7 +223,8 @@ function atomic_preprocess_node__resource(array &$variables) {
   }
 
   /** @var \Drupal\file\Entity\File $file */
-  $file = reset($thumbnail->referencedEntities());
+  $referenced_entities = $thumbnail->referencedEntities();
+  $file = reset($referenced_entities);
 
   if (!$file) {
     return;
