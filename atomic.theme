@@ -106,6 +106,54 @@ function atomic_preprocess_node(&$variables) {
       $variables['date_formatted'] = \Drupal::service('date.formatter')->format($date, '', 'c');
     }
   }
+  
+  // Handle resource thumbnail processing (moved from atomic_preprocess_node__resource)
+  if ($variables['node']->getType() === 'resource') {
+    $view_mode = $variables['elements']['#view_mode'] ?? 'default';
+    
+    // Skip for search_result view mode as it's not needed
+    if ($view_mode === 'search_result') {
+      return;
+    }
+    
+    /** @var \Drupal\node\Entity\Node $node */
+    $node = $variables['node'];
+    $fieldMedia = $node?->field_media;
+    
+    if (!$fieldMedia) {
+      return;
+    }
+
+    /** @var \Drupal\media\Entity\Media $media */
+    $referenced_entities = $fieldMedia?->referencedEntities() ?? [];
+    $media = reset($referenced_entities);
+    $thumbnail = $media?->thumbnail;
+      
+    if (!$thumbnail) {
+      return;
+    }
+
+    /** @var \Drupal\file\Entity\File $file */
+    $referenced_entities = $thumbnail->referencedEntities();
+    $file = reset($referenced_entities);
+
+    if (!$file) {
+      return;
+    }
+
+    // Create responsive_image render array using the thumbnail uri.
+    $variables['responsive_media_thumbnail'] = [
+      '#theme' => 'responsive_image',
+      '#uri' => $file->getFileUri(),
+      '#responsive_image_style_id' => 'resource_thumbnail',
+      '#height' => $thumbnail?->height,
+      '#width' => $thumbnail?->width,
+      '#attributes' => [
+        'loading' => 'lazy',
+        'alt' => $media->label(),
+      ],
+    ];
+  }
 }
 
 /**
@@ -197,49 +245,3 @@ function atomic_preprocess_html(array &$variables) {
   }
 }
 
-/**
- * Implements hook_preprocess_node__resource().
- * 
- * Since thumbnails in media are just files, we need to manually create a
- * render array using "responsive_image".
- */
-function atomic_preprocess_node__resource(array &$variables) {
-  /** @var \Drupal\node\Entity\Node $node */
-  $node = $variables['node'];
-  
-  $fieldMedia = $node?->field_media;
-  
-  if (!$fieldMedia) {
-    return;
-  }
-
-  /** @var \Drupal\media\Entity\Media $media */
-  $referenced_entities = $fieldMedia?->referencedEntities() ?? [];
-  $media = reset($referenced_entities);
-  $thumbnail = $media?->thumbnail;
-    
-  if (!$thumbnail) {
-    return;
-  }
-
-  /** @var \Drupal\file\Entity\File $file */
-  $referenced_entities = $thumbnail->referencedEntities();
-  $file = reset($referenced_entities);
-
-  if (!$file) {
-    return;
-  }
-
-  // Create responsive_image render array using the thumbnail uri.
-  $variables['responsive_media_thumbnail'] = [
-    '#theme' => 'responsive_image',
-    '#uri' => $file->getFileUri(),
-    '#responsive_image_style_id' => 'resource_thumbnail',
-    '#height' => $thumbnail?->height,
-    '#width' => $thumbnail?->width,
-    '#attributes' => [
-      'loading' => 'lazy',
-      'alt' => $media->label(),
-    ],
-  ];
-}
