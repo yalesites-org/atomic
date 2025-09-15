@@ -1,6 +1,8 @@
 {{ attach_library('atomic/tabs') }}
 
-{% embed "@molecules/tabs/yds-tabs.twig" %}
+{% embed "@molecules/tabs/yds-tabs.twig" with {
+  tabs__padding_options: padding_options|default('default'),
+} %}
   {% block tab__label %}
     {% for key, tab in items %}
       {% include "@molecules/tabs/_yds-tab-label.twig" with {
