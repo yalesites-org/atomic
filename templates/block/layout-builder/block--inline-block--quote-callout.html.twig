@@ -1,7 +1,6 @@
 {% extends "@atomic/block/layout-builder/_layout-builder-block-template.twig" %}
 
 {% block content %}
-  {{ attach_library('atomic/spotlights') }}
 
   {% if content.field_media.0 %}
     {% set quote_callout__quote_image = 'with-image' %}
@@ -15,7 +14,6 @@
     quote_callout__quote_alignment: content.field_style_alignment.0['#markup'],
     quote_callout__width: 'content',
     quote_callout__accent_theme: content.field_style_color.0['#markup'],
-    quote_callout__padding_options: padding_options|default('default'),
   } %}
 
     {% block quote_callout__image %}

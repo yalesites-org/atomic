@@ -66,9 +66,6 @@ text:
 text-copy-button:
   js:
     node_modules/@yalesites-org/component-library-twig/dist/js/01-atoms/controls/text-copy-button/yds-text-copy-button.js: {}
-spotlights:
-  js:
-    node_modules/@yalesites-org/component-library-twig/dist/js/02-molecules/content-spotlight-portrait/content-spotlights.js: {}
 event-localist:
   js:
     node_modules/@yalesites-org/component-library-twig/dist/js/02-molecules/meta/event-meta/event-meta-localist.js: {}

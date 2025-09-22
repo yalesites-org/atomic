@@ -1,3 +1,6 @@
+
+{# Top padding element #}
+<div class="ys-block-padding-top" data-padding-options="{{ padding_options|default('default') }}"></div>
 {# If we're in layout-builder, we need to add/wrap a '<div>' around each
 component to make them drag-n-droppable #}
 {% if attributes.hasClass('js-layout-builder-block') %}
@@ -30,3 +33,6 @@ component to make them drag-n-droppable #}
 {% if in_layout_builder %}
   </div>
 {% endif %}
+
+{# Bottom padding element #}
+<div class="ys-block-padding-bottom" data-padding-options="{{ padding_options|default('default') }}"></div>
