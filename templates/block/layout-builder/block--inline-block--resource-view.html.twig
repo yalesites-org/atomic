@@ -8,7 +8,6 @@
     'data-embedded-components': 'true',
     class: bem(view__base_class, view__modifiers),
   } %}
-
   <div {{ add_attributes(view__attibutes) }}>
     {% embed "@organisms/component-wrapper/yds-component-wrapper.twig" with {
       component_wrapper__width: component_wrapper__width|default('site'),
