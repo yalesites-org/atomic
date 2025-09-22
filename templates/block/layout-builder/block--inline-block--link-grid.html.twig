@@ -23,7 +23,6 @@
   {% embed "@molecules/link-grid/yds-link-grid.twig" with {
     link_grid__theme: link_grid_theme,
     link_grid__heading: content.field_heading.0,
-    link_grid__padding_options: padding_options|default('default'),
   }%}
     {% block link_grid__links_one %}
       {{content.field_link_lists.0}}
