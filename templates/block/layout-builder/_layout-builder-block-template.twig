@@ -1,3 +1,9 @@
+{# Top padding element - only render if not no-padding and not no-top #}
+{% set current_padding = padding_options|default('default') %}
+{% if current_padding != 'no-padding' and current_padding != 'no-top' %}
+  <div class="ys-block-padding-top"></div>
+{% endif %}
+
 {# If we're in layout-builder, we need to add/wrap a '<div>' around each
 component to make them drag-n-droppable #}
 {% if attributes.hasClass('js-layout-builder-block') %}
@@ -29,4 +35,9 @@ component to make them drag-n-droppable #}
 {# If we're in layout-builder, we need to close the </div> wrapper #}
 {% if in_layout_builder %}
   </div>
+{% endif %}
+
+{# Bottom padding element - only render if not no-padding #}
+{% if current_padding != 'no-padding' and current_padding != 'no-bottom' %}
+  <div class="ys-block-padding-bottom"></div>
 {% endif %}

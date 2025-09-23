@@ -1,7 +1,6 @@
 {% extends "@atomic/block/layout-builder/_layout-builder-block-template.twig" %}
 
 {% block content %}
-  {{ attach_library('atomic/spotlights') }}
 
   {% if content.field_media.0 %}
     {% set quote_callout__quote_image = 'with-image' %}
