@@ -430,3 +430,28 @@ th.field-label {
 .horizontal-tabs-panes {
   overflow: hidden;
 }
+
+/* Fix width issue specifically for edit block sidebar (layout_builder_update_block) */
+/* The edit block sidebar has different constraints than the modal */
+[data-drupal-selector^="edit-settings-block-form-group-block-tabs"].horizontal-tabs-panes {
+  width: 100%;
+  max-width: none;
+}
+
+/* Override the CKEditor fix for horizontal tabs specifically */
+/* The CKEditor fix at line 330 applies width: inherit !important to all divs */
+/* but we need tabs to take full width in the edit block sidebar */
+#drupal-off-canvas-wrapper .ui-dialog-content div[data-drupal-selector^="edit-settings-block-form-group-block-tabs"].horizontal-tabs-panes,
+#drupal-off-canvas-wrapper .ui-dialog-content .horizontal-tabs-pane.glb-claro-details .glb-claro-details__wrapper,
+#drupal-off-canvas-wrapper .ui-dialog-content .horizontal-tabs-pane .glb-form-wrapper {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* Ensure the tab content wrapper takes full available width in sidebar */
+.horizontal-tabs-pane.glb-claro-details .glb-claro-details__wrapper.details-wrapper {
+  width: 100%;
+  max-width: none;
+  margin-left: 0;
+  margin-right: 0;
+}
