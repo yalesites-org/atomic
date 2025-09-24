@@ -448,6 +448,13 @@ th.field-label {
   max-width: 100% !important;
 }
 
+/* Fix tab border alignment in Layout Builder (YSP-902) */
+/* Remove the bottom border from the tabs navigation to eliminate double border */
+#drupal-off-canvas-wrapper .horizontal-tabs ul.horizontal-tabs-list::after,
+.layout-builder-configure-block .horizontal-tabs ul.horizontal-tabs-list::after {
+  border-bottom: none !important;
+}
+
 /* Ensure the tab content wrapper takes full available width in sidebar */
 .horizontal-tabs-pane.glb-claro-details .glb-claro-details__wrapper.details-wrapper {
   width: 100%;
