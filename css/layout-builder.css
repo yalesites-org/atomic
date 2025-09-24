@@ -398,3 +398,35 @@ th.field-label {
 #block-yalesitesfooterblock .contextual-region {
   display: none;
 }
+
+/* Fix horizontal tabs content overflow issue (YSP-902) */
+/* Tab content was extending beyond the white border of the tab container */
+/* Target Gin Layout Builder specific classes used in block form tabs */
+
+.horizontal-tabs-pane.glb-claro-details {
+  overflow: hidden;
+}
+
+.horizontal-tabs-pane.glb-claro-details .glb-claro-details__wrapper {
+  padding: 1em 1.5em 1.5em 1.5em;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* Ensure Gin Layout Builder form elements respect tab boundaries */
+.horizontal-tabs-pane .glb-form-wrapper,
+.horizontal-tabs-pane .glb-form-item {
+  margin-right: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.horizontal-tabs-pane .glb-form-element {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Additional containment for the main horizontal tabs container */
+.horizontal-tabs-panes {
+  overflow: hidden;
+}
