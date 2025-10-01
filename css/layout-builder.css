@@ -184,15 +184,10 @@ div[data-drupal-selector="edit-block-form"] {
   padding: 1rem;
 }
 
-.layout-builder-components-table th {
-  background-color: transparent;
-  border: none;
-}
-
-.layout-builder-components-table tr:nth-child(2n) {
+.layout-builder-components-table tr:nth-child(odd) {
   background-color: var(--gin-bg-layer);
+  color: var(--gin-color-text);
 }
-
 
 #drupal-off-canvas-wrapper .draggable:hover,
 #drupal-off-canvas-wrapper .draggable:focus-within {
