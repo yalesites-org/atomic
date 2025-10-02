@@ -376,6 +376,11 @@ label.form-required::after, label.js-form-required::after {
   color: var(--color-basic-black);
 }
 
+/* Fix contrast for help links in dark mode media library modal */
+.gin--dark-mode .media-library-widget-modal .ui-widget-content .description a {
+  color: var(--color-basic-white);
+}
+
 .media-library-widget-modal .pager__items {
   font-weight: normal;
 }
