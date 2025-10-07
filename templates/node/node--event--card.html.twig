@@ -22,7 +22,6 @@
 {% set end_date = content.field_event_date[delta].end_time['#markup']|date('Y-m-d') %}
 
 {% set same_day = start_date == end_date %}
-{{ same_day ? "yes" : "no"}}
 
 {# Determine the date format based on whether the event starts and ends on the same day #}
 {% set date_time__format = 'date_time_multiple_days' %}
