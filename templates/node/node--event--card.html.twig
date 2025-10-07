@@ -17,9 +17,23 @@
   {% endset %}
 {% endif %}
 
+{# Used to test if we're ouputting for the same day or multiple days #}
+{% set start_date = content.field_event_date[delta].start_time['#markup']|date('Y-m-d') %}
+{% set end_date = content.field_event_date[delta].end_time['#markup']|date('Y-m-d') %}
+
+{% set same_day = start_date == end_date %}
+
+{# Determine the date format based on whether the event starts and ends on the same day #}
+{% set date_time__format = 'date_time_multiple_days' %}
+{% if same_day %}
+  {% set date_time__format = 'same_day_diff_time' %}
+{% endif %}
+
 {% set date__formatted %}
   {% include "@atoms/date-time/yds-date-time.twig" with {
     date_time__start: content.field_event_date[delta].start_time['#markup'],
+    date_time__end: content.field_event_date[delta].end_time['#markup'],
+    date_time__format: date_time__format,
   } %} {{multi_day_text}}
 {% endset %}
 
