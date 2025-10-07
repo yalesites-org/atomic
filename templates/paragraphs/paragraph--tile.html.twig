@@ -2,10 +2,15 @@
 {% set parent = paragraph._referringItem.parent.parent.entity %}
 {% set tile__item__bg_image = content.field_media.0 ? 'true' : 'false' %}
 
+{# Extract link data for improved accessibility #}
+{% set link_url = content.field_link.0['#url_title'] %}
+{% set link_title = content.field_link.0['#title'] %}
+
 {% embed "@molecules/tile-item/yds-tile-item.twig" with {
   tile__item__heading: content.field_heading.0['#text'],
   tile__item__content: content.field_text.0,
-  tile__item__content_link: content.field_link.0['#url_title'],
+  tile__item__content_link: link_url,
+  tile__item__link_title: link_title,
   tile__item__alignment: parent.fields.field_style_alignment.0.value,
   tile__item__vertical_alignment: parent.fields.field_style_position.0.value,
   tile__item__presentation_style: content.field_heading.0['#text'] ? 'heading' : 'text-only',
