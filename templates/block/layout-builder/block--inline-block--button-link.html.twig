@@ -10,18 +10,42 @@
     {% set component_wrapper__alignment = "left" %}
   {% endif %}
 
+  {# Get button alignment and style settings - use raw value, not label #}
+  {% set button_alignment = content.field_button_alignment['#items'].0.value|default('left') %}
+  {% set button_style = content.field_button_style_consistency['#items'].0.value|default('mixed') %}
+
+  {# Debug output - remove after testing #}
+  <!-- DEBUG: button_alignment = {{ button_alignment }} -->
+  <!-- DEBUG: button_style = {{ button_style }} -->
+  <!-- DEBUG: first_button_style will be = {% if button_style == 'both_filled' %}filled{% elseif button_style == 'both_outline' %}outline{% else %}filled (mixed default){% endif %} -->
+  <!-- DEBUG: second_button_style will be = {% if button_style == 'both_filled' %}filled{% elseif button_style == 'both_outline' %}outline{% else %}outline (mixed default){% endif %} -->
+
+  {# Determine individual button styles based on consistency setting #}
+  {% if button_style == 'both_filled' %}
+    {% set first_button_style = 'filled' %}
+    {% set second_button_style = 'filled' %}
+  {% elseif button_style == 'both_outline' %}
+    {% set first_button_style = 'outline' %}
+    {% set second_button_style = 'outline' %}
+  {% else %}
+    {# mixed (default) #}
+    {% set first_button_style = 'filled' %}
+    {% set second_button_style = 'outline' %}
+  {% endif %}
+
   {% embed "@organisms/component-wrapper/yds-component-wrapper.twig" with {
     component_wrapper__width: component_wrapper__width,
     component_wrapper__label: content.field_heading,
     component__modifiers: ['no-top-margin'],
   } %}
     {% block component_wrapper_inner %}
-      <div class="cta-group">
+      <div class="cta-group cta-group--align-{{ button_alignment }}">
         {% include "@atoms/controls/cta/yds-cta.twig" with {
           cta__element: 'a',
           cta__content: content.field_button_link.0['#title'],
           cta__href: content.field_button_link.0['#url_title'],
           cta__component_theme: cta__component_theme|default('one'),
+          cta__style: first_button_style,
         }%}
         {% if content.field_button_link.1['#url_title'] is not empty %}
           {% include "@atoms/controls/cta/yds-cta.twig" with {
@@ -29,7 +53,7 @@
             cta__content: content.field_button_link.1['#title'],
             cta__href: content.field_button_link.1['#url_title'],
             cta__component_theme: cta__component_theme|default('one'),
-            cta__style: 'outline',
+            cta__style: second_button_style,
           }%}
         {% endif %}
       </div>
