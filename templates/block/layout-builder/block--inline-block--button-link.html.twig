@@ -12,13 +12,7 @@
 
   {# Get button alignment and style settings - use raw value, not label #}
   {% set button_alignment = content.field_button_alignment['#items'].0.value|default('left') %}
-  {% set button_style = content.field_button_style_consistency['#items'].0.value|default('mixed') %}
-
-  {# Debug output - remove after testing #}
-  <!-- DEBUG: button_alignment = {{ button_alignment }} -->
-  <!-- DEBUG: button_style = {{ button_style }} -->
-  <!-- DEBUG: first_button_style will be = {% if button_style == 'both_filled' %}filled{% elseif button_style == 'both_outline' %}outline{% else %}filled (mixed default){% endif %} -->
-  <!-- DEBUG: second_button_style will be = {% if button_style == 'both_filled' %}filled{% elseif button_style == 'both_outline' %}outline{% else %}outline (mixed default){% endif %} -->
+  {% set button_style = content.field_button_style_consistency['#items'].0.value|default('filled_outline') %}
 
   {# Determine individual button styles based on consistency setting #}
   {% if button_style == 'both_filled' %}
@@ -27,8 +21,11 @@
   {% elseif button_style == 'both_outline' %}
     {% set first_button_style = 'outline' %}
     {% set second_button_style = 'outline' %}
+  {% elseif button_style == 'outline_filled' %}
+    {% set first_button_style = 'outline' %}
+    {% set second_button_style = 'filled' %}
   {% else %}
-    {# mixed (default) #}
+    {# filled_outline (default) #}
     {% set first_button_style = 'filled' %}
     {% set second_button_style = 'outline' %}
   {% endif %}
