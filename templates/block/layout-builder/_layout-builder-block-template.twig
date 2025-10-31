@@ -1,26 +1,19 @@
-{# Top padding element - only render if not no-padding and not no-top #}
+{# Set padding modifier class based on padding_options #}
 {% set current_padding = padding_options|default('default') %}
-{% if current_padding != 'no-padding' and current_padding != 'no-top' %}
-  <div class="ys-block-padding-top"></div>
-{% endif %}
+{% set padding_modifier = 'ys-block-wrapper--padding-' ~ current_padding %}
 
 {# If we're in layout-builder, we need to add/wrap a '<div>' around each
 component to make them drag-n-droppable #}
 {% if attributes.hasClass('js-layout-builder-block') %}
-
-  {# Set a variable to true if we're in in_layout_builder so that we can
-  close the div after the block content instance, which removes all attributes because of
-  emulsify_twig. Without this the div can't close by checking
-    {% if attributes.hasClass('js-layout-builder-block') %}
-   #}
-  {% set in_layout_builder = TRUE %}
-
   {% set reusable_class = is_reusable ? 'ys-layout-builder--is-reusable' %}
 
-  <div{{ attributes.addClass(reusable_class) }}>
+  <div{{ attributes.addClass('ys-block-wrapper').addClass(padding_modifier).addClass(reusable_class) }}>
     {{ attach_library('ys_themes/ys_themes') }}
     <div class="ys-layout-builder--drag-drop">
     </div>
+{% else %}
+  {# When not in layout builder, still wrap content with padding classes #}
+  <div class="ys-block-wrapper {{ padding_modifier }}">
 {% endif %}
 
   {{ title_prefix }}
@@ -32,12 +25,5 @@ component to make them drag-n-droppable #}
     {# To be replaced with component #}
   {% endblock %}
 
-{# If we're in layout-builder, we need to close the </div> wrapper #}
-{% if in_layout_builder %}
-  </div>
-{% endif %}
-
-{# Bottom padding element - only render if not no-padding #}
-{% if current_padding != 'no-padding' and current_padding != 'no-bottom' %}
-  <div class="ys-block-padding-bottom"></div>
-{% endif %}
+{# Close the wrapper div #}
+</div>
