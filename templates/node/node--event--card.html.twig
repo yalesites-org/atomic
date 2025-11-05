@@ -1,5 +1,3 @@
-{% set event_has_passed = event_dates is empty %}
-
 {# Use event_dates array to print any event dates - look inside array for formatted options #}
 
 {% set delta = 0 %}
@@ -7,6 +5,8 @@
 {% if elements['#delta'] is not empty %}
   {% set delta = elements['#delta'] %}
 {% endif %}
+
+{% set event_has_passed = content.field_event_date[delta].end_time['#markup']|date("U") < "now"|date("U") %}
 
 {% if event_dates|length > 1 %}
   {% set multi_day_text %}
@@ -49,13 +49,10 @@
 
 {% set url = content.field_external_source[0]['#url']|render ? content.field_external_source[0]['#url']|render : url %}
 
-{# Set the event title prefix based on event status #}
-{% set event_title__prefix = event_has_passed ? 'Past Event: ' : '' %}
-
 {# field_ticket_registration_url #}
 {# field_external_source #}
 {% embed "@molecules/cards/reference-card/yds-reference-card.twig" with {
-  reference_card__prefix: event_title__prefix,
+  event_has_passed: event_has_passed,
   reference_card__heading: heading,
   reference_card__subheading: date__formatted,
   reference_card__url: url,
