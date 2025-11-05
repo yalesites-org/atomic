@@ -332,23 +332,6 @@ th.field-label {
   margin-block-end: 0;
 }
 
-/* Adjust bottom-margin if an element with [data-spotlights-position="first-and-last"] is the last element on the page */
-/* Or if [data-spotlights-position="last"] is the last element in main content */
-.main-content [data-spotlights-position="first-and-last"]:last-child,
-.main-content [data-spotlights-position="last"]:last-child {
-  margin-bottom: 0;
-}
-
-/* Adjust top-margin if an element with an [data-spotlights-position="first" or data-spotlights-position="first-and-last"
-// is the first element in main content */
-.main-content [data-spotlights-position="first"]:first-child,
-.main-content [data-spotlights-position="first-and-last"]:first-child,
-/* page-meta will almost always be the first element in main content, so we need a condition for it */
-.main-content > .page-meta + [data-spotlights-position="first-and-last"],
-.main-content > .page-meta + [data-spotlights-position="first"] {
-  margin-top: 0;
-}
-
 /* Fixes dark mode weight links to have better contrast. */
 .gin--dark-mode button.tabledrag-toggle-weight {
   color: var(--gin-color-text);
