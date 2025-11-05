@@ -184,22 +184,15 @@ div[data-drupal-selector="edit-block-form"] {
   padding: 1rem;
 }
 
-.layout-builder-components-table th {
-  background-color: transparent;
-  border: none;
-}
-
-.layout-builder-components-table tr:nth-child(2n) {
+.layout-builder-components-table tr:nth-child(odd) {
   background-color: var(--gin-bg-layer);
+  color: var(--gin-color-text);
 }
-
 
 #drupal-off-canvas-wrapper .draggable:hover,
 #drupal-off-canvas-wrapper .draggable:focus-within {
   background-color: var(--gin-bg-layer2);
 }
-
-
 /* Layout component layout-builder link overrides. */
 .yds-layout.layout-builder__layout[data-component-theme="one"] .layout-builder__link.layout-builder__link--add,
 .yds-layout.layout-builder__layout[data-component-theme="three"] .layout-builder__link.layout-builder__link--add,
@@ -449,4 +442,19 @@ th.field-label {
   max-width: none;
   margin-left: 0;
   margin-right: 0;
+}
+
+/* Fix hover text contrast in dark mode - must be at end of file for specificity */
+.gin--dark-mode #drupal-off-canvas table tr.draggable.layout-builder-components-table__row:hover,
+.gin--dark-mode #drupal-off-canvas table tr.layout-builder-components-table__row:hover,
+.gin--dark-mode #drupal-off-canvas tr.draggable:hover,
+.gin--dark-mode #drupal-off-canvas tr:hover {
+  color: var(--gin-color-text);
+}
+
+.gin--dark-mode #drupal-off-canvas table tr.draggable.layout-builder-components-table__row:hover td,
+.gin--dark-mode #drupal-off-canvas table tr.draggable.layout-builder-components-table__row:hover a,
+.gin--dark-mode #drupal-off-canvas table tr.layout-builder-components-table__row:hover td,
+.gin--dark-mode #drupal-off-canvas table tr.layout-builder-components-table__row:hover a {
+  color: inherit;
 }
