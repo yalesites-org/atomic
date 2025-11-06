@@ -37,18 +37,6 @@ would be used instead resulting in top margin of size-spacing-6.  */
   margin-bottom: 0;
 }
 
-/* We allow spotlights in the banner now, but they appear a little to close to
- * the top of the page. This allows us to adjust the top margin to give a
- * little more space to just the first one.
- */
-.main-content .layout--banner .layout__region > .text-with-image:first-child,
-.main-content
-  .layout--banner
-  .layout__region
-  > .content-spotlight-portrait:first-child {
-  margin-top: var(--size-spacing-8);
-}
-
 /* The last item inside the `.main-content` area should have some space between
 // it and the site footer (size-spacing-12 below) - unless it is designated as
 // `$flush-bottom` above. Then it will have no bottom-margin separating it from
@@ -196,22 +184,15 @@ div[data-drupal-selector="edit-block-form"] {
   padding: 1rem;
 }
 
-.layout-builder-components-table th {
-  background-color: transparent;
-  border: none;
-}
-
-.layout-builder-components-table tr:nth-child(2n) {
+.layout-builder-components-table tr:nth-child(odd) {
   background-color: var(--gin-bg-layer);
+  color: var(--gin-color-text);
 }
-
 
 #drupal-off-canvas-wrapper .draggable:hover,
 #drupal-off-canvas-wrapper .draggable:focus-within {
   background-color: var(--gin-bg-layer2);
 }
-
-
 /* Layout component layout-builder link overrides. */
 .yds-layout.layout-builder__layout[data-component-theme="one"] .layout-builder__link.layout-builder__link--add,
 .yds-layout.layout-builder__layout[data-component-theme="three"] .layout-builder__link.layout-builder__link--add,
@@ -351,23 +332,6 @@ th.field-label {
   margin-block-end: 0;
 }
 
-/* Adjust bottom-margin if an element with [data-spotlights-position="first-and-last"] is the last element on the page */
-/* Or if [data-spotlights-position="last"] is the last element in main content */
-.main-content [data-spotlights-position="first-and-last"]:last-child,
-.main-content [data-spotlights-position="last"]:last-child {
-  margin-bottom: 0;
-}
-
-/* Adjust top-margin if an element with an [data-spotlights-position="first" or data-spotlights-position="first-and-last"
-// is the first element in main content */
-.main-content [data-spotlights-position="first"]:first-child,
-.main-content [data-spotlights-position="first-and-last"]:first-child,
-/* page-meta will almost always be the first element in main content, so we need a condition for it */
-.main-content > .page-meta + [data-spotlights-position="first-and-last"],
-.main-content > .page-meta + [data-spotlights-position="first"] {
-  margin-top: 0;
-}
-
 /* Fixes dark mode weight links to have better contrast. */
 .gin--dark-mode button.tabledrag-toggle-weight {
   color: var(--gin-color-text);
@@ -379,14 +343,14 @@ th.field-label {
  * gin, and ckeditor.
  */
 .gin--dark-mode .field-multiple-table.glb-table tr.draggable > td {
-  background-color: var(--gin-bg-layer); 
-  color: var(--gin-color-text); 
-} 
+  background-color: var(--gin-bg-layer);
+  color: var(--gin-color-text);
+}
 
-.gin--dark-mode .field-multiple-table.glb-table tr.draggable:nth-child(odd) > td { 
-  background-color: var(--gin-bg-layer2); 
-  color: var(--gin-color-text); 
-} 
+.gin--dark-mode .field-multiple-table.glb-table tr.draggable:nth-child(odd) > td {
+  background-color: var(--gin-bg-layer2);
+  color: var(--gin-color-text);
+}
 
 /*
  * There are places where the contextual menu is showing when it should not.
