@@ -2,6 +2,7 @@
 
 {% block content %}
   {{ attach_library('atomic/spotlights') }}
+  {{ attach_library('atomic/tile-item') }}
 
   {% embed "@organisms/tiles/yds-tiles.twig" with {
     tiles__alignment: content.field_style_alignment.0['#markup'],
