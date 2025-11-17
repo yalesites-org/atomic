@@ -193,6 +193,12 @@ div[data-drupal-selector="edit-block-form"] {
 #drupal-off-canvas-wrapper .draggable:focus-within {
   background-color: var(--gin-bg-layer2);
 }
+
+.gin--dark-mode #drupal-off-canvas-wrapper tr.draggable:nth-child(even):hover,
+.gin--dark-mode #drupal-off-canvas-wrapper tr.draggable:nth-child(even):focus-within {
+  color: var(--gin-color-text) !important;
+}
+
 /* Layout component layout-builder link overrides. */
 .yds-layout.layout-builder__layout[data-component-theme="one"] .layout-builder__link.layout-builder__link--add,
 .yds-layout.layout-builder__layout[data-component-theme="three"] .layout-builder__link.layout-builder__link--add,
