@@ -14,14 +14,11 @@
   {% endset %}
 {% endif %}
 
-{% set event_has_passed = event_dates is empty %}
+{% set event_has_passed = content.field_event_date[delta].end_time['#markup']|date("U") < "now"|date("U") %}
 
 {% set heading = content.field_teaser_title.0 ? content.field_teaser_title : label %}
 {% set reference_card__image = 'false' %}
 {% set url = content.field_external_source[0]['#url']|render ? content.field_external_source[0]['#url']|render : url %}
-
-{# Set the event title prefix based on event status #}
-{% set event_title__prefix = event_has_passed ? 'Past Event: ' : '' %}
 
 {# Used to test if we're ouputting for the same day or multiple days #}
 {% set start_date = content.field_event_date[delta].start_time['#markup']|date('Y-m-d') %}
@@ -44,7 +41,7 @@
 {% endset %}
 
 {% include "@molecules/cards/reference-card/yds-reference-card.twig" with {
-  reference_card__prefix: event_title__prefix,
+  event_has_passed: event_has_passed,
   reference_card__heading: heading,
   reference_card__subheading: date__formatted,
   reference_card__url: url,
