@@ -14,12 +14,12 @@
 {# For events, include event-specific formatting #}
 {% if node.getType() == 'event' %}
   {% set delta = 0 %}
-  
+
   {% if elements['#delta'] is not empty %}
     {% set delta = elements['#delta'] %}
   {% endif %}
-  
-  {% set event_has_passed = event_dates is empty %}
+
+  {% set event_has_passed = content.field_event_date[delta].end_time['#markup']|date("U") < "now"|date("U") %}
   
   {# Use event_dates array to print any event dates #}
   {% if event_dates|length > 1 %}
@@ -44,9 +44,6 @@
       } %}
     {%- endset %}
   {% endif %}
-
-  {# Set the event title prefix based on event status #}
-  {% set event_title__prefix = event_has_passed ? 'Past Event: ' : '' %}
 {% endif %}
 
 {# Build the reference card parameters based on content type #}
@@ -71,7 +68,7 @@
   }) %}
 {% elseif node.getType() == 'event' %}
   {% set reference_card_params = reference_card_params|merge({
-    reference_card__prefix: event_title__prefix,
+    event_has_passed: event_has_passed,
     reference_card__subheading: date__formatted,
     reference_card__snippet: content.field_teaser_text,
     reference_card__cta_primary__href: ticket_url,
