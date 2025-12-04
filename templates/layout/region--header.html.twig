@@ -29,7 +29,8 @@
   }
 } %}
 
-{% set header_config = header_config_map[header_type] %}
+{# Use header_header_variant to get correct config_map. #}
+{% set header_config = header_config_map[header_variant] %}
 
 {% embed "@organisms/site-header/yds-site-header.twig" with {
   site_header__site_name: header_config['site_name'],
@@ -45,8 +46,14 @@
   drupal_utility_nav: elements.utility_navigation,
 } %}
   {% block site_header__primary_nav %}
-    {# swap with book menu if microsite #}
-    {{ elements.main_navigation }}
+    {% if header_variant == 'normal' %}
+      {{ elements.main_navigation }}
+    {% else %}
+      {% include "@organisms/menu/primary-nav/yds-primary-nav.twig" with {
+        primary_nav__items: collection_microsite_menu_items,
+        menu__variation: 'basic',
+      } %}
+    {% endif %}
   {% endblock %}
 
   {% block site_header__background_image %}

@@ -13,13 +13,13 @@ use Drupal\node\Entity\Node;
  */
 function atomic_preprocess_region__header(&$variables) {
   $variables['site_name'] = \Drupal::config('system.site')->get('name');
-  $variables['header_type'] = 'normal';
+  $variables['header_variant'] = 'normal';
   
   $node = \Drupal::routeMatch()->getParameter('node');
   if ($node instanceof Node && $node->bundle() == 'page') {
     if (_node_is_a_collection($node)) {
       if (_is_collection_a_microsite($node->book['bid'])) {
-        $variables['header_type'] = 'collection_microsite';
+        $variables['header_variant'] = 'collection_microsite';
 
         _get_collection_microsite_details($node, $variables);
       }
@@ -334,6 +334,61 @@ function _get_collection_microsite_details(Node $node, array &$variables) {
     $variables['collection_microsite_name'] = $parent_node->getTitle();
     $variables['collection_microsite_link'] = $parent_node->toUrl()->toString();
     
-    $variables['collection_microsite_tree'] = $book_tree['#items'] ? reset($book_tree['#items'])['below'] : NULL;
+    $variables['collection_microsite_menu_items'] = _process_collection_microsite_menu_items($book_tree['#items']);
   }
+}
+
+/**
+ * Helper function to duplicate to add menu item to collection_microsite menu.
+ * Any item with a "submenu" gets duplicated.
+ *
+ * @param array|null $items
+ * @return array|null
+ */
+function _process_collection_microsite_menu_items($items) {
+  if (empty($items)) {
+    return NULL;
+  }
+
+  $menu_items = reset($items)['below'];
+
+  foreach ($menu_items as &$menuItem) {
+    // Skip menu items that do not have subitems.
+    if (empty($menuItem['below'])) {
+      continue;
+    }
+
+    // Clone top level menu item.
+    $clonedMenuItem = $menuItem;
+
+    // We don't want any other subitems, just the top level.
+    $clonedMenuItem['below'] = NULL;
+
+    // Default the node_title to the menu title.
+    $clonedMenuItem['node_title'] = $clonedMenuItem['title'];
+
+    // If the menu item is associated with a node, replace the node_title
+    // with the node's title.
+    if ($menuItem['url']->isRouted()) {
+      $routeParameters = $menuItem['url']->getRouteParameters();
+
+      if (array_key_exists('node', $routeParameters)) {
+        $nodeId = $routeParameters['node'];
+
+        if ($nodeId) {
+          /** @var \Drupal\node\Entity\Node $node */
+          $node = \Drupal::entityTypeManager()->getStorage('node')->load($nodeId);
+
+          if ($node) {
+            $clonedMenuItem['node_title'] = $node->getTitle();
+          }
+        }
+      }
+    }
+
+    // Add cloned item to the beginning of the menu.
+    array_unshift($menuItem['below'], $clonedMenuItem);
+  }
+
+  return $menu_items;
 }
