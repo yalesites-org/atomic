@@ -5,13 +5,26 @@
  * Functions to support theming.
  */
 
+use Drupal\Core\Url;
 use Drupal\node\Entity\Node;
 
 /**
  * Implements hook_preprocess_region().
  */
-function atomic_preprocess_region(&$variables) {
+function atomic_preprocess_region__header(&$variables) {
   $variables['site_name'] = \Drupal::config('system.site')->get('name');
+  $variables['header_type'] = 'normal';
+  
+  $node = \Drupal::routeMatch()->getParameter('node');
+  if ($node instanceof Node && $node->bundle() == 'page') {
+    if (_node_is_a_collection($node)) {
+      if (_is_collection_a_microsite($node->book['bid'])) {
+        $variables['header_type'] = 'collection_microsite';
+
+        _get_collection_microsite_details($node, $variables);
+      }
+    }
+  }
 }
 
 /**
@@ -234,19 +247,14 @@ function atomic_preprocess_views_view(&$variables) {
 function atomic_preprocess_html(array &$variables) {
   $variables['main_content_id'] = '#main-content';
   $variables['secondary_nav_present'] = FALSE;
-  if ($node = \Drupal::routeMatch()->getParameter('node')) {
-    if ($node instanceof Node && $node->bundle() == 'page') {
-      if (_node_is_book($node)) {
-        // Page is just a normal collection.
-        if (!_is_collection_a_microsite($node->book['bid'])) {
-          $variables['secondary_nav_present'] = TRUE;
-          $variables['main_content_id'] = '#main-content-after-secondary-nav';
-        }
-        // Page is part of microsite collection.
-        else {
-          // get microsite collection data.
-          // hide primary nav.
-        }
+  
+  $node = \Drupal::routeMatch()->getParameter('node');
+  if ($node instanceof Node && $node->bundle() == 'page') {
+    if (_node_is_a_collection($node)) {
+      // Page is just a normal collection.
+      if (!_is_collection_a_microsite($node->book['bid'])) {
+        $variables['secondary_nav_present'] = TRUE;
+        $variables['main_content_id'] = '#main-content-after-secondary-nav';
       }
     }
   }
@@ -261,7 +269,7 @@ function atomic_preprocess_layout__page_meta(&$variables) {
   /** @var \Drupal\node\Entity\Node $entity_node */
   $entity_node = $variables['content']['#entity'];
 
-  if (_node_is_book($entity_node)) {
+  if (_node_is_a_collection($entity_node)) {
     $variables['show_secondary_nav'] = TRUE;
 
     if (_is_collection_a_microsite($entity_node->book['bid'])) {
@@ -276,21 +284,56 @@ function atomic_preprocess_layout__page_meta(&$variables) {
  * @param Node $node
  * @return void
  */
-function _node_is_book($node) {
+function _node_is_a_collection($node) {
   return ($node->book) ? TRUE : FALSE;
 }
 
 /**
  * Helper function to determine if the collection is a microsite.
  *
- * @param integer $nid
+ * @param int $nid
  * @return void
  */
 function _is_collection_a_microsite(int $nid) {
+  $cid = 'collection:microsite:' . $nid;
+  
+  // Try to get from persistent cache first
+  if ($cache = \Drupal::cache()->get($cid)) {
+    return $cache->data;
+  }
+
   /** @var \Drupal\node\Entity\Node $node */
   $node = Node::load($nid);
-  
   $collection_as_microsite = $node?->field_collection_as_microsite?->getString();
+  $is_microsite_collection = $collection_as_microsite ? TRUE : FALSE;
 
-  return $collection_as_microsite ? TRUE : FALSE;
+  // Store in persistent cache (stored in cache_default table)
+  \Drupal::cache()->set($cid, $is_microsite_collection);
+
+  return $is_microsite_collection;
+}
+
+/**
+ * Helper function to get collection microsite details. All $variables set
+ * passed back to calling function.
+ *
+ * @param Node $node
+ * @param array $variables
+ * @return void
+ */
+function _get_collection_microsite_details(Node $node, array &$variables) {
+  $bid = $node->book['bid'];
+  $book_manager = \Drupal::service('book.manager');
+  $book_tree_data = $book_manager->bookTreeAllData($bid);
+  $book_tree = $book_manager->bookTreeOutput($book_tree_data);
+
+  /** @var \Drupal\node\Entity\Node $parent_node */
+  $parent_node = \Drupal::EntityTypeManager()->getStorage('node')->load($bid);
+
+  if ($parent_node) {
+    $variables['collection_microsite_name'] = $parent_node->getTitle();
+    $variables['collection_microsite_link'] = $parent_node->toUrl()->toString();
+    
+    $variables['collection_microsite_tree'] = $book_tree['#items'] ? reset($book_tree['#items'])['below'] : NULL;
+  }
 }
