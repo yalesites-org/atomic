@@ -10,8 +10,7 @@ use Drupal\node\Entity\Node;
 /**
  * Implements hook_preprocess_region().
  * 
- * Uses _get_collection_microsite_details() to get collection microsite details
- * and assign them to $variables.
+ * Assigns details from _get_collection_microsite_details() to the $variables.
  */
 function atomic_preprocess_region__header(&$variables) {
   $variables['site_name'] = \Drupal::config('system.site')->get('name');
@@ -335,6 +334,7 @@ function _get_collection_microsite_details(Node $node, array &$variables) {
   if ($parent_node) {
     $variables['collection_microsite_name'] = $parent_node->getTitle();
     $variables['collection_microsite_link'] = $parent_node->toUrl()->toString();
+    $variables['collection_microsite_hide_utility_menu'] = $parent_node?->field_hide_utility_menu?->getString();
     
     $variables['collection_microsite_menu_items'] = _process_collection_microsite_menu_items($book_tree['#items']);
   }

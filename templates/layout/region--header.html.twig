@@ -4,6 +4,7 @@
   # - collection_microsite_name
   # - collection_microsite_link
   # - collection_microsite_menu_items
+  # - collection_microsite_hide_utility_menu
   # - header_variant
   #
   # @see atomic_preprocess_region__header()
@@ -41,6 +42,7 @@
     'branding_name': getHeaderSetting('site_wide_branding_name'),
     'branding_link': getHeaderSetting('site_wide_branding_link'),
     'show_yale_logo': false,
+    'hide_utility_menu': false,
   },
   'collection_microsite': {
     'site_name': collection_microsite_name,
@@ -48,6 +50,7 @@
     'branding_name': site_name,
     'branding_link': '/',
     'show_yale_logo': true,
+    'hide_utility_menu': collection_microsite_hide_utility_menu,
   }
 } %}
 
@@ -60,6 +63,7 @@
   site_header__branding_name: header_config['branding_name'],
   site_header__branding_link: header_config['branding_link'],
   site_header__show_yale_logo: header_config['show_yale_logo'],
+  site_header__hide_utility_menu: header_config['hide_utility_menu'],
 
   site_header__border_thickness: '8',
   site_header__theme: getThemeSetting('header_theme'),
