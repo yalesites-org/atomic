@@ -20,9 +20,12 @@
   {% set link_grid__links_three = content.field_link_lists.2 %}
   {% set link_grid__links_four = content.field_link_lists.3 %}
 
+  {% set link_grid__line_treatment = link_grid__line_treatment|default('default') %}
+
   {% embed "@molecules/link-grid/yds-link-grid.twig" with {
     link_grid__theme: link_grid_theme,
     link_grid__heading: content.field_heading.0,
+    link_grid__line_treatment: link_grid__line_treatment,
   }%}
     {% block link_grid__links_one %}
       {{content.field_link_lists.0}}
