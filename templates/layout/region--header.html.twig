@@ -27,6 +27,19 @@
 {% endif %}
 
 {# 
+  Microsite headers should have a different color based on the header_theme.
+  Note:
+    one = "white",
+    two = "black",
+    three = "blue"
+#}
+{% set collection_microsite_header_theme_map = {
+  'one': 'three',
+  'two': 'one',
+  'three': 'one',
+} %}
+
+{#
   The header config map has 2 values "normal" and "collection_microsite".
 
   normal - Used for most all pages, include regualer collection pages.
@@ -37,14 +50,16 @@
 #}
 {% set header_config_map = {
   'normal': {
-    'site_name': site_name,
-    'site_link': '/',
     'hide_utility_menu': false,
+    'header_theme': getThemeSetting('header_theme'),
+    'is_collection_microsite': false,
   },
   'collection_microsite': {
-    'site_name': collection_microsite_name,
-    'site_link': collection_microsite_link,
+    'collection_microsite_name': collection_microsite_name,
+    'collection_microsite_link': collection_microsite_link,
     'hide_utility_menu': collection_microsite_hide_utility_menu,
+    'header_theme': collection_microsite_header_theme_map[getThemeSetting('header_theme')],
+    'is_collection_microsite': true,
   }
 } %}
 
@@ -52,14 +67,17 @@
 {% set header_config = header_config_map[header_variant] %}
 
 {% embed "@organisms/site-header/yds-site-header.twig" with {
-  site_header__site_name: header_config['site_name'],
-  site_header__site_link: header_config['site_link'],
+  site_header__site_name: site_name,
+  site_header__site_link: '/',
+  site_header__collection_microsite_name: header_config['collection_microsite_name'],
+  site_header__collection_microsite_link: header_config['collection_microsite_link'],
   site_header__branding_name: getHeaderSetting('site_wide_branding_name'),
   site_header__branding_link: getHeaderSetting('site_wide_branding_link'),
   site_header__hide_utility_menu: header_config['hide_utility_menu'],
+  site_header__is_collection_microsite: header_config['is_collection_microsite'],
 
   site_header__border_thickness: '8',
-  site_header__theme: getThemeSetting('header_theme'),
+  site_header__theme: header_config['header_theme'],
   site_header__accent: getThemeSetting('header_accent'),
   site_header__menu__variation: getHeaderSetting('header_variation'),
   site_header__nav_position: getHeaderSetting('nav_position'),
