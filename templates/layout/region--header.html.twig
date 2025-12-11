@@ -1,8 +1,20 @@
+{#
+  # Available Variables
+  # - site_name
+  # - collection_microsite_name
+  # - collection_microsite_link
+  # - collection_microsite_menu_items
+  # - collection_microsite_hide_utility_menu
+  # - header_variant
+  #
+  # @see atomic_preprocess_region__header()
+#}
+
 {{ elements.alert_block }}
 
 {% if getHeaderSetting('site_name_image') %}
   {% set isSiteHeaderLogo = TRUE %}
-  {% set site_header__site_name_is_image = getHeaderSetting('site_name_image') %}
+  {% set site_header__site_name_image = getHeaderSetting('site_name_image') %}
 {% endif %}
 
 {# Dropdown button links in utility navigation #}
@@ -14,19 +26,72 @@
   {% set utility_nav__dropdown_link__url = '#' %}
 {% endif %}
 
+{# 
+  Microsite headers should have a different color based on the header_theme.
+  Note:
+    one = "white",
+    two = "black",
+    three = "blue"
+#}
+{% set collection_microsite_header_theme_map = {
+  'one': 'three',
+  'two': 'one',
+  'three': 'one',
+} %}
+
+{#
+  The header config map has 2 values "normal" and "collection_microsite".
+
+  normal - Used for most all pages, include regualer collection pages.
+  collection_microsite - Used only for collections that marked as "microsite".
+
+  This config allows us to use a single "yds-site-header" template and reassign
+  keys on the left, to different values based the header_variant.
+#}
+{% set header_config_map = {
+  'normal': {
+    'hide_utility_menu': false,
+    'header_theme': getThemeSetting('header_theme'),
+    'is_collection_microsite': false,
+  },
+  'collection_microsite': {
+    'collection_microsite_name': collection_microsite_name,
+    'collection_microsite_link': collection_microsite_link,
+    'hide_utility_menu': collection_microsite_hide_utility_menu,
+    'header_theme': collection_microsite_header_theme_map[getThemeSetting('header_theme')],
+    'is_collection_microsite': true,
+  }
+} %}
+
+{# Use header_header_variant to get correct config_map. #}
+{% set header_config = header_config_map[header_variant] %}
+
 {% embed "@organisms/site-header/yds-site-header.twig" with {
-  site_name: site_name,
+  site_header__site_name: site_name,
+  site_header__site_link: '/',
+  site_header__collection_microsite_name: header_config['collection_microsite_name'],
+  site_header__collection_microsite_link: header_config['collection_microsite_link'],
+  site_header__branding_name: getHeaderSetting('site_wide_branding_name'),
+  site_header__branding_link: getHeaderSetting('site_wide_branding_link'),
+  site_header__hide_utility_menu: header_config['hide_utility_menu'],
+  site_header__is_collection_microsite: header_config['is_collection_microsite'],
+
   site_header__border_thickness: '8',
-  site_header__theme: getThemeSetting('header_theme'),
+  site_header__theme: header_config['header_theme'],
   site_header__accent: getThemeSetting('header_accent'),
   site_header__menu__variation: getHeaderSetting('header_variation'),
   site_header__nav_position: getHeaderSetting('nav_position'),
-  site_header__branding_name: getHeaderSetting('site_wide_branding_name')|default('Yale University'),
-  site_header__branding_link: getHeaderSetting('site_wide_branding_link')|default('https://www.yale.edu'),
   drupal_utility_nav: elements.utility_navigation,
 } %}
   {% block site_header__primary_nav %}
-    {{ elements.main_navigation }}
+    {% if header_variant == 'normal' %}
+      {{ elements.main_navigation }}
+    {% else %}
+      {% include "@organisms/menu/primary-nav/yds-primary-nav.twig" with {
+        primary_nav__items: collection_microsite_menu_items,
+        menu__variation: 'basic',
+      } %}
+    {% endif %}
   {% endblock %}
 
   {% block site_header__background_image %}
@@ -34,5 +99,4 @@
       {{ site_header__background_image }}
     {% endif %}
   {% endblock %}
-
 {% endembed %}

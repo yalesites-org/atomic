@@ -9,9 +9,23 @@ use Drupal\node\Entity\Node;
 
 /**
  * Implements hook_preprocess_region().
+ * 
+ * Assigns details from _get_collection_microsite_details() to the $variables.
  */
-function atomic_preprocess_region(&$variables) {
+function atomic_preprocess_region__header(&$variables) {
   $variables['site_name'] = \Drupal::config('system.site')->get('name');
+  $variables['header_variant'] = 'normal';
+  
+  $node = \Drupal::routeMatch()->getParameter('node');
+  if ($node instanceof Node && $node->bundle() == 'page') {
+    if (_node_is_a_collection($node)) {
+      if (_is_collection_a_microsite($node->book['bid'])) {
+        $variables['header_variant'] = 'collection_microsite';
+
+        _get_collection_microsite_details($node, $variables);
+      }
+    }
+  }
 }
 
 /**
@@ -234,10 +248,12 @@ function atomic_preprocess_views_view(&$variables) {
 function atomic_preprocess_html(array &$variables) {
   $variables['main_content_id'] = '#main-content';
   $variables['secondary_nav_present'] = FALSE;
-  if ($node = \Drupal::routeMatch()->getParameter('node')) {
-    if ($node instanceof Node && $node->bundle() == 'page') {
-
-      if ($node->book) {
+  
+  $node = \Drupal::routeMatch()->getParameter('node');
+  if ($node instanceof Node && $node->bundle() == 'page') {
+    if (_node_is_a_collection($node)) {
+      // Page is just a normal collection.
+      if (!_is_collection_a_microsite($node->book['bid'])) {
         $variables['secondary_nav_present'] = TRUE;
         $variables['main_content_id'] = '#main-content-after-secondary-nav';
       }
@@ -245,3 +261,136 @@ function atomic_preprocess_html(array &$variables) {
   }
 }
 
+/**
+ * Implements hook_preprocess_layout for page_meta().
+ * 
+ * Checks if page is part of a microsite and hides the secondary nav.
+ */
+function atomic_preprocess_layout__page_meta(&$variables) {
+  /** @var \Drupal\node\Entity\Node $entity_node */
+  $entity_node = $variables['content']['#entity'];
+
+  if (_node_is_a_collection($entity_node)) {
+    $variables['show_secondary_nav'] = TRUE;
+
+    if (_is_collection_a_microsite($entity_node->book['bid'])) {
+      $variables['show_secondary_nav'] = FALSE;
+    }
+  }
+}
+
+/**
+ * Helper function to determine if a node is part of a book. 
+ *
+ * @param Node $node
+ * @return void
+ */
+function _node_is_a_collection($node) {
+  return ($node->book) ? TRUE : FALSE;
+}
+
+/**
+ * Helper function to determine if the collection is a microsite.
+ *
+ * @param int $nid
+ * @return void
+ */
+function _is_collection_a_microsite(int $nid) {
+  $cid = 'collection:microsite:' . $nid;
+  
+  // Try to get from persistent cache first
+  if ($cache = \Drupal::cache()->get($cid)) {
+    return $cache->data;
+  }
+
+  /** @var \Drupal\node\Entity\Node $node */
+  $node = Node::load($nid);
+  $collection_as_microsite = $node?->field_collection_as_microsite?->getString();
+  $is_microsite_collection = $collection_as_microsite ? TRUE : FALSE;
+
+  // Store in persistent cache (stored in cache_default table)
+  \Drupal::cache()->set($cid, $is_microsite_collection);
+
+  return $is_microsite_collection;
+}
+
+/**
+ * Helper function to get collection microsite details. All $variables set
+ * passed back to calling function.
+ *
+ * @param Node $node
+ * @param array $variables
+ * @return void
+ */
+function _get_collection_microsite_details(Node $node, array &$variables) {
+  $bid = $node->book['bid'];
+  $book_manager = \Drupal::service('book.manager');
+  $book_tree_data = $book_manager->bookTreeAllData($bid);
+  $book_tree = $book_manager->bookTreeOutput($book_tree_data);
+
+  /** @var \Drupal\node\Entity\Node $parent_node */
+  $parent_node = \Drupal::EntityTypeManager()->getStorage('node')->load($bid);
+
+  if ($parent_node) {
+    $variables['collection_microsite_name'] = $parent_node->getTitle();
+    $variables['collection_microsite_link'] = $parent_node->toUrl()->toString();
+    $variables['collection_microsite_hide_utility_menu'] = $parent_node?->field_hide_utility_menu?->getString();
+    
+    $variables['collection_microsite_menu_items'] = _process_collection_microsite_menu_items($book_tree['#items']);
+  }
+}
+
+/**
+ * Helper function to duplicate to add menu item to collection_microsite menu.
+ * Any item with a "submenu" gets duplicated.
+ *
+ * @param array|null $items
+ * @return array|null
+ */
+function _process_collection_microsite_menu_items($items) {
+  if (empty($items)) {
+    return NULL;
+  }
+
+  $menu_items = reset($items)['below'];
+
+  foreach ($menu_items as &$menuItem) {
+    // Skip menu items that do not have subitems.
+    if (empty($menuItem['below'])) {
+      continue;
+    }
+
+    // Clone top level menu item.
+    $clonedMenuItem = $menuItem;
+
+    // We don't want any other subitems, just the top level.
+    $clonedMenuItem['below'] = NULL;
+
+    // Default the node_title to the menu title.
+    $clonedMenuItem['node_title'] = $clonedMenuItem['title'];
+
+    // If the menu item is associated with a node, replace the node_title
+    // with the node's title.
+    if ($menuItem['url']->isRouted()) {
+      $routeParameters = $menuItem['url']->getRouteParameters();
+
+      if (array_key_exists('node', $routeParameters)) {
+        $nodeId = $routeParameters['node'];
+
+        if ($nodeId) {
+          /** @var \Drupal\node\Entity\Node $node */
+          $node = \Drupal::entityTypeManager()->getStorage('node')->load($nodeId);
+
+          if ($node) {
+            $clonedMenuItem['node_title'] = $node->getTitle();
+          }
+        }
+      }
+    }
+
+    // Add cloned item to the beginning of the menu.
+    array_unshift($menuItem['below'], $clonedMenuItem);
+  }
+
+  return $menu_items;
+}
