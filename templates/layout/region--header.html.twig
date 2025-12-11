@@ -39,17 +39,11 @@
   'normal': {
     'site_name': site_name,
     'site_link': '/',
-    'branding_name': getHeaderSetting('site_wide_branding_name'),
-    'branding_link': getHeaderSetting('site_wide_branding_link'),
-    'show_yale_logo': false,
     'hide_utility_menu': false,
   },
   'collection_microsite': {
     'site_name': collection_microsite_name,
     'site_link': collection_microsite_link,
-    'branding_name': site_name,
-    'branding_link': '/',
-    'show_yale_logo': true,
     'hide_utility_menu': collection_microsite_hide_utility_menu,
   }
 } %}
@@ -60,9 +54,8 @@
 {% embed "@organisms/site-header/yds-site-header.twig" with {
   site_header__site_name: header_config['site_name'],
   site_header__site_link: header_config['site_link'],
-  site_header__branding_name: header_config['branding_name'],
-  site_header__branding_link: header_config['branding_link'],
-  site_header__show_yale_logo: header_config['show_yale_logo'],
+  site_header__branding_name: getHeaderSetting('site_wide_branding_name'),
+  site_header__branding_link: getHeaderSetting('site_wide_branding_link'),
   site_header__hide_utility_menu: header_config['hide_utility_menu'],
 
   site_header__border_thickness: '8',
