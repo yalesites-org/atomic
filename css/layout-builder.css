@@ -221,13 +221,13 @@ div[data-drupal-selector="edit-block-form"] {
  */
 .gin--dark-mode .layout-builder__link--configure:hover,
 .gin--dark-mode .layout-builder__link--add-section-to-library:hover {
-  background-color: #000000 !important;
-  color: #ffffff !important;
+  background-color: var(--ys-contrast-black) !important;
+  color: var(--ys-contrast-white) !important;
 }
 
 /* Remove link hover - white icon only, no background (icon uses mask-image) */
 .gin--dark-mode .layout-builder__link--remove:hover {
-  color: #ffffff !important;
+  color: var(--ys-contrast-white) !important;
 }
 
 .layout-builder__section .layout-builder__link--add-section-to-library {
