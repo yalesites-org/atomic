@@ -363,8 +363,130 @@ label.form-required::after, label.js-form-required::after {
   background: var(--color-basic-white);
 }
 
+/**
+ * WCAG 2.1 AA Contrast Fix - Issue #1086
+ * Media library help text links need proper contrast in dark mode
+ * Using Gin's primary color for consistency with other admin links
+ */
+.gin--dark-mode .media-library-widget-modal .ui-widget-content a {
+  color: var(--gin-color-primary);
+}
+
 .media-library-widget-modal .ui-widget-content a {
   color: var(--color-basic-black);
+}
+
+/**
+ * WCAG 2.1 AA Contrast Fix - Issue #1086
+ * Media library view switcher (Grid/Table toggle)
+ * Unselected state uses white to match icon; selected state stays blue
+ */
+.gin--dark-mode .media-library-wrapper .views-display-link:not(.is-active),
+.gin--dark-mode .glb-view-header .views-display-link:not(.is-active) {
+  color: #ffffff;
+  opacity: 0.65;
+}
+
+.gin--dark-mode .media-library-wrapper .views-display-link:not(.is-active):hover,
+.gin--dark-mode .glb-view-header .views-display-link:not(.is-active):hover {
+  opacity: 0.85;
+}
+
+/**
+ * WCAG 2.1 AA Contrast Fix - Issue #1086
+ * Layout Builder section links on white backgrounds
+ * Use darker blue that passes 4.5:1 contrast on white for small text
+ * Include icons (pseudo-elements) to match link color
+ */
+.gin--dark-mode .layout-builder__link {
+  color: #0056b3;
+}
+
+.gin--dark-mode .layout-builder__link::before,
+.gin--dark-mode .layout-builder__link::after {
+  background-color: #0056b3 !important;
+}
+
+/* Override gin_lb.css section hover - keep links blue unless directly hovered */
+.gin--dark-mode .layout-builder__section:hover .layout-builder__link--configure:not(:hover),
+.gin--dark-mode .layout-builder__section:hover .layout-builder__link--add-section-to-library:not(:hover),
+.gin--dark-mode .layout-builder__section:hover .layout-builder__link--remove:not(:hover) {
+  color: #0056b3 !important;
+}
+
+.gin--dark-mode .layout-builder__section:hover .layout-builder__link:not(:hover)::before,
+.gin--dark-mode .layout-builder__section:hover .layout-builder__link:not(:hover)::after {
+  background-color: #0056b3 !important;
+}
+
+/* Icons with pseudo-elements - white on hover (direct link hover only) */
+.gin--dark-mode .layout-builder__link:hover::before,
+.gin--dark-mode .layout-builder__link:hover::after {
+  background-color: #ffffff !important;
+}
+
+/* Remove link uses mask-image directly on the element, not pseudo-element */
+.gin--dark-mode .layout-builder__link--remove {
+  background-color: #0056b3 !important;
+}
+
+/* Remove icon turns black on hover (icon is ::after pseudo-element) */
+.gin--dark-mode .layout-builder__link--remove:hover::after {
+  background-color: #000000 !important;
+}
+
+/* Add Section to Library - blue icon, white on hover */
+.gin--dark-mode .layout-builder__link--add-section-to-library {
+  background-image: url('data:image/svg+xml;utf8,<svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 100.25 100.25" width="26px" height="26px"><path fill="%230056b3" d="M83.061,27.94l-11-11c-0.281-0.281-0.663-0.439-1.061-0.439H18c-0.828,0-1.5,0.671-1.5,1.5v64c0,0.829,0.672,1.5,1.5,1.5h64c0.828,0,1.5-0.671,1.5-1.5v-53C83.5,28.602,83.342,28.221,83.061,27.94z M34.5,19.5h31v21h-31V19.5z M71.5,80.5h-43v-26h43V80.5z M80.5,80.5h-6V53c0-0.829-0.672-1.5-1.5-1.5H27c-0.828,0-1.5,0.671-1.5,1.5v27.5h-6v-61h12V42c0,0.829,0.672,1.5,1.5,1.5h34c0.828,0,1.5-0.671,1.5-1.5V19.5h1.879L80.5,29.621V80.5z"/></svg>');
+}
+
+.gin--dark-mode .layout-builder__link--add-section-to-library:hover {
+  background-image: url('data:image/svg+xml;utf8,<svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 100.25 100.25" width="26px" height="26px"><path fill="%23ffffff" d="M83.061,27.94l-11-11c-0.281-0.281-0.663-0.439-1.061-0.439H18c-0.828,0-1.5,0.671-1.5,1.5v64c0,0.829,0.672,1.5,1.5,1.5h64c0.828,0,1.5-0.671,1.5-1.5v-53C83.5,28.602,83.342,28.221,83.061,27.94z M34.5,19.5h31v21h-31V19.5z M71.5,80.5h-43v-26h43V80.5z M80.5,80.5h-6V53c0-0.829-0.672-1.5-1.5-1.5H27c-0.828,0-1.5,0.671-1.5,1.5v27.5h-6v-61h12V42c0,0.829,0.672,1.5,1.5,1.5h34c0.828,0,1.5-0.671,1.5-1.5V19.5h1.879L80.5,29.621V80.5z"/></svg>');
+}
+
+.gin--dark-mode .layout-builder__link--import-from-library {
+  background-image: url('data:image/svg+xml;utf8,<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 137.144 137.144"><g><g><path fill="%230056b3" d="M75.429,27.429H61.715v54.858H48.001l20.571,27.428l20.571-27.428H75.429V27.429z M109.715,0H27.429C12.28,0,0,12.28,0,27.429v82.286c0,15.149,12.28,27.429,27.429,27.429h82.286c15.149,0,27.429-12.28,27.429-27.429V27.429C137.144,12.28,124.864,0,109.715,0z M123.43,102.858c0,11.362-9.21,20.572-20.571,20.572H34.286c-11.361,0-20.572-9.21-20.572-20.572V34.286c0-11.362,9.21-20.572,20.572-20.572h68.572c11.361,0,20.571,9.21,20.571,20.572V102.858z"/></g></g></svg>');
+}
+
+/**
+ * WCAG 2.1 AA Contrast Fix - Issue #1086
+ * Context-aware drag handle and icon colors for striped tables
+ *
+ * Problem: Gin's --gin-color-text-light is light gray (#9e9fa0) assuming dark
+ * backgrounds. This fails on white striped table rows where drag handles become
+ * nearly invisible (1.86:1 contrast).
+ *
+ * Solution: Override variable for light backgrounds (white table rows, dialogs)
+ * with dark gray (#4a4a4a = 9.23:1 contrast). Maintain light gray for dark rows.
+ */
+.gin--dark-mode .ui-dialog,
+.gin--dark-mode .layout-builder-configure-section,
+.gin--dark-mode .layout-builder__region,
+.gin--dark-mode tbody tr:nth-child(even),
+.gin--dark-mode .media-library-widget__modal,
+.gin--dark-mode .form-wrapper,
+.gin--dark-mode .off-canvas-dialog-panel {
+  --gin-color-text-light: #4a4a4a;
+}
+
+.gin--dark-mode tbody tr:nth-child(odd),
+.gin--dark-mode .gin-layer-wrapper,
+.gin--dark-mode .region-breadcrumb,
+.gin--dark-mode .view-header,
+.gin--dark-mode .gin-secondary {
+  --gin-color-text-light: #9e9fa0;
+}
+
+/* Direct targeting of drag handles on white rows - override SVG with darker version */
+.gin--dark-mode tbody tr:nth-child(even) .tabledrag-handle::after,
+.gin--dark-mode #drupal-off-canvas-wrapper tbody tr:nth-child(even) .tabledrag-handle::after {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3e%3cpath fill='%234a4a4a' d='M14.904 7.753l-2.373-2.372c-.291-.292-.529-.193-.529.22v1.399h-3v-3h1.398c.414 0 .512-.239.221-.53l-2.371-2.372c-.137-.136-.36-.136-.497 0l-2.372 2.372c-.292.292-.193.53.22.53h1.399v3h-3v-1.369c0-.413-.239-.511-.53-.22l-2.372 2.372c-.136.136-.136.359 0 .494l2.372 2.372c.291.292.53.192.53-.219v-1.43h3v3h-1.4c-.413 0-.511.238-.22.529l2.374 2.373c.137.137.36.137.495 0l2.373-2.373c.29-.291.19-.529-.222-.529h-1.398v-3h3v1.4c0 .412.238.511.529.219l2.373-2.371c.137-.137.137-.359 0-.495z'/%3e%3c/svg%3e") !important;
+}
+
+/* White drag handles on hover (row background turns dark) */
+.gin--dark-mode tbody tr:nth-child(even):hover .tabledrag-handle::after,
+.gin--dark-mode #drupal-off-canvas-wrapper tbody tr:nth-child(even):hover .tabledrag-handle::after {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3e%3cpath fill='%23ffffff' d='M14.904 7.753l-2.373-2.372c-.291-.292-.529-.193-.529.22v1.399h-3v-3h1.398c.414 0 .512-.239.221-.53l-2.371-2.372c-.137-.136-.36-.136-.497 0l-2.372 2.372c-.292.292-.193.53.22.53h1.399v3h-3v-1.369c0-.413-.239-.511-.53-.22l-2.372 2.372c-.136.136-.136.359 0 .494l2.372 2.372c.291.292.53.192.53-.219v-1.43h3v3h-1.4c-.413 0-.511.238-.22.529l2.374 2.373c.137.137.36.137.495 0l2.373-2.373c.29-.291.19-.529-.222-.529h-1.398v-3h3v1.4c0 .412.238.511.529.219l2.373-2.371c.137-.137.137-.359 0-.495z'/%3e%3c/svg%3e") !important;
 }
 
 .media-library-widget-modal .pager__items {
