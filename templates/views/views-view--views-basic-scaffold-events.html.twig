@@ -1,4 +1,5 @@
 {# @todo refactor how views basic is rendered. #}
+{{ attach_library('ys_views_basic/ys_views_basic') }}
 {% set type = view.rowPlugin.options['view_mode'] == 'list_item' ? 'list' : 'grid' %}
 
 {% set dom_id_class = dom_id ? 'js-view-dom-id-' ~ dom_id %}
