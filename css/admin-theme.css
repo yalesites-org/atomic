@@ -558,6 +558,24 @@ label.form-required::after, label.js-form-required::after {
   background-color: var(--ys-contrast-white) !important;
 }
 
+/**
+ * WCAG 2.1 AA Contrast Fix - Issue #1086
+ * Help text and form descriptions need proper contrast in dark mode
+ * Using standard text color instead of text-light for readability
+ * Includes: form descriptions, GinLB descriptions, field prefixes, character counters, detail summaries, admin descriptions
+ */
+.gin--dark-mode .form-item__description,
+.gin--dark-mode .fieldset__description,
+.gin--dark-mode .fieldset__prefix,
+.gin--dark-mode .glb-form-item__description,
+.gin--dark-mode .glb-fieldset__description,
+.gin--dark-mode .counter,
+.gin--dark-mode .claro-details__summary-summary,
+.gin--dark-mode .field-option__description,
+.gin--dark-mode .admin-item__description {
+  color: var(--gin-color-text) !important;
+}
+
 .media-library-widget-modal .pager__items {
   font-weight: normal;
 }
