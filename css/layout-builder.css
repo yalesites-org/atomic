@@ -214,20 +214,20 @@ div[data-drupal-selector="edit-block-form"] {
   border-color: white !important;
 }
 
-/* Change layoutbuilder configure/UI element colors in dark mode because the defaults don't look good */
-.gin--dark-mode .layout-builder__link--configure:hover {
-  background-color: var(--gin-bg-layer) !important;
+/*
+ * Layout Builder link hover states (Issue #1086)
+ * Black background with white text and icons on direct hover
+ * Note: remove link uses mask-image, so background-color IS the icon color
+ */
+.gin--dark-mode .layout-builder__link--configure:hover,
+.gin--dark-mode .layout-builder__link--add-section-to-library:hover {
+  background-color: var(--ys-contrast-black) !important;
+  color: var(--ys-contrast-white) !important;
 }
 
-.gin--dark-mode .layout-builder__section:hover .layout-builder__link--configure {
-  background-color: var(--gin-bg-layer) !important;
-  color: var(--gin-color-primary) !important;
-}
-
-.gin--dark-mode .layout-builder__section:hover .layout-builder__link--add-section-to-library,
-.gin--dark-mode .layout-builder__section:hover .layout-builder__link--remove {
-  background-color: var(--gin-bg-layer) !important;
-  color: var(--gin-color-primary) !important;
+/* Remove link hover - white icon only, no background (icon uses mask-image) */
+.gin--dark-mode .layout-builder__link--remove:hover {
+  color: var(--ys-contrast-white) !important;
 }
 
 .layout-builder__section .layout-builder__link--add-section-to-library {
