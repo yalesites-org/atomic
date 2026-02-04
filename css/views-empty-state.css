@@ -1,0 +1,44 @@
+/**
+ * @file
+ * Empty state styles for Views.
+ */
+
+/* Empty state message styling for views_basic_scaffold */
+.view-empty-wrapper {
+  background-color: var(--color-gray-100);
+  padding: var(--size-spacing-6) var(--size-spacing-6) var(--size-spacing-4);
+}
+
+/* Set up color slots from global theme context */
+[data-global-theme='one'] .view-empty-wrapper {
+  --color-slot-one: var(--global-themes-one-colors-slot-one);
+}
+
+[data-global-theme='two'] .view-empty-wrapper {
+  --color-slot-one: var(--global-themes-two-colors-slot-one);
+}
+
+[data-global-theme='three'] .view-empty-wrapper {
+  --color-slot-one: var(--global-themes-three-colors-slot-one);
+}
+
+[data-global-theme='four'] .view-empty-wrapper {
+  --color-slot-one: var(--global-themes-four-colors-slot-one);
+}
+
+body[data-font-pairing='yalenew'] .view-empty-wrapper h2,
+body:not([data-font-pairing]) .view-empty-wrapper h2 {
+  font: var(--font-style-heading-h5-yale-new);
+  font-variant-numeric: oldstyle-nums;
+  margin: 0 0 var(--size-spacing-2) 0;
+  color: var(--color-slot-one);
+}
+
+.view-empty-wrapper p.inline-message__text {
+  font-family: var(--font-families-mallory);
+  font-size: var(--font-size-text-s);
+  font-weight: var(--font-weights-mallory-book);
+  line-height: var(--line-heights-text-condensed);
+  margin: 0;
+  color: var(--color-slot-one);
+}
