@@ -1,5 +1,8 @@
 {% extends "@atomic/block/layout-builder/_layout-builder-block-template.twig" %}
 
+{# Override padding to 'no-padding' for profile meta block #}
+{% set padding_options = 'no-padding' %}
+
 {% block content %}
 
   {{ content }}
