@@ -22,6 +22,11 @@
 
 {% set same_day = start_date == end_date %}
 
+{# Check if this is an all-day event (starts at 00:00 and ends at 23:59) #}
+{% set start_time = content.field_event_date[delta].start_time['#markup']|date('H:i') %}
+{% set end_time = content.field_event_date[delta].end_time['#markup']|date('H:i') %}
+{% set is_all_day = (start_time == '00:00' and end_time == '23:59') %}
+
 {# Determine the date format based on whether the event starts and ends on the same day #}
 {% set date_time__format = 'date_time_multiple_days' %}
 {% if same_day %}
@@ -38,6 +43,7 @@
     date_time__start: content.field_event_date[delta].start_time['#markup'],
     date_time__end: content.field_event_date[delta].end_time['#markup'],
     date_time__format: date_time__format,
+    date_time__all_day: is_all_day,
   } %} {{ multi_day_text }}
 {% endset %}
 
