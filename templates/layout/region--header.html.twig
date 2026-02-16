@@ -1,10 +1,10 @@
 {#
   # Available Variables
   # - site_name
-  # - collection_microsite_name
-  # - collection_microsite_link
-  # - collection_microsite_menu_items
-  # - collection_microsite_hide_utility_menu
+  # - collection_nav_name
+  # - collection_nav_link
+  # - collection_nav_menu_items
+  # - collection_nav_hide_utility_menu
   # - header_variant
   #
   # @see atomic_preprocess_region__header()
@@ -27,31 +27,32 @@
 {% endif %}
 
 {#
-  Microsite headers use the same header theme as configured in theme settings.
-  The header_theme setting applies consistently across all pages, including microsites.
+  Collection primary nav headers use the same header theme as configured in
+  theme settings. The header_theme setting applies consistently across all
+  pages, including those using collection primary navigation.
 #}
 
 {#
-  The header config map has 2 values "normal" and "collection_microsite".
+  The header config map has 2 values "normal" and "collection_primary_nav".
 
-  normal - Used for most all pages, include regualer collection pages.
-  collection_microsite - Used only for collections that marked as "microsite".
+  normal - Used for most pages, including regular collection pages.
+  collection_primary_nav - Used only for collections with primary navigation.
 
   This config allows us to use a single "yds-site-header" template and reassign
-  keys on the left, to different values based the header_variant.
+  keys on the left, to different values based on the header_variant.
 #}
 {% set header_config_map = {
   'normal': {
     'hide_utility_menu': false,
     'header_theme': getThemeSetting('header_theme'),
-    'is_collection_microsite': false,
+    'collection_nav_position': '',
   },
-  'collection_microsite': {
-    'collection_microsite_name': collection_microsite_name,
-    'collection_microsite_link': collection_microsite_link,
-    'hide_utility_menu': collection_microsite_hide_utility_menu,
+  'collection_primary_nav': {
+    'collection_nav_name': collection_nav_name,
+    'collection_nav_link': collection_nav_link,
+    'hide_utility_menu': collection_nav_hide_utility_menu,
     'header_theme': getThemeSetting('header_theme'),
-    'is_collection_microsite': true,
+    'collection_nav_position': 'collection_primary_nav',
   }
 } %}
 
@@ -61,12 +62,12 @@
 {% embed "@organisms/site-header/yds-site-header.twig" with {
   site_header__site_name: site_name,
   site_header__site_link: '/',
-  site_header__collection_microsite_name: header_config['collection_microsite_name'],
-  site_header__collection_microsite_link: header_config['collection_microsite_link'],
+  site_header__collection_nav_name: header_config['collection_nav_name'],
+  site_header__collection_nav_link: header_config['collection_nav_link'],
   site_header__branding_name: getHeaderSetting('site_wide_branding_name'),
   site_header__branding_link: getHeaderSetting('site_wide_branding_link'),
   site_header__hide_utility_menu: header_config['hide_utility_menu'],
-  site_header__is_collection_microsite: header_config['is_collection_microsite'],
+  site_header__collection_nav_position: header_config['collection_nav_position'],
 
   site_header__border_thickness: '8',
   site_header__theme: header_config['header_theme'],
@@ -76,13 +77,13 @@
   drupal_utility_nav: elements.utility_navigation,
 } %}
   {% block site_header__primary_nav %}
-    {% if header_variant == 'normal' %}
-      {{ elements.main_navigation }}
-    {% else %}
+    {% if header_variant == 'collection_primary_nav' %}
       {% include "@organisms/menu/primary-nav/yds-primary-nav.twig" with {
-        primary_nav__items: collection_microsite_menu_items,
+        primary_nav__items: collection_nav_menu_items,
         menu__variation: 'basic',
       } %}
+    {% else %}
+      {{ elements.main_navigation }}
     {% endif %}
   {% endblock %}
 
