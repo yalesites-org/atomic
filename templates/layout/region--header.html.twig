@@ -26,18 +26,10 @@
   {% set utility_nav__dropdown_link__url = '#' %}
 {% endif %}
 
-{# 
-  Microsite headers should have a different color based on the header_theme.
-  Note:
-    one = "white",
-    two = "black",
-    three = "blue"
+{#
+  Microsite headers use the same header theme as configured in theme settings.
+  The header_theme setting applies consistently across all pages, including microsites.
 #}
-{% set collection_microsite_header_theme_map = {
-  'one': 'three',
-  'two': 'one',
-  'three': 'one',
-} %}
 
 {#
   The header config map has 2 values "normal" and "collection_microsite".
@@ -58,7 +50,7 @@
     'collection_microsite_name': collection_microsite_name,
     'collection_microsite_link': collection_microsite_link,
     'hide_utility_menu': collection_microsite_hide_utility_menu,
-    'header_theme': collection_microsite_header_theme_map[getThemeSetting('header_theme')],
+    'header_theme': getThemeSetting('header_theme'),
     'is_collection_microsite': true,
   }
 } %}
