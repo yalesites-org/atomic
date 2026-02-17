@@ -361,8 +361,6 @@ function _get_collection_nav_details(Node $node, array &$variables) {
   if ($parent_node) {
     $variables['collection_nav_name'] = $parent_node->getTitle();
     $variables['collection_nav_link'] = $parent_node->toUrl()->toString();
-    $variables['collection_nav_hide_utility_menu'] = $parent_node?->field_hide_utility_menu?->getString();
-
     $variables['collection_nav_menu_items'] = _process_collection_nav_menu_items($book_tree['#items']);
   }
 }

@@ -4,7 +4,7 @@
   # - collection_nav_name
   # - collection_nav_link
   # - collection_nav_menu_items
-  # - collection_nav_hide_utility_menu
+
   # - header_variant
   #
   # @see atomic_preprocess_region__header()
@@ -43,14 +43,12 @@
 #}
 {% set header_config_map = {
   'normal': {
-    'hide_utility_menu': false,
     'header_theme': getThemeSetting('header_theme'),
     'collection_nav_position': '',
   },
   'collection_primary_nav': {
     'collection_nav_name': collection_nav_name,
     'collection_nav_link': collection_nav_link,
-    'hide_utility_menu': collection_nav_hide_utility_menu,
     'header_theme': getThemeSetting('header_theme'),
     'collection_nav_position': 'collection_primary_nav',
   }
@@ -66,7 +64,7 @@
   site_header__collection_nav_link: header_config['collection_nav_link'],
   site_header__branding_name: getHeaderSetting('site_wide_branding_name'),
   site_header__branding_link: getHeaderSetting('site_wide_branding_link'),
-  site_header__hide_utility_menu: header_config['hide_utility_menu'],
+
   site_header__collection_nav_position: header_config['collection_nav_position'],
 
   site_header__border_thickness: '8',
