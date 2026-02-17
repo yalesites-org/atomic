@@ -22,7 +22,9 @@
     {% endblock %}
   {% endembed %}
 {% elseif empty -%}
-  {{ empty }}
+  <div class="view-empty-wrapper">
+    {{ empty }}
+  </div>
 {% endif %}
 {{ pager }}
 
