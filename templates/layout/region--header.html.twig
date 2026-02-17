@@ -33,10 +33,10 @@
 #}
 
 {#
-  The header config map has 2 values "normal" and "collection_primary_nav".
+  The header config map has 2 values "normal" and "in_header".
 
   normal - Used for most pages, including regular collection pages.
-  collection_primary_nav - Used only for collections with primary navigation.
+  in_header - Used only for collections with primary navigation.
 
   This config allows us to use a single "yds-site-header" template and reassign
   keys on the left, to different values based on the header_variant.
@@ -46,11 +46,11 @@
     'header_theme': getThemeSetting('header_theme'),
     'collection_nav_position': '',
   },
-  'collection_primary_nav': {
+  'in_header': {
     'collection_nav_name': collection_nav_name,
     'collection_nav_link': collection_nav_link,
     'header_theme': getThemeSetting('header_theme'),
-    'collection_nav_position': 'collection_primary_nav',
+    'collection_nav_position': 'in_header',
   }
 } %}
 
@@ -75,7 +75,7 @@
   drupal_utility_nav: elements.utility_navigation,
 } %}
   {% block site_header__primary_nav %}
-    {% if header_variant == 'collection_primary_nav' %}
+    {% if header_variant == 'in_header' %}
       {% include "@organisms/menu/primary-nav/yds-primary-nav.twig" with {
         primary_nav__items: collection_nav_menu_items,
         menu__variation: 'basic',
