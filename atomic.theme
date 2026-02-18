@@ -319,7 +319,7 @@ function _node_is_a_collection($node) {
  *
  * @return string
  *   The navigation position value (e.g., 'in_header',
- *   'below_header'), or empty string if not set.
+ *   'in_content'), or empty string if not set.
  */
 function _get_collection_nav_position(int $nid) {
   $cid = 'collection:nav_position:' . $nid;
