@@ -10,8 +10,8 @@ use Drupal\Core\Cache\CacheableMetadata;
 
 /**
  * Implements hook_preprocess_region().
- * 
- * Assigns details from _get_collection_microsite_details() to the $variables.
+ *
+ * Assigns details from _get_collection_nav_details() to the $variables.
  */
 function atomic_preprocess_region__header(&$variables) {
   $variables['site_name'] = \Drupal::config('system.site')->get('name');
@@ -21,16 +21,16 @@ function atomic_preprocess_region__header(&$variables) {
   if ($node instanceof Node && $node->bundle() == 'page') {
     if (_node_is_a_collection($node)) {
       $bid = $node->book['bid'];
-      // Add cache tags so the header re-renders when the microsite state
-      // or book structure changes.
+      // Add cache tags so the header re-renders when the collection nav
+      // position or book structure changes.
       $cache_metadata = new CacheableMetadata();
-      $cache_metadata->addCacheTags(['ys_microsite:' . $bid, 'node:' . $bid]);
+      $cache_metadata->addCacheTags(['ys_collection_nav:' . $bid, 'node:' . $bid]);
       \Drupal::service('renderer')->addCacheableDependency($variables, $cache_metadata);
 
-      if (_is_collection_a_microsite($bid)) {
-        $variables['header_variant'] = 'collection_microsite';
+      if (_get_collection_nav_position($bid) === 'in_header') {
+        $variables['header_variant'] = 'in_header';
 
-        _get_collection_microsite_details($node, $variables);
+        _get_collection_nav_details($node, $variables);
       }
     }
   }
@@ -261,14 +261,14 @@ function atomic_preprocess_html(array &$variables) {
   if ($node instanceof Node && $node->bundle() == 'page') {
     if (_node_is_a_collection($node)) {
       $bid = $node->book['bid'];
-      // Add cache tags so the HTML re-renders when the microsite state
-      // or book structure changes.
+      // Add cache tags so the HTML re-renders when the collection nav
+      // position or book structure changes.
       $cache_metadata = new CacheableMetadata();
-      $cache_metadata->addCacheTags(['ys_microsite:' . $bid, 'node:' . $bid]);
+      $cache_metadata->addCacheTags(['ys_collection_nav:' . $bid, 'node:' . $bid]);
       \Drupal::service('renderer')->addCacheableDependency($variables, $cache_metadata);
 
-      // Page is just a normal collection.
-      if (!_is_collection_a_microsite($bid)) {
+      // Page is just a normal collection (not using primary nav).
+      if (_get_collection_nav_position($bid) !== 'in_header') {
         $variables['secondary_nav_present'] = TRUE;
         $variables['main_content_id'] = '#main-content-after-secondary-nav';
       }
@@ -278,8 +278,8 @@ function atomic_preprocess_html(array &$variables) {
 
 /**
  * Implements hook_preprocess_layout for page_meta().
- * 
- * Checks if page is part of a microsite and hides the secondary nav.
+ *
+ * Checks if page uses collection primary nav and hides the secondary nav.
  */
 function atomic_preprocess_layout__page_meta(&$variables) {
   /** @var \Drupal\node\Entity\Node $entity_node */
@@ -287,15 +287,15 @@ function atomic_preprocess_layout__page_meta(&$variables) {
 
   if (_node_is_a_collection($entity_node)) {
     $bid = $entity_node->book['bid'];
-    // Add cache tags so the layout re-renders when the microsite state
-    // or book structure changes.
+    // Add cache tags so the layout re-renders when the collection nav
+    // position or book structure changes.
     $cache_metadata = new CacheableMetadata();
-    $cache_metadata->addCacheTags(['ys_microsite:' . $bid, 'node:' . $bid]);
+    $cache_metadata->addCacheTags(['ys_collection_nav:' . $bid, 'node:' . $bid]);
     \Drupal::service('renderer')->addCacheableDependency($variables, $cache_metadata);
 
     $variables['show_secondary_nav'] = TRUE;
 
-    if (_is_collection_a_microsite($bid)) {
+    if (_get_collection_nav_position($bid) === 'in_header') {
       $variables['show_secondary_nav'] = FALSE;
     }
   }
@@ -312,39 +312,44 @@ function _node_is_a_collection($node) {
 }
 
 /**
- * Helper function to determine if the collection is a microsite.
+ * Helper function to get the collection navigation position.
  *
  * @param int $nid
- * @return void
+ *   The node ID of the book root.
+ *
+ * @return string
+ *   The navigation position value (e.g., 'in_header',
+ *   'in_content'), or empty string if not set.
  */
-function _is_collection_a_microsite(int $nid) {
-  $cid = 'collection:microsite:' . $nid;
+function _get_collection_nav_position(int $nid) {
+  $cid = 'collection:nav_position:' . $nid;
 
-  // Try to get from persistent cache first
+  // Try to get from persistent cache first.
   if ($cache = \Drupal::cache()->get($cid)) {
     return $cache->data;
   }
 
   /** @var \Drupal\node\Entity\Node $node */
   $node = Node::load($nid);
-  $collection_as_microsite = $node?->field_collection_as_microsite?->getString();
-  $is_microsite_collection = $collection_as_microsite ? TRUE : FALSE;
+  $nav_position = $node?->field_collection_nav_position?->getString() ?: '';
 
   // Store in persistent cache with cache tags for targeted invalidation.
-  \Drupal::cache()->set($cid, $is_microsite_collection, -1, ['ys_microsite:' . $nid]);
+  \Drupal::cache()->set($cid, $nav_position, -1, ['ys_collection_nav:' . $nid]);
 
-  return $is_microsite_collection;
+  return $nav_position;
 }
 
 /**
- * Helper function to get collection microsite details. All $variables set
- * passed back to calling function.
+ * Helper function to get collection navigation details.
  *
- * @param Node $node
+ * All $variables set are passed back to the calling function.
+ *
+ * @param \Drupal\node\Entity\Node $node
+ *   The current node.
  * @param array $variables
- * @return void
+ *   The template variables array.
  */
-function _get_collection_microsite_details(Node $node, array &$variables) {
+function _get_collection_nav_details(Node $node, array &$variables) {
   $bid = $node->book['bid'];
   $book_manager = \Drupal::service('book.manager');
   $book_tree_data = $book_manager->bookTreeAllData($bid);
@@ -354,22 +359,24 @@ function _get_collection_microsite_details(Node $node, array &$variables) {
   $parent_node = \Drupal::EntityTypeManager()->getStorage('node')->load($bid);
 
   if ($parent_node) {
-    $variables['collection_microsite_name'] = $parent_node->getTitle();
-    $variables['collection_microsite_link'] = $parent_node->toUrl()->toString();
-    $variables['collection_microsite_hide_utility_menu'] = $parent_node?->field_hide_utility_menu?->getString();
-    
-    $variables['collection_microsite_menu_items'] = _process_collection_microsite_menu_items($book_tree['#items']);
+    $variables['collection_nav_name'] = $parent_node->getTitle();
+    $variables['collection_nav_link'] = $parent_node->toUrl()->toString();
+    $variables['collection_nav_menu_items'] = _process_collection_nav_menu_items($book_tree['#items']);
   }
 }
 
 /**
- * Helper function to duplicate to add menu item to collection_microsite menu.
+ * Helper function to duplicate and add menu items to collection nav menu.
+ *
  * Any item with a "submenu" gets duplicated.
  *
  * @param array|null $items
+ *   The menu items to process.
+ *
  * @return array|null
+ *   The processed menu items, or NULL if empty.
  */
-function _process_collection_microsite_menu_items($items) {
+function _process_collection_nav_menu_items($items) {
   if (empty($items)) {
     return NULL;
   }
