@@ -87,6 +87,17 @@ display: flex;
   margin-bottom: var(--size-spacing-7);
 }
 
+/* When the profile meta image style is "outdent", the image protrudes below the
+   section background via a negative margin-bottom. Add margin-bottom to the
+   banner layout wrapper so the next section does not overlap the protruding
+   image. Only applies at desktop where the outdent effect is active.
+   See: https://github.com/yalesites-org/YaleSites-Internal/issues/1126 */
+@media (min-width: 992px) {
+  .layout--banner:has(.profile-meta[data-component-image-style='outdent']) {
+    margin-bottom: var(--size-spacing-7);
+  }
+}
+
 /* The yds-two-column (70/30) layout's default top margin is missing: the
    spacing-page-section mixin in _yds-two-column.scss generates no CSS with default
    parameters, so neither data-component-padding="default" nor a missing attribute
