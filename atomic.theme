@@ -128,20 +128,35 @@ function atomic_preprocess_node(&$variables) {
       $variables['date_formatted'] = \Drupal::service('date.formatter')->format($date, '', 'c');
     }
   }
-  
-  // Handle resource thumbnail processing (moved from atomic_preprocess_node__resource)
+  // Handle resource thumbnail processing.
   if ($variables['node']->getType() === 'resource') {
     $view_mode = $variables['elements']['#view_mode'] ?? 'default';
-    
-    // Skip for search_result view mode as it's not needed
+    $responsive_image_style_id = $view_mode === 'portrait_grid'
+      ? 'card_grid_portrait_5_8'
+      : 'resource_thumbnail';
+
+    // Skip for search_result view mode as it's not needed.
     if ($view_mode === 'search_result') {
       return;
     }
-    
+
     /** @var \Drupal\node\Entity\Node $node */
     $node = $variables['node'];
+    $fieldTeaserMedia = $node?->field_teaser_media;
     $fieldMedia = $node?->field_media;
-    
+
+    if ($view_mode === 'portrait_grid' && $fieldTeaserMedia && !$fieldTeaserMedia->isEmpty()) {
+      /** @var \Drupal\media\Entity\Media $teaser_media */
+      $teaser_media = $fieldTeaserMedia->entity;
+      if ($teaser_media) {
+        $variables['content']['field_teaser_media'] = [
+          0 => \Drupal::entityTypeManager()
+            ->getViewBuilder('media')
+            ->view($teaser_media, 'card_grid_portrait_5_8'),
+        ];
+      }
+    }
+
     if (!$fieldMedia) {
       return;
     }
@@ -150,7 +165,7 @@ function atomic_preprocess_node(&$variables) {
     $referenced_entities = $fieldMedia?->referencedEntities() ?? [];
     $media = reset($referenced_entities);
     $thumbnail = $media?->thumbnail;
-      
+
     if (!$thumbnail) {
       return;
     }
@@ -167,7 +182,7 @@ function atomic_preprocess_node(&$variables) {
     $variables['responsive_media_thumbnail'] = [
       '#theme' => 'responsive_image',
       '#uri' => $file->getFileUri(),
-      '#responsive_image_style_id' => 'resource_thumbnail',
+      '#responsive_image_style_id' => $responsive_image_style_id,
       '#height' => $thumbnail?->height,
       '#width' => $thumbnail?->width,
       '#attributes' => [
