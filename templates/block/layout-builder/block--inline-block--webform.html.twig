@@ -12,8 +12,10 @@
         {% include "@molecules/inline-message/yds-inline-message.twig" with {
             inline_message__heading: "Configuration issue",
             inline_message__content: content['#configuration_issue'],
-            inline_message__type: 'info',
+            inline_message__type: 'general',
             inline_message__theme: 'two',
+            inline_message__link__content: content['#configuration_issue_link_content'],
+            inline_message__link__url: content['#configuration_issue_link_url'],
           } %}
       {% endif %}
 
