@@ -8,11 +8,7 @@
     {% set link_grid__width = "site" %}
   {% endif %}
 
-  {% if layout_section == 'ys_layout_two_column_50_50' %}
-    {% set link_grid_theme = 'inherit' %}
-  {% else %}
-    {% set link_grid_theme = content.field_style_color.0['#markup'] %}
-  {% endif %}
+  {% set link_grid_theme = content.field_style_color.0['#markup'] %}
 
   {# add checks for each link list #}
   {% set link_grid__links_one = content.field_link_lists.0 %}
