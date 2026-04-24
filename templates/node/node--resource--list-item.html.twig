@@ -25,7 +25,7 @@
 {# Authors — comma-separated, linked to each author's profile node #}
 {% set authors %}
   {% if resource_authors|length %}
-    <span class="resource-meta__label">{{ resource_authors|length == 1 ? 'Author'|t : 'Authors'|t }}:</span>
+    <span class="publication-meta__label">{{ resource_authors|length == 1 ? 'Author'|t : 'Authors'|t }}:</span>
     {% for author in resource_authors %}
       <a href="{{ author.url }}">{{ author.label }}</a>{% if not loop.last %}, {% endif %}
     {% endfor %}
@@ -38,15 +38,15 @@
    appearing between them. #}
 {% set date_and_authors %}
   {% if publish_date|trim or authors|trim or (node.show_teaser_text and content.field_teaser_text|render|trim) %}
-    <div class="resource-meta">
+    <div class="publication-meta">
       {% if publish_date|trim %}
-        <div class="resource-meta__publish-date">{{ publish_date }}</div>
+        <div class="publication-meta__publish-date">{{ publish_date }}</div>
       {% endif %}
       {% if node.show_teaser_text and content.field_teaser_text|render|trim %}
-        <div class="resource-meta__teaser-text">{{ content.field_teaser_text }}</div>
+        <div class="publication-meta__teaser-text">{{ content.field_teaser_text }}</div>
       {% endif %}
       {% if authors|trim %}
-        <div class="resource-meta__authors">{{ authors }}</div>
+        <div class="publication-meta__authors">{{ authors }}</div>
       {% endif %}
     </div>
   {% endif %}
@@ -57,15 +57,15 @@
 {% set journal_issue = node.field_journal_publication_issue.0.value|default('')|trim %}
 {% set journal_info %}
   {% if journal_name or journal_issue %}
-    <div class="resource-journal">
+    <div class="publication-journal">
       {% if journal_name %}
-        <div class="resource-journal__name">
-          <span class="resource-journal__label">{{ 'Publication'|t }}:</span> <em>{{ journal_name }}</em>
+        <div class="publication-journal__name">
+          <span class="publication-journal__label">{{ 'Publication'|t }}:</span> <em>{{ journal_name }}</em>
         </div>
       {% endif %}
       {% if journal_issue %}
-        <div class="resource-journal__issue">
-          <span class="resource-journal__label">{{ 'Issue'|t }}:</span> {{ journal_issue }}
+        <div class="publication-journal__issue">
+          <span class="publication-journal__label">{{ 'Issue'|t }}:</span> {{ journal_issue }}
         </div>
       {% endif %}
     </div>
@@ -75,9 +75,9 @@
 {# Discipline taxonomy — comma-separated linked terms, label inline #}
 {% set discipline %}
   {% if content.field_discipline|render|trim %}
-    <div class="resource-discipline">
-      <span class="resource-discipline__label">{{ 'Discipline'|t }}:</span>
-      <span class="resource-discipline__terms">
+    <div class="publication-discipline">
+      <span class="publication-discipline__label">{{ 'Discipline'|t }}:</span>
+      <span class="publication-discipline__terms">
         {% for item in content.field_discipline['#items'] %}
           {% set term = item.entity %}
           {% if term %}

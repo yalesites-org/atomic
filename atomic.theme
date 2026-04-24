@@ -143,6 +143,21 @@ function atomic_preprocess_node(&$variables) {
     /** @var \Drupal\node\Entity\Node $node */
     $node = $variables['node'];
     $fieldTeaserMedia = $node?->field_teaser_media;
+
+    // Build a list of linked author profiles for templates that show authors.
+    // Each item: ['label' => string, 'url' => string].
+    $variables['resource_authors'] = [];
+    if ($node->hasField('field_authors') && !$node->get('field_authors')->isEmpty()) {
+      foreach ($node->get('field_authors')->referencedEntities() as $author) {
+        if ($author && $author->access('view')) {
+          $variables['resource_authors'][] = [
+            'label' => $author->label(),
+            'url' => $author->toUrl()->toString(),
+          ];
+        }
+      }
+    }
+
     $fieldMedia = $node?->field_media;
 
     if ($view_mode === 'portrait_grid' && $fieldTeaserMedia && !$fieldTeaserMedia->isEmpty()) {

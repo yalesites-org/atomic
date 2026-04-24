@@ -25,7 +25,7 @@
 {# Authors — comma-separated, linked to each author's profile node #}
 {% set authors %}
   {% if resource_authors|length %}
-    <span class="resource-meta__label">{{ resource_authors|length == 1 ? 'Author'|t : 'Authors'|t }}:</span>
+    <span class="publication-meta__label">{{ resource_authors|length == 1 ? 'Author'|t : 'Authors'|t }}:</span>
     {% for author in resource_authors %}
       <a href="{{ author.url }}">{{ author.label }}</a>{% if not loop.last %}, {% endif %}
     {% endfor %}
@@ -38,12 +38,12 @@
    appearing between them. #}
 {% set date_and_authors %}
   {% if publish_date|trim or authors|trim %}
-    <div class="resource-meta">
+    <div class="publication-meta">
       {% if publish_date|trim %}
-        <div class="resource-meta__publish-date">{{ publish_date }}</div>
+        <div class="publication-meta__publish-date">{{ publish_date }}</div>
       {% endif %}
       {% if authors|trim %}
-        <div class="resource-meta__authors">{{ authors }}</div>
+        <div class="publication-meta__authors">{{ authors }}</div>
       {% endif %}
     </div>
   {% endif %}
