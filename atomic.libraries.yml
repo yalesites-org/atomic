@@ -95,9 +95,3 @@ ys_embed:
 read-time:
   js:
     node_modules/@yalesites-org/component-library-twig/dist/js/02-molecules/read-time/yds-read-time.js: {}
-publication-detail:
-  js:
-    node_modules/@yalesites-org/component-library-twig/dist/js/02-molecules/meta/publication-meta/publication-detail.js: {}
-  dependencies:
-    - core/drupal
-    - core/once
