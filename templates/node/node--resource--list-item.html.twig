@@ -4,6 +4,7 @@
  * - responsive_media_thumbnail: A responsive image using the thumbnail file.
  * - date_formatted: The publish_date in ISO 8601 format.
  * - resource_authors: Array of authors, each with 'label' and 'url' keys.
+ * - show_tags: Whether to render tags (set per-block by ys_views_content_resources).
  *
  * @see atomic_preprocess_node()
  * @see atomic_preprocess_node__resource()
@@ -38,10 +39,13 @@
    (`.reference-card__subheading > *:not(:first-child)::before { content: '|' }`) from
    appearing between them. #}
 {% set date_and_authors %}
-  {% if publish_date|trim or authors|trim or (node.show_teaser_text and content.field_teaser_text|render|trim) %}
+  {% if publish_date|trim or authors|trim or (node.show_teaser_text and content.field_teaser_text|render|trim) or (node.show_tags and content.field_tags|render|trim) %}
     <div class="publication-meta">
       {% if publish_date|trim %}
         <div class="publication-meta__publish-date">{{ publish_date }}</div>
+      {% endif %}
+      {% if node.show_tags and content.field_tags|render|trim %}
+        <div class="publication-meta__tags">{{ content.field_tags }}</div>
       {% endif %}
       {% if node.show_teaser_text and content.field_teaser_text|render|trim %}
         <div class="publication-meta__teaser-text">{{ content.field_teaser_text }}</div>
