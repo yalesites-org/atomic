@@ -144,18 +144,18 @@ function atomic_preprocess_node(&$variables) {
     $node = $variables['node'];
     $fieldTeaserMedia = $node?->field_teaser_media;
 
-    // Build a list of linked author profiles for templates that show authors.
-    // Each item: ['label' => string, 'url' => string].
-    $variables['resource_authors'] = [];
-    if ($node->hasField('field_authors') && !$node->get('field_authors')->isEmpty()) {
-      foreach ($node->get('field_authors')->referencedEntities() as $author) {
-        if ($author && $author->access('view')) {
-          $variables['resource_authors'][] = [
-            'label' => $author->label(),
-            'url' => $author->toUrl()->toString(),
-          ];
-        }
-      }
+    // Build the merged + sorted author list via the ys_layouts service so
+    // view-row templates and the ResourceMetaBlock produce identical output.
+    // Non-affiliated authors come back with url === NULL; templates render
+    // those as plain text.
+    $author_cache_tags = [];
+    $variables['resource_authors'] = \Drupal::service('ys_layouts.resource_author_builder')
+      ->build($node, $author_cache_tags);
+    if ($author_cache_tags) {
+      $variables['#cache']['tags'] = \Drupal\Core\Cache\Cache::mergeTags(
+        $variables['#cache']['tags'] ?? [],
+        $author_cache_tags
+      );
     }
 
     $fieldMedia = $node?->field_media;

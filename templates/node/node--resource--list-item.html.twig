@@ -22,12 +22,13 @@
   {% endif %}
 {% endset %}
 
-{# Authors — comma-separated, linked to each author's profile node #}
+{# Authors — comma-separated. Affiliated authors link to their profile node;
+   non-affiliated authors (no profile, url is NULL) render as plain text. #}
 {% set authors %}
   {% if resource_authors|length %}
     <span class="publication-meta__label">{{ resource_authors|length == 1 ? 'Author'|t : 'Authors'|t }}:</span>
     {% for author in resource_authors %}
-      <a href="{{ author.url }}">{{ author.label }}</a>{% if not loop.last %}, {% endif %}
+      {% if author.url %}<a href="{{ author.url }}">{{ author.label }}</a>{% else %}{{ author.label }}{% endif %}{% if not loop.last %}, {% endif %}
     {% endfor %}
   {% endif %}
 {% endset %}
