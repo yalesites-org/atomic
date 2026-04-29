@@ -37,17 +37,15 @@
 {# Combine published date, optional teaser text, and authors into one block.
    Wrapping in a single outer div prevents the molecule's flex-child pipe separator
    (`.reference-card__subheading > *:not(:first-child)::before { content: '|' }`) from
-   appearing between them. #}
+   appearing between them. Tags render via the reference_card__tags block below
+   (matches post / event / page / profile cards). #}
 {% set date_and_authors %}
-  {% if publish_date|trim or authors|trim or (node.show_teaser_text and content.field_teaser_text|render|trim) or (node.show_tags and content.field_tags|render|trim) %}
+  {% if publish_date|trim or authors|trim or (node.show_teaser_text and content.field_teaser_text|render|trim) %}
     <div class="publication-meta">
       {% if publish_date|trim %}
         <div class="publication-meta__publish-date">
           <span class="publication-meta__label">{{ 'Published'|t }}:</span> {{ publish_date }}
         </div>
-      {% endif %}
-      {% if node.show_tags and content.field_tags|render|trim %}
-        <div class="publication-meta__tags">{{ content.field_tags }}</div>
       {% endif %}
       {% if node.show_teaser_text and content.field_teaser_text|render|trim %}
         <div class="publication-meta__teaser-text">{{ content.field_teaser_text }}</div>
@@ -106,9 +104,14 @@
   reference_card__image_aria: heading[0]['#context'].value,
   reference_card__overlay: node.pin_label,
   show_categories: node.show_category,
+  show_tags: node.show_tags,
 } %}
   {% block reference_card__categories %}
     {{ content.field_category }}
+  {% endblock %}
+
+  {% block reference_card__tags %}
+    {{ content.field_tags }}
   {% endblock %}
 
   {% block reference_card__image %}
