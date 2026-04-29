@@ -42,7 +42,9 @@
   {% if publish_date|trim or authors|trim or (node.show_teaser_text and content.field_teaser_text|render|trim) or (node.show_tags and content.field_tags|render|trim) %}
     <div class="publication-meta">
       {% if publish_date|trim %}
-        <div class="publication-meta__publish-date">{{ publish_date }}</div>
+        <div class="publication-meta__publish-date">
+          <span class="publication-meta__label">{{ 'Published'|t }}:</span> {{ publish_date }}
+        </div>
       {% endif %}
       {% if node.show_tags and content.field_tags|render|trim %}
         <div class="publication-meta__tags">{{ content.field_tags }}</div>
@@ -110,12 +112,18 @@
   {% endblock %}
 
   {% block reference_card__image %}
-    {# For Resource cards, use only the teaser image (field_teaser_media) and
-       intentionally skip the resource's own file thumbnail (responsive_media_thumbnail),
-       which is often a giant document preview. Falls back to the site-wide teaser image. #}
+    {# Image fallback chain for Resource cards / list-items:
+        1. Editor-supplied teaser image (field_teaser_media)
+        2. The Resource's own file thumbnail (responsive_media_thumbnail) for
+           document and image bundles only — atomic_preprocess_node()
+           suppresses this for video bundles, where the auto-generated frame
+           is rarely useful as a card image
+        3. Site-wide fallback teaser image
+    #}
     {% if content.field_teaser_media[0] %}
       {{ content.field_teaser_media }}
-
+    {% elseif responsive_media_thumbnail %}
+      {{ responsive_media_thumbnail }}
     {% elseif getCoreSetting('image_fallback.teaser') %}
       {{ drupal_entity('media', getCoreSetting('image_fallback.teaser'), 'card_list_3_2') }}
     {% endif %}
