@@ -1,0 +1,36 @@
+{#
+/**
+ * @file
+ * Minimal node template for the `related_content_card` view mode.
+ *
+ * Used by the embedded `entity_reference_for_fields:embed_related_content`
+ * view to render each linked node as a compact card inside the Related
+ * Content block. View-mode display configs are intentionally minimal
+ * (only `field_category` rendered as `entity_reference_label`); this
+ * template supplies the surrounding card markup directly so the molecule
+ * styling (`.related-card`) can target a stable structure.
+ *
+ * Profile bundle has no `field_category` — `content.field_category` will
+ * render empty and the conditional collapses to just the bundle label
+ * in the eyebrow.
+ *
+ * Available Variables (Drupal node template defaults):
+ * - node: The current node entity.
+ * - content: Render array of fields enabled in this view-mode display.
+ * - label: The node title (rendered).
+ * - url: The canonical URL to the node.
+ * - attributes: HTML attributes for the wrapper.
+ */
+#}
+<article{{ attributes.addClass(['related-card']) }}>
+  <p class="related-card__eyebrow">
+    {{ node.type.entity.label|upper }}
+    {%- if content.field_category|render is not empty and node.field_category.entity %}
+      <span class="related-card__eyebrow-separator" aria-hidden="true"> | </span>
+      <span class="related-card__category">{{ node.field_category.entity.label|upper }}</span>
+    {%- endif %}
+  </p>
+  <h3 class="related-card__title">
+    <a href="{{ url }}">{{ label }}</a>
+  </h3>
+</article>

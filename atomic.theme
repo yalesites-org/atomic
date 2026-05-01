@@ -7,6 +7,8 @@
 
 use Drupal\node\Entity\Node;
 use Drupal\Core\Cache\CacheableMetadata;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\media\MediaInterface;
 
 /**
  * Implements hook_preprocess_region().
@@ -484,4 +486,27 @@ function _process_collection_nav_menu_items($items) {
   }
 
   return $menu_items;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view_alter() for media entities.
+ *
+ * Suppresses the contextual edit pencil on media rendered as a reference
+ * from a Resource node. Authors can still reach the media edit form via
+ * the parent node's Edit screen. Scoped to Resource only per YISP-122;
+ * site-wide application is documented as a follow-up pitch in
+ * docs-local/2026-04-30-suppress-media-contextual-links-option-2.md.
+ *
+ * Implemented at the entity_view_alter stage (rather than preprocess) so
+ * the unset happens before contextual.module's preprocess injects the
+ * pencil's data-contextual-token attribute and contextual-region class.
+ */
+function atomic_media_view_alter(array &$build, MediaInterface $entity, EntityViewDisplayInterface $display) {
+  if (!isset($entity->_referringItem)) {
+    return;
+  }
+  $parent = $entity->_referringItem->getEntity();
+  if ($parent instanceof Node && $parent->bundle() === 'resource') {
+    unset($build['#contextual_links']);
+  }
 }
