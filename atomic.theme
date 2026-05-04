@@ -7,6 +7,8 @@
 
 use Drupal\node\Entity\Node;
 use Drupal\Core\Cache\CacheableMetadata;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\media\MediaInterface;
 
 /**
  * Implements hook_preprocess_region().
@@ -143,6 +145,43 @@ function atomic_preprocess_node(&$variables) {
     /** @var \Drupal\node\Entity\Node $node */
     $node = $variables['node'];
     $fieldTeaserMedia = $node?->field_teaser_media;
+
+    // Build the merged + sorted author list via the ys_layouts service so
+    // view-row templates and the ResourceMetaBlock produce identical output.
+    // Non-affiliated authors come back with url === NULL; templates render
+    // those as plain text.
+    $author_cache_tags = [];
+    $variables['resource_authors'] = \Drupal::service('ys_layouts.resource_author_builder')
+      ->build($node, $author_cache_tags);
+    if ($author_cache_tags) {
+      $variables['#cache']['tags'] = \Drupal\Core\Cache\Cache::mergeTags(
+        $variables['#cache']['tags'] ?? [],
+        $author_cache_tags
+      );
+    }
+
+    // field_discipline is rendered manually in the resource card / list-item
+    // templates (so the inline "Discipline: term1, term2" format with a
+    // single label is preserved). The manual render uses #items, which
+    // bypasses the field formatter pipeline, so attach the referenced term
+    // cache tags here — otherwise card renders won't be invalidated when a
+    // discipline term is renamed or deleted.
+    if ($node->hasField('field_discipline') && !$node->get('field_discipline')->isEmpty()) {
+      $discipline_cache_tags = [];
+      foreach ($node->get('field_discipline')->referencedEntities() as $term) {
+        $discipline_cache_tags = \Drupal\Core\Cache\Cache::mergeTags(
+          $discipline_cache_tags,
+          $term->getCacheTags()
+        );
+      }
+      if ($discipline_cache_tags) {
+        $variables['#cache']['tags'] = \Drupal\Core\Cache\Cache::mergeTags(
+          $variables['#cache']['tags'] ?? [],
+          $discipline_cache_tags
+        );
+      }
+    }
+
     $fieldMedia = $node?->field_media;
 
     if ($view_mode === 'portrait_grid' && $fieldTeaserMedia && !$fieldTeaserMedia->isEmpty()) {
@@ -164,6 +203,16 @@ function atomic_preprocess_node(&$variables) {
     /** @var \Drupal\media\Entity\Media $media */
     $referenced_entities = $fieldMedia?->referencedEntities() ?? [];
     $media = reset($referenced_entities);
+
+    // Skip building responsive_media_thumbnail for video Resources: the
+    // video media's thumbnail is the auto-generated frame, which is rarely
+    // useful as a card image. Document and image bundles still get the
+    // thumbnail so PDF previews and image resources don't render with a
+    // blank card when no field_teaser_media is set.
+    if ($media && $media->bundle() === 'video') {
+      return;
+    }
+
     $thumbnail = $media?->thumbnail;
 
     if (!$thumbnail) {
@@ -437,4 +486,27 @@ function _process_collection_nav_menu_items($items) {
   }
 
   return $menu_items;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view_alter() for media entities.
+ *
+ * Suppresses the contextual edit pencil on media rendered as a reference
+ * from a Resource node. Authors can still reach the media edit form via
+ * the parent node's Edit screen. Scoped to Resource only per YISP-122;
+ * site-wide application is documented as a follow-up pitch in
+ * docs-local/2026-04-30-suppress-media-contextual-links-option-2.md.
+ *
+ * Implemented at the entity_view_alter stage (rather than preprocess) so
+ * the unset happens before contextual.module's preprocess injects the
+ * pencil's data-contextual-token attribute and contextual-region class.
+ */
+function atomic_media_view_alter(array &$build, MediaInterface $entity, EntityViewDisplayInterface $display) {
+  if (!isset($entity->_referringItem)) {
+    return;
+  }
+  $parent = $entity->_referringItem->getEntity();
+  if ($parent instanceof Node && $parent->bundle() === 'resource') {
+    unset($build['#contextual_links']);
+  }
 }
