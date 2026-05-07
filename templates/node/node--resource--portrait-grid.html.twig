@@ -16,38 +16,32 @@
 
 {% set show_publish_date = node.show_publish_date is not defined or node.show_publish_date %}
 {% set show_authors = node.show_authors is not defined or node.show_authors %}
-
-{% set publish_date %}
-  {% if show_publish_date and date_format %}
-    {% include "@atoms/date-time/yds-date-time.twig" with {
-      date_time__start: date_formatted,
-      date_time__format: date_format,
-    } %}
-  {% endif %}
-{% endset %}
-
-{% set authors %}
-  {% if show_authors and resource_authors|length %}
-    <span class="publication-meta__label">{{ resource_authors|length == 1 ? 'Author'|t : 'Authors'|t }}:</span>
-    {% for author in resource_authors %}
-      {% if author.url %}<a href="{{ author.url }}">{{ author.label }}</a>{% else %}{{ author.label }}{% endif %}{% if not loop.last %}, {% endif %}
-    {% endfor %}
-  {% endif %}
-{% endset %}
+{% set has_publish_date = show_publish_date and date_format %}
+{% set has_authors = show_authors and resource_authors|length %}
+{% set has_teaser_text = node.show_teaser_text and content.field_teaser_text|render|trim %}
 
 {% set date_and_authors %}
-  {% if publish_date|trim or authors|trim or (node.show_teaser_text and content.field_teaser_text|render|trim) %}
+  {% if has_publish_date or has_authors or has_teaser_text %}
     <div class="publication-meta">
-      {% if publish_date|trim %}
+      {% if has_publish_date %}
         <div class="publication-meta__publish-date">
-          <span class="publication-meta__label">{{ 'Published'|t }}:</span> {{ publish_date }}
+          <span class="publication-meta__label">{{ 'Published'|t }}:</span>
+          {% include "@atoms/date-time/yds-date-time.twig" with {
+            date_time__start: date_formatted,
+            date_time__format: date_format,
+          } %}
         </div>
       {% endif %}
-      {% if node.show_teaser_text and content.field_teaser_text|render|trim %}
+      {% if has_teaser_text %}
         <div class="publication-meta__teaser-text">{{ content.field_teaser_text }}</div>
       {% endif %}
-      {% if authors|trim %}
-        <div class="publication-meta__authors">{{ authors }}</div>
+      {% if has_authors %}
+        <div class="publication-meta__authors">
+          <span class="publication-meta__label">{{ resource_authors|length == 1 ? 'Author'|t : 'Authors'|t }}:</span>
+          {% for author in resource_authors %}
+            {% if author.url %}<a href="{{ author.url }}">{{ author.label }}</a>{% else %}{{ author.label }}{% endif %}{% if not loop.last %}, {% endif %}
+          {% endfor %}
+        </div>
       {% endif %}
     </div>
   {% endif %}
