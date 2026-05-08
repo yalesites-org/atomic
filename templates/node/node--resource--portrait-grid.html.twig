@@ -14,61 +14,52 @@
 {% set date_format = content.field_date_format.0 ? content.field_date_format.0['#markup'] : '' %}
 {% set url = content.field_external_source[0]['#url']|render ? content.field_external_source[0]['#url']|render : url %}
 
-{% set publish_date %}
-  {% if date_format %}
-    {% include "@atoms/date-time/yds-date-time.twig" with {
-      date_time__start: date_formatted,
-      date_time__format: date_format,
-    } %}
-  {% endif %}
-{% endset %}
+{% set show_publish_date = node.show_publish_date is not defined or node.show_publish_date %}
+{% set show_authors = node.show_authors is not defined or node.show_authors %}
+{% set has_publish_date = show_publish_date and date_format %}
+{% set has_authors = show_authors and resource_authors|length %}
+{% set has_teaser_text = node.show_teaser_text and content.field_teaser_text|render|trim %}
 
-{# Authors — comma-separated. Affiliated authors link to their profile node;
-   non-affiliated authors (no profile, url is NULL) render as plain text. #}
-{% set authors %}
-  {% if resource_authors|length %}
-    <span class="publication-meta__label">{{ resource_authors|length == 1 ? 'Author'|t : 'Authors'|t }}:</span>
-    {% for author in resource_authors %}
-      {% if author.url %}<a href="{{ author.url }}">{{ author.label }}</a>{% else %}{{ author.label }}{% endif %}{% if not loop.last %}, {% endif %}
-    {% endfor %}
-  {% endif %}
-{% endset %}
-
-{# Combine published date, optional teaser text, and authors into one block.
-   Wrapping in a single outer div prevents the molecule's flex-child pipe separator
-   (`.reference-card__subheading > *:not(:first-child)::before { content: '|' }`) from
-   appearing between them. Tags render via the reference_card__tags block below
-   (matches post / event / page / profile cards). #}
 {% set date_and_authors %}
-  {% if publish_date|trim or authors|trim or (node.show_teaser_text and content.field_teaser_text|render|trim) %}
+  {% if has_publish_date or has_authors or has_teaser_text %}
     <div class="publication-meta">
-      {% if publish_date|trim %}
+      {% if has_publish_date %}
         <div class="publication-meta__publish-date">
-          <span class="publication-meta__label">{{ 'Published'|t }}:</span> {{ publish_date }}
+          <span class="publication-meta__label">{{ 'Published'|t }}:</span>
+          {% include "@atoms/date-time/yds-date-time.twig" with {
+            date_time__start: date_formatted,
+            date_time__format: date_format,
+          } %}
         </div>
       {% endif %}
-      {% if node.show_teaser_text and content.field_teaser_text|render|trim %}
+      {% if has_teaser_text %}
         <div class="publication-meta__teaser-text">{{ content.field_teaser_text }}</div>
       {% endif %}
-      {% if authors|trim %}
-        <div class="publication-meta__authors">{{ authors }}</div>
+      {% if has_authors %}
+        <div class="publication-meta__authors">
+          <span class="publication-meta__label">{{ resource_authors|length == 1 ? 'Author'|t : 'Authors'|t }}:</span>
+          {% for author in resource_authors %}
+            {% if author.url %}<a href="{{ author.url }}">{{ author.label }}</a>{% else %}{{ author.label }}{% endif %}{% if not loop.last %}, {% endif %}
+          {% endfor %}
+        </div>
       {% endif %}
     </div>
   {% endif %}
 {% endset %}
 
-{# Journal info — publication name (italicised) and issue, on separate lines with labels #}
+{% set show_journal_name = node.show_journal_name is not defined or node.show_journal_name %}
+{% set show_journal_issue = node.show_journal_issue is not defined or node.show_journal_issue %}
 {% set journal_name = node.field_journal_publication_name.0.value|default('')|trim %}
 {% set journal_issue = node.field_journal_publication_issue.0.value|default('')|trim %}
 {% set journal_info %}
-  {% if journal_name or journal_issue %}
+  {% if (show_journal_name and journal_name) or (show_journal_issue and journal_issue) %}
     <div class="publication-journal">
-      {% if journal_name %}
+      {% if show_journal_name and journal_name %}
         <div class="publication-journal__name">
           <span class="publication-journal__label">{{ 'Publication'|t }}:</span> <em>{{ journal_name }}</em>
         </div>
       {% endif %}
-      {% if journal_issue %}
+      {% if show_journal_issue and journal_issue %}
         <div class="publication-journal__issue">
           <span class="publication-journal__label">{{ 'Issue'|t }}:</span> {{ journal_issue }}
         </div>
@@ -100,7 +91,7 @@
   reference_card__subheading: date_and_authors,
   reference_card__overline: node.show_discipline ? discipline : '',
   reference_card__image: node.show_thumbnail ? 'true' : 'false',
-  reference_card__snippet: node.show_publication ? journal_info : '',
+  reference_card__snippet: (show_journal_name or show_journal_issue) ? journal_info : '',
   reference_card__image_aria: heading[0]['#context'].value,
   reference_card__overlay: node.pin_label,
   show_categories: node.show_category,

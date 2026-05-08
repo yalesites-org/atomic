@@ -13,38 +13,29 @@
 {% set date_format = content.field_date_format.0 ? content.field_date_format.0['#markup'] : '' %}
 {% set url = content.field_external_source[0]['#url']|render ? content.field_external_source[0]['#url']|render : url %}
 
-{% set publish_date %}
-  {% if date_format %}
-    {% include "@atoms/date-time/yds-date-time.twig" with {
-      date_time__start: date_formatted,
-      date_time__format: date_format,
-    } %}
-  {% endif %}
-{% endset %}
+{% set show_publish_date = node.show_publish_date is not defined or node.show_publish_date %}
+{% set show_authors = node.show_authors is not defined or node.show_authors %}
+{% set has_publish_date = show_publish_date and date_format %}
+{% set has_authors = show_authors and resource_authors|length %}
 
-{# Authors — comma-separated. Affiliated authors link to their profile node;
-   non-affiliated authors (no profile, url is NULL) render as plain text. #}
-{% set authors %}
-  {% if resource_authors|length %}
-    <span class="publication-meta__label">{{ resource_authors|length == 1 ? 'Author'|t : 'Authors'|t }}:</span>
-    {% for author in resource_authors %}
-      {% if author.url %}<a href="{{ author.url }}">{{ author.label }}</a>{% else %}{{ author.label }}{% endif %}{% if not loop.last %}, {% endif %}
-    {% endfor %}
-  {% endif %}
-{% endset %}
-
-{# Combine published date and authors into one block so date sits directly above authors.
-   Wrapping both in a single outer div prevents the molecule's flex-child pipe separator
-   (`.reference-card__subheading > *:not(:first-child)::before { content: '|' }`) from
-   appearing between them. #}
 {% set date_and_authors %}
-  {% if publish_date|trim or authors|trim %}
+  {% if has_publish_date or has_authors %}
     <div class="publication-meta">
-      {% if publish_date|trim %}
-        <div class="publication-meta__publish-date">{{ publish_date }}</div>
+      {% if has_publish_date %}
+        <div class="publication-meta__publish-date">
+          {% include "@atoms/date-time/yds-date-time.twig" with {
+            date_time__start: date_formatted,
+            date_time__format: date_format,
+          } %}
+        </div>
       {% endif %}
-      {% if authors|trim %}
-        <div class="publication-meta__authors">{{ authors }}</div>
+      {% if has_authors %}
+        <div class="publication-meta__authors">
+          <span class="publication-meta__label">{{ resource_authors|length == 1 ? 'Author'|t : 'Authors'|t }}:</span>
+          {% for author in resource_authors %}
+            {% if author.url %}<a href="{{ author.url }}">{{ author.label }}</a>{% else %}{{ author.label }}{% endif %}{% if not loop.last %}, {% endif %}
+          {% endfor %}
+        </div>
       {% endif %}
     </div>
   {% endif %}
