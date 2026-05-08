@@ -3,45 +3,121 @@
  * Available Variables:
  * - responsive_media_thumbnail: A responsive image using the thumbnail file.
  * - date_formatted: The publish_date in ISO 8601 format.
+ * - resource_authors: Array of authors, each with 'label' and 'url' keys.
+ * - show_tags: Whether to render tags (set per-block by ys_views_content_resources).
  *
  * @see atomic_preprocess_node()
- #}
+ * @see atomic_preprocess_node__resource()
+#}
 
 {% set heading = content.field_teaser_title.0 ? content.field_teaser_title : label %}
 {% set date_format = content.field_date_format.0 ? content.field_date_format.0['#markup'] : '' %}
 {% set url = content.field_external_source[0]['#url']|render ? content.field_external_source[0]['#url']|render : url %}
 
-{% set publish_date %}
-  {% if date_format %}
-    <strong>{{ 'Published'|t }}:</strong>
-    {% include "@atoms/date-time/yds-date-time.twig" with {
-      date_time__start: date_formatted,
-      date_time__format: date_format,
-    } %}
+{% set show_publish_date = node.show_publish_date is not defined or node.show_publish_date %}
+{% set show_authors = node.show_authors is not defined or node.show_authors %}
+{% set has_publish_date = show_publish_date and date_format %}
+{% set has_authors = show_authors and resource_authors|length %}
+{% set has_teaser_text = node.show_teaser_text and content.field_teaser_text|render|trim %}
+
+{% set date_and_authors %}
+  {% if has_publish_date or has_authors or has_teaser_text %}
+    <div class="publication-meta">
+      {% if has_publish_date %}
+        <div class="publication-meta__publish-date">
+          <span class="publication-meta__label">{{ 'Published'|t }}:</span>
+          {% include "@atoms/date-time/yds-date-time.twig" with {
+            date_time__start: date_formatted,
+            date_time__format: date_format,
+          } %}
+        </div>
+      {% endif %}
+      {% if has_teaser_text %}
+        <div class="publication-meta__teaser-text">{{ content.field_teaser_text }}</div>
+      {% endif %}
+      {% if has_authors %}
+        <div class="publication-meta__authors">
+          <span class="publication-meta__label">{{ resource_authors|length == 1 ? 'Author'|t : 'Authors'|t }}:</span>
+          {% for author in resource_authors %}
+            {% if author.url %}<a href="{{ author.url }}">{{ author.label }}</a>{% else %}{{ author.label }}{% endif %}{% if not loop.last %}, {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  {% endif %}
+{% endset %}
+
+{% set show_journal_name = node.show_journal_name is not defined or node.show_journal_name %}
+{% set show_journal_issue = node.show_journal_issue is not defined or node.show_journal_issue %}
+{% set journal_name = node.field_journal_publication_name.0.value|default('')|trim %}
+{% set journal_issue = node.field_journal_publication_issue.0.value|default('')|trim %}
+{% set journal_info %}
+  {% if (show_journal_name and journal_name) or (show_journal_issue and journal_issue) %}
+    <div class="publication-journal">
+      {% if show_journal_name and journal_name %}
+        <div class="publication-journal__name">
+          <span class="publication-journal__label">{{ 'Publication'|t }}:</span> <em>{{ journal_name }}</em>
+        </div>
+      {% endif %}
+      {% if show_journal_issue and journal_issue %}
+        <div class="publication-journal__issue">
+          <span class="publication-journal__label">{{ 'Issue'|t }}:</span> {{ journal_issue }}
+        </div>
+      {% endif %}
+    </div>
+  {% endif %}
+{% endset %}
+
+{# Discipline taxonomy — comma-separated linked terms, label inline #}
+{% set discipline %}
+  {% if content.field_discipline|render|trim %}
+    <div class="publication-discipline">
+      <span class="publication-discipline__label">{{ 'Discipline'|t }}:</span>
+      <span class="publication-discipline__terms">
+        {% for item in content.field_discipline['#items'] %}
+          {% set term = item.entity %}
+          {% if term %}
+            <a href="{{ path('entity.taxonomy_term.canonical', {'taxonomy_term': term.id}) }}">{{ term.label }}</a>{% if not loop.last %}, {% endif %}
+          {% endif %}
+        {% endfor %}
+      </span>
+    </div>
   {% endif %}
 {% endset %}
 
 {% embed "@molecules/cards/reference-card/yds-reference-card.twig" with {
   reference_card__heading: heading,
   reference_card__url: url,
-  reference_card__overline: publish_date,
+  reference_card__subheading: date_and_authors,
+  reference_card__overline: node.show_discipline ? discipline : '',
   reference_card__image: node.show_thumbnail ? 'true' : 'false',
-  reference_card__snippet: content.field_teaser_text,
+  reference_card__snippet: (show_journal_name or show_journal_issue) ? journal_info : '',
   reference_card__image_aria: heading[0]['#context'].value,
   reference_card__overlay: node.pin_label,
   show_categories: node.show_category,
+  show_tags: node.show_tags,
 } %}
   {% block reference_card__categories %}
     {{ content.field_category }}
   {% endblock %}
 
+  {% block reference_card__tags %}
+    {{ content.field_tags }}
+  {% endblock %}
+
   {% block reference_card__image %}
+    {# Image fallback chain for Resource portrait-grid cards:
+        1. Editor-supplied teaser image (field_teaser_media)
+        2. The Resource's own file thumbnail (responsive_media_thumbnail) for
+           document and image bundles only — atomic_preprocess_node()
+           suppresses this for video bundles, where the auto-generated frame
+           is rarely useful as a card image
+        3. Site-wide fallback teaser image (portrait 5:8 crop)
+    #}
     {% if content.field_teaser_media[0] %}
       {{ content.field_teaser_media }}
-
     {% elseif responsive_media_thumbnail %}
       {{ responsive_media_thumbnail }}
-
     {% elseif getCoreSetting('image_fallback.teaser') %}
       {{ drupal_entity('media', getCoreSetting('image_fallback.teaser'), 'card_grid_portrait_5_8') }}
     {% endif %}
