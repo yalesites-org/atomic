@@ -166,8 +166,17 @@ html.gin--dark-mode form.layout-builder-configure-block.glb-form {
 }
 
 #drupal-off-canvas-wrapper .ui-dialog-titlebar {
+  align-items: flex-start;
   background-color: var(--gin-bg-layer2) !important;
   color: var(--gin-color-text) !important;
+}
+
+/* Reserve space so the close button never overlaps a wrapped title. */
+#drupal-off-canvas-wrapper .ui-dialog-title {
+  padding-inline-end: var(
+    --jui-dialog-off-canvas-close-button-reserved-space,
+    calc(var(--gin-spacing-m, 8px) * 4)
+  );
 }
 
 #drupal-off-canvas-wrapper .button--primary {
@@ -332,10 +341,35 @@ blockquote.pull-quote__quote::before {
 }
 
 /*
-* Fix cancel button color in gin
-*/
-html.gin--dark-mode .button.dialog-cancel {
+ * Style the Layout Builder dialog Cancel link as a secondary button. The core
+ * `<a class="button dialog-cancel">` never receives Gin's `.glb-button`
+ * treatment, so without this it collapses to dark-on-dark in dark mode and is
+ * smaller than the primary action.
+ */
+#drupal-off-canvas .dialog-cancel,
+#drupal-off-canvas-wrapper .dialog-cancel {
+  display: inline-block;
+  margin: 1em 0.75em 1em 0;
+  padding: calc(1em - 2px) calc(1.5em - 2px);
+  color: var(--gin-color-primary);
+  border: 2px solid var(--gin-color-primary);
+  border-radius: 6px;
+  background-color: transparent;
+  box-shadow: 0 1px 2px var(--gin-color-primary-light);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1em;
+  text-align: center;
+  text-decoration: none;
+}
+
+#drupal-off-canvas .dialog-cancel:hover,
+#drupal-off-canvas .dialog-cancel:focus,
+#drupal-off-canvas-wrapper .dialog-cancel:hover,
+#drupal-off-canvas-wrapper .dialog-cancel:focus {
   color: var(--gin-color-button-text);
+  border-color: var(--gin-color-primary-hover);
+  background-color: var(--gin-color-primary-hover);
 }
 
 /*
@@ -524,7 +558,7 @@ label.form-required::after, label.js-form-required::after {
 .gin--dark-mode .ui-dialog,
 .gin--dark-mode .layout-builder-configure-section,
 .gin--dark-mode .layout-builder__region,
-.gin--dark-mode tbody tr:nth-child(even),
+.gin--dark-mode tbody tr:nth-child(even):not(.layout-builder-components-table__row),
 .gin--dark-mode .media-library-widget__modal,
 .gin--dark-mode .form-wrapper,
 .gin--dark-mode .off-canvas-dialog-panel {
@@ -539,9 +573,12 @@ label.form-required::after, label.js-form-required::after {
   --gin-color-text-light: #9e9fa0;
 }
 
-/* Direct targeting of drag handles on white rows - using mask-image pattern */
-.gin--dark-mode tbody tr:nth-child(even) .tabledrag-handle::after,
-.gin--dark-mode #drupal-off-canvas-wrapper tbody tr:nth-child(even) .tabledrag-handle::after {
+/* Direct targeting of drag handles on white rows - using mask-image pattern.
+ * Excludes the Layout Builder "Move block" reorder table: its rows are all
+ * dark (not striped), so the light-background contrast override does not apply
+ * and would otherwise make even-row handles a different color. */
+.gin--dark-mode tbody tr:nth-child(even):not(.layout-builder-components-table__row) .tabledrag-handle::after,
+.gin--dark-mode #drupal-off-canvas-wrapper tbody tr:nth-child(even):not(.layout-builder-components-table__row) .tabledrag-handle::after {
   background-color: var(--ys-contrast-dark-gray) !important;
   background-image: none !important;
   mask-image: var(--icon-drag-handle);
@@ -553,8 +590,8 @@ label.form-required::after, label.js-form-required::after {
 }
 
 /* White drag handles on hover (row background turns dark) */
-.gin--dark-mode tbody tr:nth-child(even):hover .tabledrag-handle::after,
-.gin--dark-mode #drupal-off-canvas-wrapper tbody tr:nth-child(even):hover .tabledrag-handle::after {
+.gin--dark-mode tbody tr:nth-child(even):not(.layout-builder-components-table__row):hover .tabledrag-handle::after,
+.gin--dark-mode #drupal-off-canvas-wrapper tbody tr:nth-child(even):not(.layout-builder-components-table__row):hover .tabledrag-handle::after {
   background-color: var(--ys-contrast-white) !important;
 }
 
@@ -623,4 +660,80 @@ label.form-required::after, label.js-form-required::after {
 
 .gin--dark-mode .media-library-widget-modal .pager__link {
   color: var(--color-basic-white);
+}
+
+/**
+ * Layout Builder "Move block" reorder table (off-canvas).
+ *
+ * The Drupal 10.6 / Gin 4.x / Gin LB 2.0 upgrade dropped the styling for this
+ * table. Restore the header, row borders, handle alignment, and current-row
+ * highlight. Handle color uniformity is handled separately by
+ * excluding these rows from the even-row contrast override above.
+ */
+#drupal-off-canvas-wrapper .layout-builder-components-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#drupal-off-canvas-wrapper .layout-builder-components-table thead th {
+  padding: 0.75em 1em;
+  color: var(--gin-color-text);
+  text-align: left;
+  background: var(--gin-bg-header);
+  border-bottom: 1px solid
+    var(--gin-border-color-table, var(--gin-border-color));
+}
+
+#drupal-off-canvas-wrapper .layout-builder-components-table tbody tr {
+  border-bottom: 1px solid
+    var(--gin-border-color-table, var(--gin-border-color));
+}
+
+#drupal-off-canvas-wrapper .layout-builder-components-table tbody tr:hover {
+  background: var(--gin-bg-item-hover);
+}
+
+/* Align the drag handle and label on one baseline. */
+#drupal-off-canvas-wrapper .layout-builder-components-table__block-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+}
+
+/* Highlight the current block with a left accent that does not indent the row,
+ * so its handle stays aligned with the others (overrides core's padding-left +
+ * border-left in layout_builder/css/off-canvas.css). */
+#drupal-off-canvas-wrapper
+  .layout-builder-components-table
+  .layout-builder-components-table__block-label--current {
+  padding-left: 1rem;
+  border-left: 0;
+  box-shadow: inset 4px 0 0 var(--gin-color-primary);
+}
+
+/* "Show row weights" toggle: Drupal 10.6 renders this as a plain
+ * `<button class="link tabledrag-toggle-weight">` that Gin LB 2.0 no longer
+ * styles. Render it as a small secondary button. */
+#drupal-off-canvas .tabledrag-toggle-weight,
+#drupal-off-canvas-wrapper .tabledrag-toggle-weight {
+  display: inline-block;
+  padding: 0.5em 1em;
+  color: var(--gin-color-text);
+  border: 1px solid var(--gin-border-color);
+  border-radius: 6px;
+  background-color: transparent;
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+}
+
+#drupal-off-canvas .tabledrag-toggle-weight:hover,
+#drupal-off-canvas .tabledrag-toggle-weight:focus,
+#drupal-off-canvas-wrapper .tabledrag-toggle-weight:hover,
+#drupal-off-canvas-wrapper .tabledrag-toggle-weight:focus {
+  color: var(--gin-color-button-text);
+  border-color: var(--gin-color-primary-hover);
+  background-color: var(--gin-color-primary-hover);
 }
