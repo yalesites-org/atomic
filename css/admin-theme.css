@@ -28,6 +28,22 @@ html.gin--dark-mode form.layout-builder-configure-block.glb-form {
   top: calc(var(--gin-toolbar-secondary-height) - 7px) !important;
 }
 
+/* Pull the Layout Builder sidebar flush below the toolbar. Gin LB 2.0 sets the
+   panel top to the displaced offset PLUS the secondary toolbar height, but the
+   displaced offset already accounts for the toolbar, so the extra height
+   double-counts and leaves a gap above the panel. */
+.gin--horizontal-toolbar #gin_sidebar.glb-sidebar {
+  top: var(--drupal-displace-offset-top) !important;
+  height: calc(100% - var(--drupal-displace-offset-top)) !important;
+}
+
+/* In Layout Builder, drop the front-end first-child top margin so the preview
+   content sits flush below the toolbar. Scoped to .glb-body (Gin LB editing
+   context only) so live pages keep their intended spacing. */
+.glb-body .main-content > *:first-child {
+  margin-top: 0 !important;
+}
+
 /* yalb-1251 - AX: pencil icon difficulty editing blocks */
 /* change the contextual pencil icon to the left-hand side of each component
 // instead of the right
