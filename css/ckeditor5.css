@@ -30,6 +30,18 @@ div[contenteditable="true"] #drupal-off-canvas [data-drupal-ck-style-fence] .ck-
   color: black;
 }
 
+/*
+ * The broad reset above strips padding from every element inside a
+ * draggable-table editor (e.g. Accordion items), which also removes the
+ * indentation lists need. Without it, "outside" list markers render past the
+ * editing area: bullets sit far left and ordered-list numbers are clipped to
+ * just the trailing period. Restore list indentation so markers stay visible.
+ */
+.glb-table .ck-content ul,
+.glb-table .ck-content ol {
+  padding-inline-start: 40px;
+}
+
 .glb-table .ck-content tr:nth-child(2n) {
   background-color: var(--gin-bg-layer);
 }
