@@ -11,7 +11,7 @@
 {% embed "@molecules/cards/reference-card/yds-reference-card.twig" with {
   reference_card__overline: date__formatted,
   reference_card__heading: heading,
-  reference_card__heading_level: '2',
+  reference_card__heading_level: node.card_heading_level|default('2'),
   reference_card__url: url,
   reference_card__snippet: content.field_teaser_text,
   reference_card__image: node.show_thumbnail ? 'true' : 'false',
