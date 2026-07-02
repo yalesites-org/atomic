@@ -152,4 +152,18 @@ class SdcSchemaValidationTest extends UnitTestCase {
     $this->assertNotEmpty($this->validate('lists', ['list__type' => 'table']));
   }
 
+  /**
+   * Date Time atom (Wave 1): a valid format passes; an invalid one fails.
+   */
+  public function testDateTimeFormat(): void {
+    $this->assertSame([], $this->validate('date-time', [
+      'date_time__start' => 1700000000,
+      'date_time__format' => 'date',
+    ]));
+    $this->assertNotEmpty($this->validate('date-time', [
+      'date_time__start' => 1700000000,
+      'date_time__format' => 'bogus',
+    ]));
+  }
+
 }
