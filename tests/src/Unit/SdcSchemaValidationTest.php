@@ -118,4 +118,30 @@ class SdcSchemaValidationTest extends UnitTestCase {
     $this->assertNotEmpty($this->validate('heading', ['heading__level' => '9']));
   }
 
+  /**
+   * CTA atom (Wave 1): a valid fill style passes; an invalid one fails.
+   */
+  public function testCtaStyle(): void {
+    $this->assertSame([], $this->validate('cta', ['cta__style' => 'outline']));
+    $this->assertNotEmpty($this->validate('cta', ['cta__style' => 'bogus']));
+  }
+
+  /**
+   * Text Link atom (Wave 1): a valid type passes; an invalid one fails.
+   */
+  public function testTextLinkType(): void {
+    $this->assertSame([], $this->validate('text-link', ['link__type' => 'external']));
+    $this->assertNotEmpty($this->validate('text-link', ['link__type' => 'bogus']));
+  }
+
+  /**
+   * Text Copy Button atom (Wave 1): valid data (with an optional tag) passes.
+   */
+  public function testTextCopyButtonValid(): void {
+    $this->assertSame([], $this->validate('text-copy-button', [
+      'text_copy_button__pre_text' => 'copy me',
+      'text_copy_button__pre_text_tag' => 'span',
+    ]));
+  }
+
 }
