@@ -166,4 +166,18 @@ class SdcSchemaValidationTest extends UnitTestCase {
     ]));
   }
 
+  /**
+   * Skip Link atom (Wave 1): valid data passes.
+   */
+  public function testLinkSkipValid(): void {
+    $this->assertSame([], $this->validate('link-skip', ['link_skip__url' => '#main']));
+  }
+
+  /**
+   * Read Time atom (Wave 1): valid data passes.
+   */
+  public function testReadTimeValid(): void {
+    $this->assertSame([], $this->validate('read-time', ['read_time__label' => 'Read time']));
+  }
+
 }
