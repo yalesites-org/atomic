@@ -1,0 +1,35 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Divider
+status: stable
+group: Atoms
+description: >
+  A horizontal rule / section divider. Thin SDC wrapper over the component
+  library's @atoms/divider/yds-divider.twig template; the real markup and SCSS
+  stay in component-library-twig.
+props:
+  type: object
+  properties:
+    divider__width:
+      title: Width
+      description: >
+        Width of the divider as a percentage of its container. Enum values are
+        the field_style_width labels (list_default formatter), which is what the
+        block template passes at render time.
+      type: string
+      enum:
+        - '100'
+        - '75'
+        - '50'
+        - '25'
+      default: '100'
+    divider__position:
+      title: Position
+      description: >
+        Horizontal alignment of the divider. Enum values are the
+        field_style_position labels (list_default formatter, capitalized); the
+        underlying template lowercases them before use.
+      type: string
+      enum:
+        - Left
+        - Center
+      default: Center
