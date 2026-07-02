@@ -196,4 +196,11 @@ class SdcSchemaValidationTest extends UnitTestCase {
     $this->assertSame([], $this->validate('image', ['figure__caption' => NULL]));
   }
 
+  /**
+   * Basic Meta (Wave 1): the (prop-less) schema accepts an empty prop set.
+   */
+  public function testBasicMetaValid(): void {
+    $this->assertSame([], $this->validate('basic-meta', []));
+  }
+
 }
