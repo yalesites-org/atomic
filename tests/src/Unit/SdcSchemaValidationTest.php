@@ -97,4 +97,25 @@ class SdcSchemaValidationTest extends UnitTestCase {
     ]));
   }
 
+  /**
+   * Text atom (Wave 1): a valid wrapper element passes.
+   */
+  public function testTextValidData(): void {
+    $this->assertSame([], $this->validate('text', ['text__element' => 'p']));
+  }
+
+  /**
+   * Heading atom (Wave 1): a valid level passes.
+   */
+  public function testHeadingValidLevel(): void {
+    $this->assertSame([], $this->validate('heading', ['heading__level' => '3']));
+  }
+
+  /**
+   * Heading atom (Wave 1): an out-of-range level fails.
+   */
+  public function testHeadingInvalidLevelFails(): void {
+    $this->assertNotEmpty($this->validate('heading', ['heading__level' => '9']));
+  }
+
 }
