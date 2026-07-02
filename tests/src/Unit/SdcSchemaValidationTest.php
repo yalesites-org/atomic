@@ -188,4 +188,12 @@ class SdcSchemaValidationTest extends UnitTestCase {
     $this->assertNotEmpty($this->validate('taxonomy-display', ['taxonomy_display__theme' => 'nope']));
   }
 
+  /**
+   * Image atom (Wave 1): valid data (with an optional caption) passes.
+   */
+  public function testImageValid(): void {
+    $this->assertSame([], $this->validate('image', ['figure__caption' => 'A caption']));
+    $this->assertSame([], $this->validate('image', ['figure__caption' => NULL]));
+  }
+
 }
