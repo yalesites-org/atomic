@@ -226,4 +226,15 @@ class SdcSchemaValidationTest extends UnitTestCase {
     $this->assertNotEmpty($this->validate('pull-quote', ['pull_quote__style' => 'nope']));
   }
 
+  /**
+   * Wrapped Image (Wave 2): valid dials pass; an invalid style fails.
+   */
+  public function testWrappedImage(): void {
+    $this->assertSame([], $this->validate('wrapped-image', [
+      'wrapped_image__style' => 'floated',
+      'wrapped_image__alignment' => 'right',
+    ]));
+    $this->assertNotEmpty($this->validate('wrapped-image', ['wrapped_image__style' => 'nope']));
+  }
+
 }

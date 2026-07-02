@@ -1,0 +1,41 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Wrapped Image
+status: stable
+group: Molecules
+description: >
+  An image floated/offset alongside wrapping text. Thin SDC wrapper over
+  @molecules/wrapped-image/yds-wrapped-image.twig.
+props:
+  type: object
+  properties:
+    wrapped_image__style:
+      title: Style (dial)
+      description: field_style_variation (list_key).
+      type: string
+      enum: [floated, offset]
+      default: offset
+    wrapped_image__alignment:
+      title: Image alignment (dial)
+      description: field_style_position (list_key).
+      type: string
+      enum: [left, right]
+      default: left
+    wrapped_image__width:
+      title: Width
+      description: Content width; computed by the block template from the parent node type.
+      type:
+        - string
+        - "null"
+slots:
+  wrapped_image__content:
+    title: Wrapping text
+    required: false
+    description: The text that wraps the image (rendered via the text atom).
+  wrapped_image__caption:
+    title: Image caption
+    required: false
+    description: Optional image caption.
+  wrapped_image__image:
+    title: Image markup
+    required: true
+    description: The image markup (typically a Drupal media/responsive-image render array).
