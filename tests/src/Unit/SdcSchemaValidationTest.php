@@ -144,4 +144,12 @@ class SdcSchemaValidationTest extends UnitTestCase {
     ]));
   }
 
+  /**
+   * Lists atom (Wave 1, codegen-seeded): a valid type passes; invalid fails.
+   */
+  public function testListsType(): void {
+    $this->assertSame([], $this->validate('lists', ['list__type' => 'ol']));
+    $this->assertNotEmpty($this->validate('lists', ['list__type' => 'table']));
+  }
+
 }
