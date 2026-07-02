@@ -39,7 +39,9 @@ class SdcSchemaValidationTest extends UnitTestCase {
    */
   private function validate(string $name, array $data): array {
     $validator = new Validator();
-    $subject = json_decode(json_encode($data));
+    // Cast to object so an empty prop set encodes as {} (a JSON object) rather
+    // than [] (a JSON array), which would fail the schema's "type: object".
+    $subject = json_decode(json_encode((object) $data));
     $validator->validate($subject, $this->propsSchema($name));
     return $validator->getErrors();
   }
