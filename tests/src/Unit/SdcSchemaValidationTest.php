@@ -218,4 +218,12 @@ class SdcSchemaValidationTest extends UnitTestCase {
     ]));
   }
 
+  /**
+   * Pull Quote (Wave 2): a valid style passes; an invalid one fails.
+   */
+  public function testPullQuoteStyle(): void {
+    $this->assertSame([], $this->validate('pull-quote', ['pull_quote__style' => 'quote-left']));
+    $this->assertNotEmpty($this->validate('pull-quote', ['pull_quote__style' => 'nope']));
+  }
+
 }
