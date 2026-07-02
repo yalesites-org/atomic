@@ -205,4 +205,17 @@ class SdcSchemaValidationTest extends UnitTestCase {
     $this->assertSame([], $this->validate('basic-meta', []));
   }
 
+  /**
+   * Inline Message (Wave 2): a valid theme/type passes; an invalid theme fails.
+   */
+  public function testInlineMessage(): void {
+    $this->assertSame([], $this->validate('inline-message', [
+      'inline_message__theme' => 'two',
+      'inline_message__type' => 'marketing',
+    ]));
+    $this->assertNotEmpty($this->validate('inline-message', [
+      'inline_message__theme' => 'nope',
+    ]));
+  }
+
 }
