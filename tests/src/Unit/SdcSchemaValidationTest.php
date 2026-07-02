@@ -180,4 +180,12 @@ class SdcSchemaValidationTest extends UnitTestCase {
     $this->assertSame([], $this->validate('read-time', ['read_time__label' => 'Read time']));
   }
 
+  /**
+   * Taxonomy Display (Wave 1): a valid theme passes; an invalid one fails.
+   */
+  public function testTaxonomyDisplayTheme(): void {
+    $this->assertSame([], $this->validate('taxonomy-display', ['taxonomy_display__theme' => 'one']));
+    $this->assertNotEmpty($this->validate('taxonomy-display', ['taxonomy_display__theme' => 'nope']));
+  }
+
 }
