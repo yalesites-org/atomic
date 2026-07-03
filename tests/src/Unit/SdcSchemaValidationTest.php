@@ -248,4 +248,13 @@ class SdcSchemaValidationTest extends UnitTestCase {
     $this->assertNotEmpty($this->validate('wrapped-callout', ['wrapped_callout__theme' => 'nope']));
   }
 
+  /**
+   * Link Grid (Wave 2): valid themes (incl. "inherit") pass; invalid fails.
+   */
+  public function testLinkGrid(): void {
+    $this->assertSame([], $this->validate('link-grid', ['link_grid__theme' => 'three']));
+    $this->assertSame([], $this->validate('link-grid', ['link_grid__theme' => 'inherit']));
+    $this->assertNotEmpty($this->validate('link-grid', ['link_grid__theme' => 'nope']));
+  }
+
 }
