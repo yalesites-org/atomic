@@ -311,4 +311,26 @@ class SdcSchemaValidationTest extends UnitTestCase {
     $this->assertNotEmpty($this->validate('tiles', ['tiles__grid_count' => 'five']));
   }
 
+  /**
+   * Breadcrumbs (Wave 7, global chrome): a valid item trail passes.
+   *
+   * A missing required item field, or the absent required items array, fails.
+   */
+  public function testBreadcrumbs(): void {
+    $this->assertSame([], $this->validate('breadcrumbs', [
+      'breadcrumbs__items' => [
+        ['title' => 'Home', 'url' => '/'],
+        ['title' => 'Chemistry', 'url' => '/chem', 'is_active' => TRUE],
+      ],
+    ]));
+    // Omitting the required breadcrumbs__items fails.
+    $this->assertNotEmpty($this->validate('breadcrumbs', [
+      'breadcrumbs__modifiers' => 'collapsible',
+    ]));
+    // An item missing its required title fails.
+    $this->assertNotEmpty($this->validate('breadcrumbs', [
+      'breadcrumbs__items' => [['url' => '/no-title']],
+    ]));
+  }
+
 }
