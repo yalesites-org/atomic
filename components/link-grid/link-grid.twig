@@ -1,0 +1,36 @@
+{#
+ # SDC thin wrapper for the Link Grid molecule. Four optional link columns: each
+ # captured slot both gates the template's {% if link_grid__links_N %} (via a
+ # derived truthiness value) and provides the column content (injected into the
+ # matching CLT block). SDC slots are named __col_* to avoid colliding with the
+ # template's own link_grid__links_* blocks.
+ # See docs/sdc/recipe-convert-a-component-to-sdc.md.
+ #}
+{% set link_grid__heading_slot %}{{ block('link_grid__heading')|raw }}{% endset %}
+{% set c1 %}{{ block('link_grid__col_one')|raw }}{% endset %}
+{% set c2 %}{{ block('link_grid__col_two')|raw }}{% endset %}
+{% set c3 %}{{ block('link_grid__col_three')|raw }}{% endset %}
+{% set c4 %}{{ block('link_grid__col_four')|raw }}{% endset %}
+{% embed '@molecules/link-grid/yds-link-grid.twig' with {
+  link_grid__theme: link_grid__theme,
+  link_grid__width: link_grid__width,
+  link_grid__line_treatment: link_grid__line_treatment,
+  link_grid__heading: link_grid__heading_slot|trim is empty ? '' : link_grid__heading_slot,
+  link_grid__links_one: c1|trim is empty ? '' : true,
+  link_grid__links_two: c2|trim is empty ? '' : true,
+  link_grid__links_three: c3|trim is empty ? '' : true,
+  link_grid__links_four: c4|trim is empty ? '' : true,
+  c1: c1, c2: c2, c3: c3, c4: c4,
+} only %}
+  {% block link_grid__links_one %}{{ c1|raw }}{% endblock %}
+  {% block link_grid__links_two %}{{ c2|raw }}{% endblock %}
+  {% block link_grid__links_three %}{{ c3|raw }}{% endblock %}
+  {% block link_grid__links_four %}{{ c4|raw }}{% endblock %}
+{% endembed %}
+{% if false %}
+  {% block link_grid__heading %}{% endblock %}
+  {% block link_grid__col_one %}{% endblock %}
+  {% block link_grid__col_two %}{% endblock %}
+  {% block link_grid__col_three %}{% endblock %}
+  {% block link_grid__col_four %}{% endblock %}
+{% endif %}
