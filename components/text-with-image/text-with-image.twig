@@ -1,0 +1,43 @@
+{#
+ # SDC thin wrapper for the Text With Image molecule (Content Spotlight).
+ # overline/subheading/text feed the text atom (|raw internally) so |trim
+ # captures are safe; heading feeds the heading atom ({{ }}) so it is Markup-
+ # captured; caption feeds the image atom (|raw); the image markup is injected
+ # into the text_with_image__image block. directory is threaded for nested atoms.
+ #}
+{% set tw_overline = block('text_with_image__overline') %}
+{% set tw_heading %}{{ block('text_with_image__heading')|raw }}{% endset %}
+{% set tw_subheading = block('text_with_image__subheading') %}
+{% set tw_text = block('text_with_image__text') %}
+{% set tw_caption = block('text_with_image__caption') %}
+{% set tw_image %}{{ block('text_with_image__image')|raw }}{% endset %}
+{% embed '@molecules/text-with-image/yds-text-with-image.twig' with {
+  text_with_image__position: text_with_image__position,
+  text_with_image__width: text_with_image__width,
+  text_with_image__style: text_with_image__style,
+  text_with_image__theme: text_with_image__theme,
+  text_with_image__vertical_align: text_with_image__vertical_align,
+  text_with_image__focus: text_with_image__focus,
+  text_with_image__heading_level: text_with_image__heading_level,
+  text_with_image__link__content: text_with_image__link__content,
+  text_with_image__link__url: text_with_image__link__url,
+  text_with_image__link_two__content: text_with_image__link_two__content,
+  text_with_image__link_two__url: text_with_image__link_two__url,
+  text_with_image__overline: tw_overline|trim,
+  text_with_image__heading: tw_heading|trim is empty ? '' : tw_heading,
+  text_with_image__subheading: tw_subheading|trim,
+  text_with_image__text: tw_text|trim,
+  text_with_image__caption: tw_caption|trim,
+  tw_image: tw_image,
+  directory: directory,
+} only %}
+  {% block text_with_image__image %}{{ tw_image|raw }}{% endblock %}
+{% endembed %}
+{% if false %}
+  {% block text_with_image__overline %}{% endblock %}
+  {% block text_with_image__heading %}{% endblock %}
+  {% block text_with_image__subheading %}{% endblock %}
+  {% block text_with_image__text %}{% endblock %}
+  {% block text_with_image__caption %}{% endblock %}
+  {% block text_with_image__image %}{% endblock %}
+{% endif %}

@@ -2,11 +2,8 @@
 
 {% block content %}
 
-  {% embed "@molecules/text-with-image/yds-text-with-image.twig" with {
-    text_with_image__heading: content.field_heading.0,
+  {% embed 'atomic:text-with-image' with {
     text_with_image__heading_level: content.field_heading_level.0['#markup'],
-    text_with_image__subheading: content.field_subheading.0,
-    text_with_image__text: content.field_text,
     text_with_image__link__content: content.field_link.0['#title'],
     text_with_image__link__url: content.field_link.0['#url_title'],
     text_with_image__link_two__content: content.field_link_two.0['#title'],
@@ -17,14 +14,12 @@
     text_with_image__width: content.field_style_width.0['#markup'],
     text_with_image__theme: content.field_style_color.0['#markup'],
     text_with_image__vertical_align: content.field_style_alignment.0['#markup'],
-    text_with_image__caption: content.field_caption.0,
-    text_with_image__image: content.field_media,
   } %}
-
-    {% block text_with_image__image %}
-      {{ content.field_media }}
-    {% endblock %}
-
+    {% block text_with_image__heading %}{{ content.field_heading.0 }}{% endblock %}
+    {% block text_with_image__subheading %}{{ content.field_subheading.0 }}{% endblock %}
+    {% block text_with_image__text %}{{ content.field_text }}{% endblock %}
+    {% block text_with_image__caption %}{{ content.field_caption.0 }}{% endblock %}
+    {% block text_with_image__image %}{{ content.field_media }}{% endblock %}
   {% endembed %}
 
 {% endblock %}

@@ -287,4 +287,14 @@ class SdcSchemaValidationTest extends UnitTestCase {
     $this->assertSame([], $this->validate('tabs', ['tabs__id' => 'abc', 'tabs__theme' => 'one']));
   }
 
+  /**
+   * Text With Image / Content Spotlight (Wave 4): valid data passes.
+   */
+  public function testTextWithImage(): void {
+    $this->assertSame([], $this->validate('text-with-image', [
+      'text_with_image__position' => 'image-left',
+      'text_with_image__theme' => 'one',
+    ]));
+  }
+
 }
