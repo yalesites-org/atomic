@@ -21,8 +21,11 @@ props:
         - "null"
     quick_links__background_color:
       title: Theme
-      type: string
-      default: one
+      description: Nullable; the template applies its own default ('one') when absent.
+      type:
+        - string
+        - "null"
+
     quick_links__width:
       title: Width
       type:
