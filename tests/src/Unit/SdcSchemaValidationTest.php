@@ -280,4 +280,11 @@ class SdcSchemaValidationTest extends UnitTestCase {
     $this->assertNotEmpty($this->validate('video', ['video__alignment' => 'nope']));
   }
 
+  /**
+   * Tabs (Wave 3): valid data passes.
+   */
+  public function testTabs(): void {
+    $this->assertSame([], $this->validate('tabs', ['tabs__id' => 'abc', 'tabs__theme' => 'one']));
+  }
+
 }
