@@ -257,4 +257,12 @@ class SdcSchemaValidationTest extends UnitTestCase {
     $this->assertNotEmpty($this->validate('link-grid', ['link_grid__theme' => 'nope']));
   }
 
+  /**
+   * Quick Links (Wave 2): a valid variation passes; an invalid one fails.
+   */
+  public function testQuickLinks(): void {
+    $this->assertSame([], $this->validate('quick-links', ['quick_links__variation' => 'subtle']));
+    $this->assertNotEmpty($this->validate('quick-links', ['quick_links__variation' => 'nope']));
+  }
+
 }
