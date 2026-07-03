@@ -1,0 +1,62 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Breadcrumbs
+status: experimental
+group: Organisms
+description: >
+  Site breadcrumb trail. Thin SDC wrapper over the component library's
+  @organisms/menu/breadcrumbs/yds-breadcrumbs.twig template; the real markup, SCSS,
+  and JS stay in component-library-twig. Global chrome (Wave 7 / #1362): this is the
+  component contract. It is NOT yet wired into the live render path — the standalone
+  breadcrumb block is disabled and the live trail is produced by the bespoke
+  title-breadcrumb combo block (ys-title-breadcrumb.html.twig + YaleSitesBreadcrumbsManager).
+  Wiring chrome to SDCs is a pending decision (see the epic decisions log).
+props:
+  type: object
+  required:
+    - breadcrumbs__items
+  properties:
+    breadcrumbs__items:
+      type: array
+      title: Breadcrumb items
+      description: >
+        The ordered breadcrumb trail. Each item has a title and a url; the last
+        item may be marked active. Breadcrumbs only render when there are two or
+        more items (unless always_show_breadcrumbs is true).
+      items:
+        type: object
+        required:
+          - title
+          - url
+        properties:
+          title:
+            type: string
+            title: Label
+          url:
+            type: string
+            title: URL
+          is_active:
+            type: boolean
+            title: Is the current page
+      examples:
+        - - title: Home
+            url: /
+          - title: Academic Programs
+            url: /academics
+          - title: Undergraduate Chemistry
+            url: /academics/chemistry
+            is_active: true
+    breadcrumbs__modifiers:
+      type: string
+      title: Modifier
+      description: BEM modifier for the wrapper; controls the collapsible behavior.
+      default: collapsible
+    always_show_breadcrumbs:
+      type: boolean
+      title: Always show
+      description: >
+        Render the trail even when there is only a single item (by default a
+        single-item trail is hidden).
+      default: false
+libraryOverrides:
+  dependencies:
+    - atomic/breadcrumbs

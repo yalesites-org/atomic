@@ -1,0 +1,19 @@
+{#
+ # SDC thin wrapper for the Breadcrumbs organism (global chrome, Wave 7 / #1362).
+ #
+ # Delegates to the canonical @organisms/menu/breadcrumbs/yds-breadcrumbs.twig.
+ # The trail data (breadcrumbs__items) is a prop, threaded explicitly because SDC
+ # does not inherit Twig context (the CLT template otherwise reads an ambient
+ # `items`). `directory` is threaded so the nested icon atoms resolve the SVG
+ # sprite path.
+ #
+ # Contract only: not yet wired into the live render path (the standalone
+ # breadcrumb block is disabled; the live trail comes from the bespoke
+ # title-breadcrumb combo). See docs/sdc + the epic decisions log.
+ #}
+{{ include('@organisms/menu/breadcrumbs/yds-breadcrumbs.twig', {
+  breadcrumbs__items: breadcrumbs__items,
+  breadcrumbs__modifiers: breadcrumbs__modifiers,
+  always_show_breadcrumbs: always_show_breadcrumbs,
+  directory: directory,
+}, with_context = false) }}
