@@ -237,4 +237,15 @@ class SdcSchemaValidationTest extends UnitTestCase {
     $this->assertNotEmpty($this->validate('wrapped-image', ['wrapped_image__style' => 'nope']));
   }
 
+  /**
+   * Wrapped Callout (Wave 2): valid dials pass; an invalid theme fails.
+   */
+  public function testWrappedCallout(): void {
+    $this->assertSame([], $this->validate('wrapped-callout', [
+      'wrapped_callout__theme' => 'two',
+      'wrapped_callout__alignment' => 'right',
+    ]));
+    $this->assertNotEmpty($this->validate('wrapped-callout', ['wrapped_callout__theme' => 'nope']));
+  }
+
 }
