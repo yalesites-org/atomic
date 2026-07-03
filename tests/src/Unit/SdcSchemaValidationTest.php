@@ -166,6 +166,8 @@ class SdcSchemaValidationTest extends UnitTestCase {
       'date_time__start' => 1700000000,
       'date_time__format' => 'bogus',
     ]));
+    // Omitting the required date_time__start fails.
+    $this->assertNotEmpty($this->validate('date-time', ['date_time__format' => 'date']));
   }
 
   /**
