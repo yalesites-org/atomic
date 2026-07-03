@@ -265,4 +265,11 @@ class SdcSchemaValidationTest extends UnitTestCase {
     $this->assertNotEmpty($this->validate('quick-links', ['quick_links__variation' => 'nope']));
   }
 
+  /**
+   * Embed (Wave 3): valid data passes.
+   */
+  public function testEmbed(): void {
+    $this->assertSame([], $this->validate('embed', ['embed__width' => 'site']));
+  }
+
 }
