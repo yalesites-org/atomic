@@ -1,0 +1,15 @@
+{#
+ # SDC thin wrapper for the Tiles organism. The tile items are injected into the
+ # template.s tiles__items block. (No component JS; the pre-SDC block.s atomic/spotlights attach was a dead reference to a missing library.)
+ #}
+{% set tiles__content %}{{ block('tiles__content')|raw }}{% endset %}
+{% embed '@organisms/tiles/yds-tiles.twig' with {
+  tiles__alignment: tiles__alignment,
+  tiles__grid_count: tiles__grid_count,
+  tiles__vertical_alignment: tiles__vertical_alignment,
+  tiles__with__animation: tiles__with__animation,
+  tiles__content: tiles__content,
+} only %}
+  {% block tiles__items %}{{ tiles__content|raw }}{% endblock %}
+{% endembed %}
+{% if false %}{% block tiles__content %}{% endblock %}{% endif %}

@@ -299,4 +299,16 @@ class SdcSchemaValidationTest extends UnitTestCase {
     ]));
   }
 
+  /**
+   * Tiles (Wave 5): valid dials pass; an invalid grid count fails.
+   */
+  public function testTiles(): void {
+    $this->assertSame([], $this->validate('tiles', [
+      'tiles__alignment' => 'center',
+      'tiles__grid_count' => 'three',
+      'tiles__vertical_alignment' => 'top',
+    ]));
+    $this->assertNotEmpty($this->validate('tiles', ['tiles__grid_count' => 'five']));
+  }
+
 }
