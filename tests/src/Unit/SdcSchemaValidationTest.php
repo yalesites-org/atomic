@@ -272,4 +272,12 @@ class SdcSchemaValidationTest extends UnitTestCase {
     $this->assertSame([], $this->validate('embed', ['embed__width' => 'site']));
   }
 
+  /**
+   * Video (Wave 3): a valid alignment passes; an invalid one fails.
+   */
+  public function testVideo(): void {
+    $this->assertSame([], $this->validate('video', ['video__alignment' => 'center']));
+    $this->assertNotEmpty($this->validate('video', ['video__alignment' => 'nope']));
+  }
+
 }
