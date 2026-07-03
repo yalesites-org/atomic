@@ -228,6 +228,7 @@ function atomic_preprocess_node(&$variables) {
     }
 
     // Create responsive_image render array using the thumbnail uri.
+    $alt = \Drupal::service('ys_layouts.media_alt_resolver')->resolve($media);
     $variables['responsive_media_thumbnail'] = [
       '#theme' => 'responsive_image',
       '#uri' => $file->getFileUri(),
@@ -236,7 +237,7 @@ function atomic_preprocess_node(&$variables) {
       '#width' => $thumbnail?->width,
       '#attributes' => [
         'loading' => 'lazy',
-        'alt' => $media->label(),
+        'alt' => $alt,
       ],
     ];
   }
