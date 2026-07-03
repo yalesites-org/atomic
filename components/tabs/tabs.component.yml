@@ -23,8 +23,11 @@ props:
         - number
     tabs__theme:
       title: Theme
-      type: string
-      default: one
+      description: Nullable; the template applies its own default ('one') when absent.
+      type:
+        - string
+        - "null"
+
 slots:
   tab__label_slot:
     title: Tab labels
