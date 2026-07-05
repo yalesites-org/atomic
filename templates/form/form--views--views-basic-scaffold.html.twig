@@ -21,8 +21,7 @@
 %}
 
 <form{{ attributes.addClass(classes) }}>
-  {# Advise users up front that changing a filter updates results on its own, so the
-     auto-submit is not an unexpected change of context (WCAG 2.1 SC 3.2.2). #}
-  <p class="ys-filter-form__note">{{ 'Results update automatically as you make selections.'|t }}</p>
+  {# Auto-submit is announced to assistive tech via a polite aria-live region
+     (see views-basic-filter-status.js); no persistent visible note is shown. #}
   {{ children }}
 </form>
