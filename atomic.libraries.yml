@@ -26,6 +26,13 @@ views-basic-filter-status:
     - core/drupalSettings
     - core/drupal.announce
     - core/once
+views-basic-filter-scroll:
+  js:
+    js/views-basic-filter-scroll.js: {}
+  dependencies:
+    - core/drupal
+    - core/drupal.ajax
+    - core/drupalSettings
 accordion:
   js:
     node_modules/@yalesites-org/component-library-twig/dist/js/02-molecules/accordion/yds-accordion.js: {}

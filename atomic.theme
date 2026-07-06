@@ -317,6 +317,10 @@ function atomic_preprocess_views_view(&$variables) {
   $variables['#attached']['library'][] = 'atomic/views-basic-filter-status';
   $settings = &$variables['#attached']['drupalSettings']['ysViewsBasicFilter'];
   $settings[$variables['dom_id']] = (int) $result_count;
+
+  // Keep the page from scrolling to the results on every filter auto-submit;
+  // the scroll-to-top is only wanted on pager clicks. (#1299 QA)
+  $variables['#attached']['library'][] = 'atomic/views-basic-filter-scroll';
 }
 
 /**
