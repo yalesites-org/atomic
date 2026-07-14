@@ -1,0 +1,93 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Content Spotlight Portrait
+status: stable
+group: Molecules
+description: >
+  A content spotlight with a portrait-oriented image, heading, text and up to two
+  links. Thin SDC wrapper over
+  @molecules/content-spotlight-portrait/yds-content-spotlight-portrait.twig. Dial
+  enums are generated from ys_themes.component_overrides.yml
+  (content_spotlight_portrait.field_style_*).
+props:
+  type: object
+  properties:
+    content_spotlight_portrait__heading_level:
+      title: Heading level
+      type: string
+      default: "2"
+    content_spotlight_portrait__link__content:
+      title: Link text
+      type:
+        - string
+        - "null"
+    content_spotlight_portrait__link__url:
+      title: Link URL
+      type:
+        - string
+        - "null"
+    content_spotlight_portrait__link_two__content:
+      title: Second link text
+      type:
+        - string
+        - "null"
+    content_spotlight_portrait__link_two__url:
+      title: Second link URL
+      type:
+        - string
+        - "null"
+    content_spotlight_portrait__style:
+      title: Style (dial - field_style_variation)
+      type: string
+      enum:
+        - inline
+        - offset
+      default: inline
+    content_spotlight_portrait__position:
+      title: Image position (dial - field_style_position)
+      type: string
+      enum:
+        - image-left
+        - image-right
+      default: image-left
+    content_spotlight_portrait__theme:
+      title: Theme (dial)
+      type: string
+      enum:
+        - default
+        - one
+        - two
+        - three
+        - four
+        - five
+      default: default
+    content_spotlight_portrait__vertical_align:
+      title: Vertical align (dial - field_style_alignment)
+      type: string
+      enum:
+        - top
+        - middle
+        - bottom
+      default: middle
+slots:
+  heading:
+    title: Heading
+    required: false
+    description: The spotlight heading (from field_heading).
+  subheading:
+    title: Subheading
+    required: false
+    description: The spotlight subheading (from field_subheading).
+  text:
+    title: Text
+    required: false
+    description: The spotlight body text (from field_text).
+  caption:
+    title: Caption
+    required: false
+    description: The image caption (from field_caption).
+  image:
+    title: Image
+    required: false
+    description: >
+      The portrait image (from field_media). Injected into the CLT
+      content_spotlight_portrait__image block.

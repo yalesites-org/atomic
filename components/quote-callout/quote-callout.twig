@@ -1,0 +1,29 @@
+{#
+ # SDC thin wrapper for Quote Callout. The quote and attribution are rendered
+ # field content, captured as Markup and passed to the CLT template's printed
+ # variables; the image is injected into the quote_callout__image block.
+ # quote_image is a prop because the CLT reads it from context (the block
+ # template computes it from the media field). directory is threaded for nested
+ # atoms. See docs/sdc/recipe-convert-a-component-to-sdc.md.
+ #}
+{% set qc_quote %}{{ block('quote')|raw }}{% endset %}
+{% set qc_attribution %}{{ block('attribution')|raw }}{% endset %}
+{% set qc_image %}{{ block('image')|raw }}{% endset %}
+{% embed '@molecules/quote-callout/yds-quote-callout.twig' with {
+  quote_callout__quote: qc_quote,
+  quote_callout__attribution: qc_attribution,
+  quote_callout__style: quote_callout__style,
+  quote_callout__alignment: quote_callout__alignment,
+  quote_callout__quote_alignment: quote_callout__quote_alignment,
+  quote_callout__width: quote_callout__width,
+  quote_callout__accent_theme: quote_callout__accent_theme,
+  quote_callout__quote_image: quote_callout__quote_image,
+  directory: directory,
+} only %}
+  {% block quote_callout__image %}{{ qc_image|raw }}{% endblock %}
+{% endembed %}
+{% if false %}
+  {% block quote %}{% endblock %}
+  {% block attribution %}{% endblock %}
+  {% block image %}{% endblock %}
+{% endif %}

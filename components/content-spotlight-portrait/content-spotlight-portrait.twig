@@ -1,0 +1,37 @@
+{#
+ # SDC thin wrapper for Content Spotlight Portrait (sibling of text-with-image).
+ # heading/subheading/text/caption are rendered field content captured as Markup
+ # and passed as the CLT template's variables; the image is injected into the
+ # content_spotlight_portrait__image block. directory is threaded for nested
+ # atoms. See docs/sdc/recipe-convert-a-component-to-sdc.md.
+ #}
+{% set csp_heading %}{{ block('heading')|raw }}{% endset %}
+{% set csp_subheading %}{{ block('subheading')|raw }}{% endset %}
+{% set csp_text %}{{ block('text')|raw }}{% endset %}
+{% set csp_caption %}{{ block('caption')|raw }}{% endset %}
+{% set csp_image %}{{ block('image')|raw }}{% endset %}
+{% embed '@molecules/content-spotlight-portrait/yds-content-spotlight-portrait.twig' with {
+  content_spotlight_portrait__heading: csp_heading|trim is empty ? '' : csp_heading,
+  content_spotlight_portrait__subheading: csp_subheading|trim,
+  content_spotlight_portrait__text: csp_text|trim,
+  content_spotlight_portrait__caption: csp_caption|trim,
+  content_spotlight_portrait__heading_level: content_spotlight_portrait__heading_level,
+  content_spotlight_portrait__link__content: content_spotlight_portrait__link__content,
+  content_spotlight_portrait__link__url: content_spotlight_portrait__link__url,
+  content_spotlight_portrait__link_two__content: content_spotlight_portrait__link_two__content,
+  content_spotlight_portrait__link_two__url: content_spotlight_portrait__link_two__url,
+  content_spotlight_portrait__style: content_spotlight_portrait__style,
+  content_spotlight_portrait__position: content_spotlight_portrait__position,
+  content_spotlight_portrait__theme: content_spotlight_portrait__theme,
+  content_spotlight_portrait__vertical_align: content_spotlight_portrait__vertical_align,
+  directory: directory,
+} only %}
+  {% block content_spotlight_portrait__image %}{{ csp_image|raw }}{% endblock %}
+{% endembed %}
+{% if false %}
+  {% block heading %}{% endblock %}
+  {% block subheading %}{% endblock %}
+  {% block text %}{% endblock %}
+  {% block caption %}{% endblock %}
+  {% block image %}{% endblock %}
+{% endif %}
