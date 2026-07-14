@@ -1,0 +1,60 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Image Banner
+status: stable
+group: Molecules
+description: >
+  A full-width image (or video) banner. Thin SDC wrapper over
+  @molecules/banner/image/yds-image-banner.twig. The image_banner__video flag is
+  a prop (the block template computes it from the media type) because the CLT
+  template reads it to switch between the video and image slots. The size dial
+  enum is generated from ys_themes.component_overrides.yml
+  (image_banner.field_style_variation).
+props:
+  type: object
+  properties:
+    image_banner__content__background:
+      title: Background theme
+      type: string
+      enum:
+        - one
+        - two
+        - three
+        - four
+        - five
+      default: one
+    image_banner__overlay_variation:
+      title: Overlay variation
+      type: string
+      enum:
+        - contained
+        - full
+      default: contained
+    image_banner__size:
+      title: Size (dial - field_style_variation)
+      type: string
+      enum:
+        - tall
+        - short
+        - mini
+      default: tall
+    image_banner__width:
+      title: Width
+      type: string
+      default: site
+    image_banner__video:
+      title: Is video
+      description: '"true" when the media is a video, else "false".'
+      type: string
+      enum:
+        - "true"
+        - "false"
+      default: "false"
+slots:
+  video:
+    title: Video
+    required: false
+    description: The video media (rendered when image_banner__video is "true").
+  image:
+    title: Image
+    required: false
+    description: The image (rendered when image_banner__video is "false").
