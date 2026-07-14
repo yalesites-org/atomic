@@ -458,6 +458,23 @@ class SdcSchemaValidationTest extends UnitTestCase {
   }
 
   /**
+   * Grand Hero (Wave 4): valid dials pass; a bad overlay variation fails.
+   */
+  public function testGrandHeroValid(): void {
+    $this->assertSame([], $this->validate('grand-hero', [
+      'grand_hero__overlay_variation' => 'contained',
+      'grand_hero__size' => 'reduced',
+      'grand_hero__content__background' => 'two',
+      'grand_hero__replace_heading' => 'Yes',
+      'grand_hero__video' => 'false',
+      'grand_hero__has_overlay_image' => TRUE,
+    ]));
+    $this->assertNotEmpty($this->validate('grand-hero', [
+      'grand_hero__overlay_variation' => 'wide',
+    ]));
+  }
+
+  /**
    * Video Banner (Wave 4): a valid width passes; a bad width fails.
    */
   public function testVideoBannerValid(): void {
