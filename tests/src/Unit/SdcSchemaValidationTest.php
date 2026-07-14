@@ -469,4 +469,38 @@ class SdcSchemaValidationTest extends UnitTestCase {
     ]));
   }
 
+  /**
+   * Custom Cards (Wave 5): a valid heading/width passes.
+   */
+  public function testCustomCardsValid(): void {
+    $this->assertSame([], $this->validate('custom-cards', [
+      'custom_card_collection__heading' => 'Featured',
+      'custom_card_collection__width' => 'site',
+    ]));
+  }
+
+  /**
+   * Reference Card (Wave 5): a valid featured flag passes; a bad one fails.
+   */
+  public function testReferenceCardValid(): void {
+    $this->assertSame([], $this->validate('reference-card', [
+      'card_collection__source_type' => 'page',
+      'card_collection__featured' => 'true',
+    ]));
+    $this->assertNotEmpty($this->validate('reference-card', [
+      'card_collection__featured' => 'yes',
+    ]));
+  }
+
+  /**
+   * Component Wrapper (Wave 5): a valid width/alignment passes.
+   */
+  public function testComponentWrapperValid(): void {
+    $this->assertSame([], $this->validate('component-wrapper', [
+      'component_wrapper__width' => 'site',
+      'component_wrapper__alignment' => 'center',
+      'component_wrapper__label' => 'Section',
+    ]));
+  }
+
 }
