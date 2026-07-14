@@ -8,6 +8,7 @@
   {% endif %}
 
   {% embed 'atomic:media-grid' with {
+    media_grid__variation: 'basic',
     media_grid__width: media_grid__width,
   } %}
     {% block heading %}{{ content.field_heading.0 }}{% endblock %}
