@@ -72,15 +72,15 @@ props:
         - string
         - "null"
 slots:
-  heading:
+  cta_banner__heading:
     title: Heading
     required: false
     description: The banner heading (from field_heading).
-  snippet:
+  cta_banner__snippet:
     title: Snippet
     required: false
     description: The banner body text (from field_text).
-  image:
+  cta_banner__image:
     title: Image
     required: false
     description: >
