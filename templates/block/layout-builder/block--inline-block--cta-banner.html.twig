@@ -16,8 +16,8 @@
     banner__width: 'site',
     banner__overlay_background_image: content.field_overlay_background_image.0['#media'].field_media_image.entity.fileuri|file_url,
   } %}
-    {% block heading %}{{ content.field_heading }}{% endblock %}
-    {% block snippet %}{{ content.field_text }}{% endblock %}
-    {% block image %}{{ content.field_media }}{% endblock %}
+    {% block cta_banner__heading %}{{ content.field_heading }}{% endblock %}
+    {% block cta_banner__snippet %}{{ content.field_text }}{% endblock %}
+    {% block cta_banner__image %}{{ content.field_media }}{% endblock %}
   {% endembed %}
 {% endblock %}

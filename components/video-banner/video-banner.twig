@@ -6,6 +6,7 @@
 {% set vb_video %}{{ block('video')|raw }}{% endset %}
 {% embed '@molecules/banner/video/yds-video-banner.twig' with {
   video_banner__width: video_banner__width,
+  vb_video: vb_video,
   directory: directory,
 } only %}
   {% block video_banner__video %}{{ vb_video|raw }}{% endblock %}

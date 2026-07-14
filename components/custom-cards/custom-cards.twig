@@ -7,6 +7,7 @@
 {% embed '@organisms/custom-card-collection/yds-custom-card-collection.twig' with {
   custom_card_collection__heading: custom_card_collection__heading,
   custom_card_collection__width: custom_card_collection__width,
+  cc_cards: cc_cards,
   directory: directory,
 } only %}
   {% block custom_card_collection__cards %}{{ cc_cards|raw }}{% endblock %}

@@ -3,11 +3,15 @@
  # field content captured as Markup and passed as the CLT template's variables;
  # the image is injected into the banner__image block. The overlay background
  # image is a URL prop. directory is threaded for nested atoms.
+ #
+ # Slot names are prefixed (cta_banner__*) to avoid colliding with generic block
+ # names (image/heading) in the block-template extends chain, which would strip
+ # the override and drop the content.
  # See docs/sdc/recipe-convert-a-component-to-sdc.md.
  #}
-{% set cta_heading %}{{ block('heading')|raw }}{% endset %}
-{% set cta_snippet %}{{ block('snippet')|raw }}{% endset %}
-{% set cta_image %}{{ block('image')|raw }}{% endset %}
+{% set cta_heading %}{{ block('cta_banner__heading')|raw }}{% endset %}
+{% set cta_snippet %}{{ block('cta_banner__snippet')|raw }}{% endset %}
+{% set cta_image %}{{ block('cta_banner__image')|raw }}{% endset %}
 {% embed '@molecules/banner/action/yds-action-banner.twig' with {
   banner__heading: cta_heading,
   banner__snippet: cta_snippet|trim,
@@ -22,12 +26,13 @@
   banner__button__style__consistency: banner__button__style__consistency,
   banner__width: banner__width,
   banner__overlay_background_image: banner__overlay_background_image,
+  cta_image: cta_image,
   directory: directory,
 } only %}
   {% block banner__image %}{{ cta_image|raw }}{% endblock %}
 {% endembed %}
 {% if false %}
-  {% block heading %}{% endblock %}
-  {% block snippet %}{% endblock %}
-  {% block image %}{% endblock %}
+  {% block cta_banner__heading %}{% endblock %}
+  {% block cta_banner__snippet %}{% endblock %}
+  {% block cta_banner__image %}{% endblock %}
 {% endif %}
