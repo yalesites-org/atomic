@@ -1,0 +1,27 @@
+{#
+ # SDC thin wrapper for the Media Grid organism (shared by the media-grid and
+ # gallery blocks). The heading is a captured Markup variable; the grid items and
+ # the (interactive) lightbox modal are injected into the CLT blocks. Every
+ # captured slot is passed in the embed's with{} so it is in scope inside the
+ # isolated (only) embed. directory is threaded for nested atoms.
+ # See docs/sdc/recipe-convert-a-component-to-sdc.md.
+ #}
+{% set mg_heading %}{{ block('heading')|raw }}{% endset %}
+{% set mg_items %}{{ block('items')|raw }}{% endset %}
+{% set mg_modal %}{{ block('modal')|raw }}{% endset %}
+{% embed '@organisms/galleries/media-grid/yds-media-grid.twig' with {
+  media_grid__heading: mg_heading,
+  media_grid__variation: media_grid__variation,
+  media_grid__width: media_grid__width,
+  mg_items: mg_items,
+  mg_modal: mg_modal,
+  directory: directory,
+} only %}
+  {% block media_grid__items %}{{ mg_items|raw }}{% endblock %}
+  {% block media_grid__modal %}{{ mg_modal|raw }}{% endblock %}
+{% endembed %}
+{% if false %}
+  {% block heading %}{% endblock %}
+  {% block items %}{% endblock %}
+  {% block modal %}{% endblock %}
+{% endif %}

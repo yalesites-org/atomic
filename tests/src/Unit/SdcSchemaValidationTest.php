@@ -487,6 +487,19 @@ class SdcSchemaValidationTest extends UnitTestCase {
   }
 
   /**
+   * Media Grid (Wave 3): a valid variation passes; a bad one fails.
+   */
+  public function testMediaGridValid(): void {
+    $this->assertSame([], $this->validate('media-grid', [
+      'media_grid__variation' => 'interactive',
+      'media_grid__width' => 'site',
+    ]));
+    $this->assertNotEmpty($this->validate('media-grid', [
+      'media_grid__variation' => 'carousel',
+    ]));
+  }
+
+  /**
    * Custom Cards (Wave 5): a valid heading/width passes.
    */
   public function testCustomCardsValid(): void {
