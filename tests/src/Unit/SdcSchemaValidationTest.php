@@ -431,4 +431,42 @@ class SdcSchemaValidationTest extends UnitTestCase {
     ]));
   }
 
+  /**
+   * CTA Banner (Wave 4): valid dials pass; a bad content layout fails.
+   */
+  public function testCtaBannerValid(): void {
+    $this->assertSame([], $this->validate('cta-banner', [
+      'banner__content__background' => 'two',
+      'banner__content__layout' => 'left',
+    ]));
+    $this->assertNotEmpty($this->validate('cta-banner', [
+      'banner__content__layout' => 'top',
+    ]));
+  }
+
+  /**
+   * Image Banner (Wave 4): a valid size + video flag pass; a bad size fails.
+   */
+  public function testImageBannerValid(): void {
+    $this->assertSame([], $this->validate('image-banner', [
+      'image_banner__size' => 'short',
+      'image_banner__video' => 'true',
+    ]));
+    $this->assertNotEmpty($this->validate('image-banner', [
+      'image_banner__size' => 'huge',
+    ]));
+  }
+
+  /**
+   * Video Banner (Wave 4): a valid width passes; a bad width fails.
+   */
+  public function testVideoBannerValid(): void {
+    $this->assertSame([], $this->validate('video-banner', [
+      'video_banner__width' => 'full',
+    ]));
+    $this->assertNotEmpty($this->validate('video-banner', [
+      'video_banner__width' => 'tiny',
+    ]));
+  }
+
 }

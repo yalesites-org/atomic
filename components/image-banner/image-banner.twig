@@ -1,0 +1,24 @@
+{#
+ # SDC thin wrapper for Image Banner. The video/image media are injected into the
+ # CLT video/image blocks; the CLT template renders whichever matches
+ # image_banner__video (a prop the block computes from the media type — replacing
+ # the pre-SDC context flag). directory is threaded for nested atoms.
+ # See docs/sdc/recipe-convert-a-component-to-sdc.md.
+ #}
+{% set ib_video %}{{ block('video')|raw }}{% endset %}
+{% set ib_image %}{{ block('image')|raw }}{% endset %}
+{% embed '@molecules/banner/image/yds-image-banner.twig' with {
+  image_banner__content__background: image_banner__content__background,
+  image_banner__overlay_variation: image_banner__overlay_variation,
+  image_banner__size: image_banner__size,
+  image_banner__width: image_banner__width,
+  image_banner__video: image_banner__video,
+  directory: directory,
+} only %}
+  {% block image_banner__video %}{{ ib_video|raw }}{% endblock %}
+  {% block image_banner__image %}{{ ib_image|raw }}{% endblock %}
+{% endembed %}
+{% if false %}
+  {% block video %}{% endblock %}
+  {% block image %}{% endblock %}
+{% endif %}

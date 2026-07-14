@@ -1,0 +1,88 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: CTA Banner
+status: stable
+group: Molecules
+description: >
+  A call-to-action banner (the "action" banner) with heading, snippet, up to two
+  links and an optional image/overlay. Thin SDC wrapper over
+  @molecules/banner/action/yds-action-banner.twig. Dial enums are generated from
+  ys_themes.component_overrides.yml (cta_banner.field_style_color/position).
+props:
+  type: object
+  properties:
+    banner__heading__level:
+      title: Heading level
+      type: string
+      default: "2"
+    banner__link__content:
+      title: Link text
+      type:
+        - string
+        - "null"
+    banner__link__url:
+      title: Link URL
+      type:
+        - string
+        - "null"
+    banner__link__content_two:
+      title: Second link text
+      type:
+        - string
+        - "null"
+    banner__link__url_two:
+      title: Second link URL
+      type:
+        - string
+        - "null"
+    banner__content__background:
+      title: Background theme (dial - field_style_color)
+      type: string
+      enum:
+        - one
+        - two
+        - three
+        - four
+        - five
+      default: one
+    banner__content__layout:
+      title: Content layout (dial - field_style_position)
+      type: string
+      enum:
+        - bottom
+        - left
+        - right
+      default: bottom
+    banner__button__alignment:
+      title: Button alignment
+      type:
+        - string
+        - "null"
+    banner__button__style__consistency:
+      title: Button style consistency
+      type:
+        - string
+        - "null"
+    banner__width:
+      title: Width
+      type: string
+      default: site
+    banner__overlay_background_image:
+      title: Overlay background image URL
+      type:
+        - string
+        - "null"
+slots:
+  heading:
+    title: Heading
+    required: false
+    description: The banner heading (from field_heading).
+  snippet:
+    title: Snippet
+    required: false
+    description: The banner body text (from field_text).
+  image:
+    title: Image
+    required: false
+    description: >
+      Optional banner image (from field_media). Injected into the CLT
+      banner__image block.
