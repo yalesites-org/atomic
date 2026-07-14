@@ -10,7 +10,7 @@
 {% set cta_image %}{{ block('image')|raw }}{% endset %}
 {% embed '@molecules/banner/action/yds-action-banner.twig' with {
   banner__heading: cta_heading,
-  banner__snippet: cta_snippet,
+  banner__snippet: cta_snippet|trim,
   banner__heading__level: banner__heading__level,
   banner__link__content: banner__link__content,
   banner__link__url: banner__link__url,
