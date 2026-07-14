@@ -333,4 +333,58 @@ class SdcSchemaValidationTest extends UnitTestCase {
     ]));
   }
 
+  /**
+   * Profile Meta (Wave 1): valid image dials pass; bad orientation fails.
+   */
+  public function testProfileMetaValid(): void {
+    $this->assertSame([], $this->validate('profile-meta', [
+      'profile_meta__heading' => 'Jane Doe',
+      'profile_meta__image_orientation' => 'portrait',
+      'profile_meta__image_style' => 'outdent',
+      'profile_meta__image_alignment' => 'right',
+    ]));
+    $this->assertNotEmpty($this->validate('profile-meta', [
+      'profile_meta__heading' => 'Jane Doe',
+      'profile_meta__image_orientation' => 'diagonal',
+    ]));
+  }
+
+  /**
+   * Page Title (Wave 1): a valid display value passes; an invalid one fails.
+   */
+  public function testPageTitleValid(): void {
+    $this->assertSame([], $this->validate('page-title', [
+      'page_title__heading' => 'About',
+      'page_title__display' => 'visually-hidden',
+      'page_title__show_social_media_sharing_links' => 'true',
+    ]));
+    $this->assertNotEmpty($this->validate('page-title', [
+      'page_title__heading' => 'About',
+      'page_title__display' => 'nope',
+    ]));
+  }
+
+  /**
+   * Event Meta (Wave 1): a valid heading + array/object props pass.
+   */
+  public function testEventMetaValid(): void {
+    $this->assertSame([], $this->validate('event-meta', [
+      'event_title__heading' => 'Reception',
+      'event_dates' => [['formatted_start_date' => 'Jan 1']],
+      'event_types' => [['name' => 'Talk', 'url' => '/t']],
+      'event_meta__with_calendar' => TRUE,
+    ]));
+  }
+
+  /**
+   * Publication Meta (Wave 1): a valid heading + typed props pass.
+   */
+  public function testPublicationMetaValid(): void {
+    $this->assertSame([], $this->validate('publication-meta', [
+      'publication_detail__heading' => 'Policy Brief',
+      'publication_detail__resource_type' => 'document',
+      'publication_detail__authors' => [['label' => 'A. Author', 'url' => '/a']],
+    ]));
+  }
+
 }
