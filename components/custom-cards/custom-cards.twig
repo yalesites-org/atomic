@@ -1,0 +1,14 @@
+{#
+ # SDC thin wrapper for the Custom Card collection. The cards are injected into
+ # the CLT custom_card_collection__cards block. directory is threaded for nested
+ # atoms. See docs/sdc/recipe-convert-a-component-to-sdc.md.
+ #}
+{% set cc_cards %}{{ block('cards')|raw }}{% endset %}
+{% embed '@organisms/custom-card-collection/yds-custom-card-collection.twig' with {
+  custom_card_collection__heading: custom_card_collection__heading,
+  custom_card_collection__width: custom_card_collection__width,
+  directory: directory,
+} only %}
+  {% block custom_card_collection__cards %}{{ cc_cards|raw }}{% endblock %}
+{% endembed %}
+{% if false %}{% block cards %}{% endblock %}{% endif %}
