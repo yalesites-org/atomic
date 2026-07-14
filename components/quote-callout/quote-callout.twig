@@ -11,7 +11,7 @@
 {% set qc_image %}{{ block('image')|raw }}{% endset %}
 {% embed '@molecules/quote-callout/yds-quote-callout.twig' with {
   quote_callout__quote: qc_quote,
-  quote_callout__attribution: qc_attribution,
+  quote_callout__attribution: qc_attribution|trim,
   quote_callout__style: quote_callout__style,
   quote_callout__alignment: quote_callout__alignment,
   quote_callout__quote_alignment: quote_callout__quote_alignment,
