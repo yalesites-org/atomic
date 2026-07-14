@@ -387,4 +387,48 @@ class SdcSchemaValidationTest extends UnitTestCase {
     ]));
   }
 
+  /**
+   * Facts and Figures (Wave 2): valid dials pass; a bad grid count fails.
+   */
+  public function testFactsValid(): void {
+    $this->assertSame([], $this->validate('facts', [
+      'facts_and_figures__group__grid_count' => 'three',
+      'facts_and_figures__group__theme' => 'two',
+      'facts_and_figures__group__alignment' => 'center',
+      'facts_and_figures__group__bg_image' => 'true',
+    ]));
+    $this->assertNotEmpty($this->validate('facts', [
+      'facts_and_figures__group__grid_count' => 'five',
+    ]));
+  }
+
+  /**
+   * Quote Callout (Wave 2): a valid style/theme passes; a bad style fails.
+   */
+  public function testQuoteCalloutValid(): void {
+    $this->assertSame([], $this->validate('quote-callout', [
+      'quote_callout__style' => 'quote',
+      'quote_callout__accent_theme' => 'three',
+      'quote_callout__quote_alignment' => 'right',
+    ]));
+    $this->assertNotEmpty($this->validate('quote-callout', [
+      'quote_callout__style' => 'nope',
+    ]));
+  }
+
+  /**
+   * Content Spotlight Portrait (Wave 2): valid dials pass; bad position fails.
+   */
+  public function testContentSpotlightPortraitValid(): void {
+    $this->assertSame([], $this->validate('content-spotlight-portrait', [
+      'content_spotlight_portrait__position' => 'image-right',
+      'content_spotlight_portrait__style' => 'offset',
+      'content_spotlight_portrait__theme' => 'two',
+      'content_spotlight_portrait__vertical_align' => 'top',
+    ]));
+    $this->assertNotEmpty($this->validate('content-spotlight-portrait', [
+      'content_spotlight_portrait__position' => 'image-top',
+    ]));
+  }
+
 }

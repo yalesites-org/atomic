@@ -1,23 +1,19 @@
 {% extends "@atomic/block/layout-builder/_layout-builder-block-template.twig" %}
 
 {% block content %}
-
-  {% if content.field_media.0 %}
-    {% set quote_callout__quote_image = 'with-image' %}
-  {% endif %}
-
-  {% embed "@molecules/quote-callout/yds-quote-callout.twig" with {
-    quote_callout__quote: content.field_text,
-    quote_callout__attribution: content.field_caption.0,
-    quote_callout__style: content.field_style_variation.0['#markup'],
-    quote_callout__alignment: quote_callout__alignment,
-    quote_callout__quote_alignment: content.field_style_alignment.0['#markup'],
+  {# Dial values are defaulted here (adapter layer) because older blocks can
+     store NULL and the SDC schema enums are strict. #}
+  {% set quote_callout__quote_image = content.field_media.0 ? 'with-image' : null %}
+  {% embed 'atomic:quote-callout' with {
+    quote_callout__style: content.field_style_variation.0['#markup']|default('bar'),
+    quote_callout__alignment: 'center',
+    quote_callout__quote_alignment: content.field_style_alignment.0['#markup']|default('left'),
     quote_callout__width: 'content',
-    quote_callout__accent_theme: content.field_style_color.0['#markup'],
+    quote_callout__accent_theme: content.field_style_color.0['#markup']|default('one'),
+    quote_callout__quote_image: quote_callout__quote_image,
   } %}
-
-    {% block quote_callout__image %}
-      {{ content.field_media }}
-    {% endblock %}
+    {% block quote %}{{ content.field_text }}{% endblock %}
+    {% block attribution %}{{ content.field_caption.0 }}{% endblock %}
+    {% block image %}{{ content.field_media }}{% endblock %}
   {% endembed %}
 {% endblock %}
