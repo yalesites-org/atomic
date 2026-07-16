@@ -533,4 +533,30 @@ class SdcSchemaValidationTest extends UnitTestCase {
     ]));
   }
 
+  /**
+   * View Embed (Wave 6): a fully-specified embed passes; null argument is ok.
+   */
+  public function testViewEmbedValid(): void {
+    $this->assertSame([], $this->validate('view-embed', [
+      'view_id' => 'post_list',
+      'display_id' => 'full',
+      'argument' => 'Latest posts',
+    ]));
+    // No block heading -> the contextual argument is null, which is allowed.
+    $this->assertSame([], $this->validate('view-embed', [
+      'view_id' => 'directory',
+      'display_id' => 'block_1',
+      'argument' => NULL,
+    ]));
+  }
+
+  /**
+   * View Embed (Wave 6): view_id and display_id are required.
+   */
+  public function testViewEmbedMissingRequiredFails(): void {
+    $this->assertNotEmpty($this->validate('view-embed', [
+      'display_id' => 'full',
+    ]));
+  }
+
 }
