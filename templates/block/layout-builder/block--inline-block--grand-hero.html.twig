@@ -3,6 +3,7 @@
 {% set gh_is_video = paragraph.field_media.entity.field_media_video_file.entity.uri.value is not empty %}
 {% set gh_overlay_media = content.field_overlay_png.0['#media'] %}
 {% set gh_has_overlay = content.field_overlay_png.0['#media'] is defined %}
+{% set grand_hero__width = content.field_style_width.0['#markup']|default('site') %}
 
 {% block content %}
   {# Dial values are defaulted here (adapter layer); the video and overlay flags
@@ -19,7 +20,7 @@
     grand_hero__content__background: content.field_style_color.0['#markup']|default('one'),
     grand_hero__overlay_variation: content.field_style_position.0['#markup']|default('full'),
     grand_hero__size: content.field_style_variation.0['#markup']|default('full'),
-    grand_hero__width: 'site',
+    grand_hero__width: grand_hero__width,
     grand_hero__replace_heading: content.field_replace_heading_with_image.0['#markup']|default('No'),
     grand_hero__video: gh_is_video ? 'true' : 'false',
     grand_hero__has_overlay_image: gh_has_overlay,

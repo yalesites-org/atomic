@@ -1,6 +1,7 @@
 {% extends "@atomic/block/layout-builder/_layout-builder-block-template.twig" %}
 
 {% set image_banner__is_video = paragraph.field_media.entity.field_media_video_file.entity.uri.value is not empty %}
+{% set image_banner__width = content.field_style_width.0['#markup']|default('site') %}
 
 {% block content %}
   {# Dial values are defaulted here (adapter layer); the video flag is computed
@@ -10,7 +11,7 @@
     image_banner__content__background: content.field_style_color.0['#markup']|default('one'),
     image_banner__overlay_variation: 'full',
     image_banner__size: content.field_style_variation.0['#markup']|default('tall'),
-    image_banner__width: 'site',
+    image_banner__width: image_banner__width,
     image_banner__video: image_banner__is_video ? 'true' : 'false',
   } %}
     {% block video %}
