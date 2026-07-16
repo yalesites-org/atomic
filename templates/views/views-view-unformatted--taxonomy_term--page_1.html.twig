@@ -8,11 +8,14 @@
     </header>
   {% endif %}
 
+  {% include "@molecules/page-title/yds-page-title.twig" with {
+    page_title__heading: title,
+  } %}
+
   {{ attachment_before }}
 
   {% if rows -%}
     {% embed "@organisms/card-collection/yds-card-collection.twig" with {
-      card_collection__heading: title,
       card_collection__featured: 'true',
       card_collection__type: 'list',
       card_collection__width: 'site',

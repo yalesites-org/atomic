@@ -1,0 +1,16 @@
+{#
+  Theme override for core/modules/media/templates/media-oembed-content.html.twig
+  Ensures the iframe has a title attribute for accessibility and is styled responsively.
+  Width/height attributes are preserved so the browser can compute an intrinsic
+  aspect ratio; CSS then scales the iframe fluidly via width: 100%; height: auto.
+  Context: https://www.drupal.org/project/drupal/issues/3071347
+#}
+
+<iframe
+  src="{{ url }}"
+  title="{{ media.label()|default('Embedded video') }}"
+  {% if width and height %}width="{{ width }}" height="{{ height }}"{% endif %}
+  frameborder="0"
+  allowfullscreen
+  class="media-oembed-content"
+></iframe>

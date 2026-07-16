@@ -18,7 +18,11 @@
   } %}
 
     {% block video__video %}
-      {{ content.field_media }}
+      <div class="video-container" data-video-isolated="true">
+        <div class="video-content-wrapper">
+          {{ content.field_media }}
+        </div>
+      </div>
     {% endblock %}
 
   {% endembed %}

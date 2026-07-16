@@ -1,0 +1,7 @@
+{#
+  The list_item view mode for Resource currently renders identically to the
+  card view mode — same publication-meta layout, same image fallback chain,
+  same reference-card embed. Extending keeps the two in sync so future card
+  edits don't have to be duplicated here.
+#}
+{% extends "@atomic/node/node--resource--card.html.twig" %}

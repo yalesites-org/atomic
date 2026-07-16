@@ -1,19 +1,41 @@
-{% set event_has_passed = event_dates is empty %}
+{% set delta = 0 %}
+
+{% if elements['#delta'] is not empty %}
+  {% set delta = elements['#delta'] %}
+{% endif %}
+
+{% set event_has_passed = content.field_event_date[delta].end_time['#markup']|date("U") < "now"|date("U") %}
 
 {# Use event_dates array to print any event dates - look inside array for formatted options #}
-{% if event_dates|length > 1 %}
-  {% set multi_day_text %}
-    {% include "@atoms/typography/text/yds-text.twig" with {
-      text__base_class: 'multi-day-event',
-      text__content: '(multi-day event)',
-    } %}
-  {% endset %}
+{# Used to test if we're ouputting for the same day or multiple days #}
+{% set start_date = content.field_event_date[delta].start_time['#markup']|date('Y-m-d') %}
+{% set end_date = content.field_event_date[delta].end_time['#markup']|date('Y-m-d') %}
+
+{% set same_day = start_date == end_date %}
+
+{# Check if this is an all-day event (starts at 00:00 and ends at 23:59) #}
+{% set start_time = content.field_event_date[delta].start_time['#markup']|date('H:i') %}
+{% set end_time = content.field_event_date[delta].end_time['#markup']|date('H:i') %}
+{% set is_all_day = (start_time == '00:00' and end_time == '23:59') %}
+
+{# Determine the date format based on whether the event starts and ends on the same day #}
+{% set date_time__format = 'date_time_multiple_days' %}
+{% if same_day %}
+  {% set date_time__format = 'same_day_diff_time' %}
 {% endif %}
+  {# Override the date format if the event spans multiple days #}
+{# {% set date_time__format = 'same_day_diff_time' %} #}
+{# {% if start_date != end_date %} #}
+{#   {% set date_time__format = 'date_time_multiple_days' %} #}
+{# {% endif %} #}
 
 {% set date__formatted %}
   {% include "@atoms/date-time/yds-date-time.twig" with {
-    date_time__start: content.field_event_date.0.start_time['#markup'],
-  } %} {{ multi_day_text }}
+    date_time__start: content.field_event_date[delta].start_time['#markup'],
+    date_time__end: content.field_event_date[delta].end_time['#markup'],
+    date_time__format: date_time__format,
+    date_time__all_day: is_all_day,
+  } %}
 {% endset %}
 
 {% if content.field_localist_event_experience.0 %}
@@ -27,16 +49,13 @@
 {% set heading = content.field_teaser_title.0 ? content.field_teaser_title : label %}
 {% set url = content.field_external_source[0]['#url']|render ? content.field_external_source[0]['#url']|render : url %}
 
-{# Set the event title prefix based on event status #}
-{% set event_title__prefix = event_has_passed ? 'Past Event: ' : '' %}
-
 {% embed "@molecules/cards/reference-card/yds-reference-card.twig" with {
-  reference_card__prefix: event_title__prefix,
+  event_has_passed: event_has_passed,
   reference_card__heading: heading,
   reference_card__subheading: date__formatted,
   reference_card__url: url,
   reference_card__snippet: content.field_teaser_text,
-  reference_card__image: 'true',
+  reference_card__image: node.show_thumbnail ? 'true' : 'false',
   reference_card__cta_primary__href: ticket_url,
   reference_card__cta_primary__content: cost_button_text,
   reference_card__cta_secondary__content: (node.hide_add_to_calendar) ? null : 'Add to Calendar',
@@ -45,7 +64,6 @@
   reference_card__overlay: node.pin_label,
   show_categories: node.show_categories,
   show_tags: node.show_tags,
-  show_thumbnail: node.show_thumbnail,
 } %}
 
   {% block reference_card__tags %}

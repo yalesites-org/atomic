@@ -1,8 +1,20 @@
+{#
+  # Available Variables
+  # - site_name
+  # - collection_nav_name
+  # - collection_nav_link
+  # - collection_nav_menu_items
+
+  # - header_variant
+  #
+  # @see atomic_preprocess_region__header()
+#}
+
 {{ elements.alert_block }}
 
 {% if getHeaderSetting('site_name_image') %}
   {% set isSiteHeaderLogo = TRUE %}
-  {% set site_header__site_name_is_image = getHeaderSetting('site_name_image') %}
+  {% set site_header__site_name_image = getHeaderSetting('site_name_image') %}
 {% endif %}
 
 {# Dropdown button links in utility navigation #}
@@ -14,19 +26,63 @@
   {% set utility_nav__dropdown_link__url = '#' %}
 {% endif %}
 
+{#
+  Collection primary nav headers use the same header theme as configured in
+  theme settings. The header_theme setting applies consistently across all
+  pages, including those using collection primary navigation.
+#}
+
+{#
+  The header config map has 2 values "normal" and "in_header".
+
+  normal - Used for most pages, including regular collection pages.
+  in_header - Used only for collections with primary navigation.
+
+  This config allows us to use a single "yds-site-header" template and reassign
+  keys on the left, to different values based on the header_variant.
+#}
+{% set header_config_map = {
+  'normal': {
+    'header_theme': getThemeSetting('header_theme'),
+    'collection_nav_position': '',
+  },
+  'in_header': {
+    'collection_nav_name': collection_nav_name,
+    'collection_nav_link': collection_nav_link,
+    'header_theme': getThemeSetting('header_theme'),
+    'collection_nav_position': 'in_header',
+  }
+} %}
+
+{# Use header_header_variant to get correct config_map. #}
+{% set header_config = header_config_map[header_variant] %}
+
 {% embed "@organisms/site-header/yds-site-header.twig" with {
-  site_name: site_name,
+  site_header__site_name: site_name,
+  site_header__site_link: '/',
+  site_header__collection_nav_name: header_config['collection_nav_name'],
+  site_header__collection_nav_link: header_config['collection_nav_link'],
+  site_header__branding_name: getHeaderSetting('site_wide_branding_name'),
+  site_header__branding_link: getHeaderSetting('site_wide_branding_link'),
+
+  site_header__collection_nav_position: header_config['collection_nav_position'],
+
   site_header__border_thickness: '8',
-  site_header__theme: getThemeSetting('header_theme'),
+  site_header__theme: header_config['header_theme'],
   site_header__accent: getThemeSetting('header_accent'),
   site_header__menu__variation: getHeaderSetting('header_variation'),
   site_header__nav_position: getHeaderSetting('nav_position'),
-  site_header__branding_name: getHeaderSetting('site_wide_branding_name')|default('Yale University'),
-  site_header__branding_link: getHeaderSetting('site_wide_branding_link')|default('https://www.yale.edu'),
   drupal_utility_nav: elements.utility_navigation,
 } %}
   {% block site_header__primary_nav %}
-    {{ elements.main_navigation }}
+    {% if header_variant == 'in_header' %}
+      {% include "@organisms/menu/primary-nav/yds-primary-nav.twig" with {
+        primary_nav__items: collection_nav_menu_items,
+        menu__variation: 'basic',
+      } %}
+    {% else %}
+      {{ elements.main_navigation }}
+    {% endif %}
   {% endblock %}
 
   {% block site_header__background_image %}
@@ -34,5 +90,4 @@
       {{ site_header__background_image }}
     {% endif %}
   {% endblock %}
-
 {% endembed %}

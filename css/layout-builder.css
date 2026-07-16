@@ -32,16 +32,9 @@ would be used instead resulting in top margin of size-spacing-6.  */
   margin-top: 0;
 }
 
-/* We allow spotlights in the banner now, but they appear a little to close to
- * the top of the page. This allows us to adjust the top margin to give a
- * little more space to just the first one.
- */
-.main-content .layout--banner .layout__region > .text-with-image:first-child,
-.main-content
-  .layout--banner
-  .layout__region
-  > .content-spotlight-portrait:first-child {
-  margin-top: var(--size-spacing-8);
+/* This applies margin-bottom: 0 to the last child inside of our nest divs */
+.main-content .layout--banner .layout__region > *:last-child {
+  margin-bottom: 0;
 }
 
 /* The last item inside the `.main-content` area should have some space between
@@ -61,7 +54,9 @@ need to have margin-bottom set to 0 */
 .main-content .layout.layout--onecol:last-of-type .layout__region--content:last-child .image-banner:last-child,
 .main-content .layout.layout--onecol:last-of-type .layout__region--content:last-child .quick-links:last-child,
 .main-content .layout.layout--onecol:last-of-type .layout__region--content:last-child .text-with-image:not([data-component-theme='default']):last-child,
-.main-content .layout.layout--onecol:last-of-type .layout__region--content:last-child .content-spotlight-portrait:not([data-component-theme='default']):last-child {
+.main-content .layout.layout--onecol:last-of-type .layout__region--content:last-child .content-spotlight-portrait:not([data-component-theme='default']):last-child,
+.main-content .layout.layout--onecol:last-of-type .layout__region--content > .ys-block-wrapper.ys-block-wrapper--padding-no-padding:last-child,
+.main-content .layout.layout--onecol:last-of-type .layout__region--content > .ys-block-wrapper.ys-block-wrapper--padding-no-bottom:last-child {
   margin-bottom: 0;
 }
 
@@ -91,6 +86,32 @@ display: flex;
 /* Fix for breadcrumb spacing on profile nodes */
 .ys-content-type-profile .main-content .breadcrumbs__wrapper {
   margin-bottom: var(--size-spacing-7);
+}
+
+/* When the profile meta image style is "outdent", the image protrudes below the
+   section background via a negative margin-bottom. Add margin-bottom to the
+   banner layout wrapper so the next section does not overlap the protruding
+   image. Only applies at desktop where the outdent effect is active.
+   See: https://github.com/yalesites-org/YaleSites-Internal/issues/1126 */
+@media (min-width: 992px) {
+  .layout--banner:has(.profile-meta[data-component-image-style='outdent']) {
+    margin-bottom: var(--size-spacing-7);
+  }
+}
+
+/* The yds-two-column (70/30) layout's default top margin is missing: the
+   spacing-page-section mixin in _yds-two-column.scss generates no CSS with default
+   parameters, so neither data-component-padding="default" nor a missing attribute
+   produces any spacing. Set the default here directly on the layout type, then let
+   the explicit no-top and no-padding values override it as intended.
+   See: https://github.com/yalesites-org/YaleSites-Internal/issues/1126 */
+.layout.yds-two-column {
+  margin-top: var(--spacing-page-section);
+}
+
+.layout.yds-two-column[data-component-padding=no-top],
+.layout.yds-two-column[data-component-padding=no-padding] {
+  margin-top: 0;
 }
 
 .main-content .layout.layout--onecol .block-wrapper__inner {
@@ -191,21 +212,20 @@ div[data-drupal-selector="edit-block-form"] {
   padding: 1rem;
 }
 
-.layout-builder-components-table th {
-  background-color: transparent;
-  border: none;
-}
-
-.layout-builder-components-table tr:nth-child(2n) {
+.layout-builder-components-table tr:nth-child(odd) {
   background-color: var(--gin-bg-layer);
+  color: var(--gin-color-text);
 }
-
 
 #drupal-off-canvas-wrapper .draggable:hover,
 #drupal-off-canvas-wrapper .draggable:focus-within {
   background-color: var(--gin-bg-layer2);
 }
 
+.gin--dark-mode #drupal-off-canvas-wrapper tr.draggable:nth-child(even):hover,
+.gin--dark-mode #drupal-off-canvas-wrapper tr.draggable:nth-child(even):focus-within {
+  color: var(--gin-color-text) !important;
+}
 
 /* Layout component layout-builder link overrides. */
 .yds-layout.layout-builder__layout[data-component-theme="one"] .layout-builder__link.layout-builder__link--add,
@@ -222,20 +242,20 @@ div[data-drupal-selector="edit-block-form"] {
   border-color: white !important;
 }
 
-/* Change layoutbuilder configure/UI element colors in dark mode because the defaults don't look good */
-.gin--dark-mode .layout-builder__link--configure:hover {
-  background-color: var(--gin-bg-layer) !important;
+/*
+ * Layout Builder link hover states (Issue #1086)
+ * Black background with white text and icons on direct hover
+ * Note: remove link uses mask-image, so background-color IS the icon color
+ */
+.gin--dark-mode .layout-builder__link--configure:hover,
+.gin--dark-mode .layout-builder__link--add-section-to-library:hover {
+  background-color: var(--ys-contrast-black) !important;
+  color: var(--ys-contrast-white) !important;
 }
 
-.gin--dark-mode .layout-builder__section:hover .layout-builder__link--configure {
-  background-color: var(--gin-bg-layer) !important;
-  color: var(--gin-color-primary) !important;
-}
-
-.gin--dark-mode .layout-builder__section:hover .layout-builder__link--add-section-to-library,
-.gin--dark-mode .layout-builder__section:hover .layout-builder__link--remove {
-  background-color: var(--gin-bg-layer) !important;
-  color: var(--gin-color-primary) !important;
+/* Remove link hover - white icon only, no background (icon uses mask-image) */
+.gin--dark-mode .layout-builder__link--remove:hover {
+  color: var(--ys-contrast-white) !important;
 }
 
 .layout-builder__section .layout-builder__link--add-section-to-library {
@@ -321,11 +341,10 @@ div[data-drupal-selector="edit-block-form"] {
   display: none;
 }
 
-/* For some reason text-within on tables in dark mode go wrong */
-.gin--dark-mode tr:hover,
-.gin--dark-mode tr:focus-within {
-  color: var(--gin-color-text);
-  background: var(--gin-bg-secondary);
+/* To fix ckeditor's modification of paragraph action buttons */
+#drupal-off-canvas-wrapper .ui-dialog-content div:not([data-drupal-ck-style-fence] *) {
+  width: inherit !important;
+  max-width: inherit !important;
 }
 
 /**
@@ -345,25 +364,40 @@ th.field-label {
 .audio-embed.layout-builder-block {
   word-break: normal;
 }
+
 /* Fix for caption in image banner */
 /* This is an override for a core CSS file for tables which has too broad styles for .caption */
 .js-layout-builder-block .image-banner__image figcaption.caption  {
   margin-block-end: 0;
 }
 
-/* Adjust bottom-margin if an element with [data-spotlights-position="first-and-last"] is the last element on the page */
-/* Or if [data-spotlights-position="last"] is the last element in main content */
-.main-content [data-spotlights-position="first-and-last"]:last-child,
-.main-content [data-spotlights-position="last"]:last-child {
-  margin-bottom: 0;
+/* Fixes dark mode weight links to have better contrast. */
+.gin--dark-mode button.tabledrag-toggle-weight {
+  color: var(--gin-color-text);
 }
 
-/* Adjust top-margin if an element with an [data-spotlights-position="first" or data-spotlights-position="first-and-last"
-// is the first element in main content */
-.main-content [data-spotlights-position="first"]:first-child,
-.main-content [data-spotlights-position="first-and-last"]:first-child,
-/* page-meta will almost always be the first element in main content, so we need a condition for it */
-.main-content > .page-meta + [data-spotlights-position="first-and-last"],
-.main-content > .page-meta + [data-spotlights-position="first"] {
-  margin-top: 0;
+/*
+ * For layout builder paragraph tables, we need to override the default in dark mode.
+ * This is due to otehr things overloading it in the wrong way, like our _table.css,
+ * gin, and ckeditor.
+ */
+.gin--dark-mode .field-multiple-table.glb-table tr.draggable > td {
+  background-color: var(--gin-bg-layer);
+  color: var(--gin-color-text);
+}
+
+.gin--dark-mode .field-multiple-table.glb-table tr.draggable:nth-child(odd) > td {
+  background-color: var(--gin-bg-layer2);
+  color: var(--gin-color-text);
+}
+
+/*
+ * There are places where the contextual menu is showing when it should not.
+ * This hides this from the users while giving us the flexibility to get to it
+ * should we ever need it.
+ */
+#block-atomic-custombooknavigation .contextual,
+#block-yalesitesfooterblock .contextual,
+#block-yalesitesfooterblock .contextual-region {
+  display: none;
 }

@@ -1,0 +1,56 @@
+{#
+/**
+ * Available Variables:
+ * - responsive_media_thumbnail: A responsive image using the thumbnail file.
+ * - date_formatted: The publish_date in ISO 8601 format.
+ * - resource_authors: Array of authors, each with 'label' and 'url' keys.
+ *
+ * @see atomic_preprocess_node()
+ * @see atomic_preprocess_node__resource()
+#}
+
+{% set heading = content.field_teaser_title.0 ? content.field_teaser_title : label %}
+{% set date_format = content.field_date_format.0 ? content.field_date_format.0['#markup'] : '' %}
+{% set url = content.field_external_source[0]['#url']|render ? content.field_external_source[0]['#url']|render : url %}
+
+{% set show_publish_date = node.show_publish_date is not defined or node.show_publish_date %}
+{% set show_authors = node.show_authors is not defined or node.show_authors %}
+{% set has_publish_date = show_publish_date and date_format %}
+{% set has_authors = show_authors and resource_authors|length %}
+
+{% set date_and_authors %}
+  {% if has_publish_date or has_authors %}
+    <div class="publication-meta">
+      {% if has_publish_date %}
+        <div class="publication-meta__publish-date">
+          {% include "@atoms/date-time/yds-date-time.twig" with {
+            date_time__start: date_formatted,
+            date_time__format: date_format,
+          } %}
+        </div>
+      {% endif %}
+      {% if has_authors %}
+        <div class="publication-meta__authors">
+          <span class="publication-meta__label">{{ resource_authors|length == 1 ? 'Author'|t : 'Authors'|t }}:</span>
+          {% for author in resource_authors %}
+            {% if author.url %}<a href="{{ author.url }}">{{ author.label }}</a>{% else %}{{ author.label }}{% endif %}{% if not loop.last %}, {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  {% endif %}
+{% endset %}
+
+{% embed "@molecules/cards/reference-card/yds-reference-card.twig" with {
+  reference_card__heading: heading,
+  reference_card__url: url,
+  reference_card__subheading: date_and_authors,
+  reference_card__image: 'false',
+  reference_card__image_aria: heading[0]['#context'].value,
+  reference_card__overlay: node.pin_label,
+  show_categories: node.show_category,
+} %}
+  {% block reference_card__categories %}
+    {{ content.field_category }}
+  {% endblock %}
+{% endembed %}

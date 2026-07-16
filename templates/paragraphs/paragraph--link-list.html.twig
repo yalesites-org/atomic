@@ -1,1 +1,8 @@
-{{content}}
+{% if paragraph.field_list_heading.value %}
+  {% include "@atoms/typography/headings/yds-heading.twig" with {
+    heading__level: '2',
+    heading__blockname: 'link-group',
+    heading: paragraph.field_list_heading.value,
+  } %}
+{% endif %}
+{{ content.field_links }}

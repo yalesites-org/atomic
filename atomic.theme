@@ -5,11 +5,37 @@
  * Functions to support theming.
  */
 
+use Drupal\node\Entity\Node;
+use Drupal\Core\Cache\CacheableMetadata;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\media\MediaInterface;
+
 /**
  * Implements hook_preprocess_region().
+ *
+ * Assigns details from _get_collection_nav_details() to the $variables.
  */
-function atomic_preprocess_region(&$variables) {
+function atomic_preprocess_region__header(&$variables) {
   $variables['site_name'] = \Drupal::config('system.site')->get('name');
+  $variables['header_variant'] = 'normal';
+
+  $node = \Drupal::routeMatch()->getParameter('node');
+  if ($node instanceof Node && $node->bundle() == 'page') {
+    if (_node_is_a_collection($node)) {
+      $bid = $node->book['bid'];
+      // Add cache tags so the header re-renders when the collection nav
+      // position or book structure changes.
+      $cache_metadata = new CacheableMetadata();
+      $cache_metadata->addCacheTags(['ys_collection_nav:' . $bid, 'node:' . $bid]);
+      \Drupal::service('renderer')->addCacheableDependency($variables, $cache_metadata);
+
+      if (_get_collection_nav_position($bid) === 'in_header') {
+        $variables['header_variant'] = 'in_header';
+
+        _get_collection_nav_details($node, $variables);
+      }
+    }
+  }
 }
 
 /**
@@ -38,6 +64,30 @@ function atomic_preprocess_menu(&$variables, $hook) {
           }
         }
       }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_pager().
+ *
+ * Adds total pages to the pager variables.
+ */
+function atomic_preprocess_pager(array &$variables) {
+  $element = $variables['pager']['#element'];
+  $pager_manager = \Drupal::service('pager.manager');
+  $pager = $pager_manager->getPager($element);
+  $variables['pager']['#total_pages'] = $pager->getTotalPages();
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter() for pager.
+ */
+function atomic_theme_suggestions_pager_alter(array &$suggestions, array $variables) {
+  // Remove gin-lb suggestion(s).
+  foreach ($suggestions as $key => $suggestion) {
+    if ($suggestion === 'pager__gin_lb' || $suggestion === 'pager--gin-lb') {
+      unset($suggestions[$key]);
     }
   }
 }
@@ -72,9 +122,124 @@ function atomic_theme_suggestions_container_alter(array &$suggestions, array &$v
  * Implements hook_preprocess_node().
  */
 function atomic_preprocess_node(&$variables) {
-  if ($variables['node']->getType() == 'post') {
-    $date = strtotime($variables['node']->field_publish_date->first()->getValue()['value']);
-    $variables['date_formatted'] = \Drupal::service('date.formatter')->format($date, '', 'c');
+  // Allows for multiple node types to use the formatted publish date.
+  if (in_array($variables['node']->getType(), ['post', 'resource'])) {
+    $date = strtotime($variables['node']->field_publish_date?->first()?->getValue()['value']);
+
+    if ($date) {
+      $variables['date_formatted'] = \Drupal::service('date.formatter')->format($date, '', 'c');
+    }
+  }
+  // Handle resource thumbnail processing.
+  if ($variables['node']->getType() === 'resource') {
+    $view_mode = $variables['elements']['#view_mode'] ?? 'default';
+    $responsive_image_style_id = $view_mode === 'portrait_grid'
+      ? 'card_grid_portrait_5_8'
+      : 'resource_thumbnail';
+
+    // Skip for search_result view mode as it's not needed.
+    if ($view_mode === 'search_result') {
+      return;
+    }
+
+    /** @var \Drupal\node\Entity\Node $node */
+    $node = $variables['node'];
+    $fieldTeaserMedia = $node?->field_teaser_media;
+
+    // Build the merged + sorted author list via the ys_layouts service so
+    // view-row templates and the ResourceMetaBlock produce identical output.
+    // Non-affiliated authors come back with url === NULL; templates render
+    // those as plain text.
+    $author_cache_tags = [];
+    $variables['resource_authors'] = \Drupal::service('ys_layouts.resource_author_builder')
+      ->build($node, $author_cache_tags);
+    if ($author_cache_tags) {
+      $variables['#cache']['tags'] = \Drupal\Core\Cache\Cache::mergeTags(
+        $variables['#cache']['tags'] ?? [],
+        $author_cache_tags
+      );
+    }
+
+    // field_discipline is rendered manually in the resource card / list-item
+    // templates (so the inline "Discipline: term1, term2" format with a
+    // single label is preserved). The manual render uses #items, which
+    // bypasses the field formatter pipeline, so attach the referenced term
+    // cache tags here — otherwise card renders won't be invalidated when a
+    // discipline term is renamed or deleted.
+    if ($node->hasField('field_discipline') && !$node->get('field_discipline')->isEmpty()) {
+      $discipline_cache_tags = [];
+      foreach ($node->get('field_discipline')->referencedEntities() as $term) {
+        $discipline_cache_tags = \Drupal\Core\Cache\Cache::mergeTags(
+          $discipline_cache_tags,
+          $term->getCacheTags()
+        );
+      }
+      if ($discipline_cache_tags) {
+        $variables['#cache']['tags'] = \Drupal\Core\Cache\Cache::mergeTags(
+          $variables['#cache']['tags'] ?? [],
+          $discipline_cache_tags
+        );
+      }
+    }
+
+    $fieldMedia = $node?->field_media;
+
+    if ($view_mode === 'portrait_grid' && $fieldTeaserMedia && !$fieldTeaserMedia->isEmpty()) {
+      /** @var \Drupal\media\Entity\Media $teaser_media */
+      $teaser_media = $fieldTeaserMedia->entity;
+      if ($teaser_media) {
+        $variables['content']['field_teaser_media'] = [
+          0 => \Drupal::entityTypeManager()
+            ->getViewBuilder('media')
+            ->view($teaser_media, 'card_grid_portrait_5_8'),
+        ];
+      }
+    }
+
+    if (!$fieldMedia) {
+      return;
+    }
+
+    /** @var \Drupal\media\Entity\Media $media */
+    $referenced_entities = $fieldMedia?->referencedEntities() ?? [];
+    $media = reset($referenced_entities);
+
+    // Skip building responsive_media_thumbnail for video Resources: the
+    // video media's thumbnail is the auto-generated frame, which is rarely
+    // useful as a card image. Document and image bundles still get the
+    // thumbnail so PDF previews and image resources don't render with a
+    // blank card when no field_teaser_media is set.
+    if ($media && $media->bundle() === 'video') {
+      return;
+    }
+
+    $thumbnail = $media?->thumbnail;
+
+    if (!$thumbnail) {
+      return;
+    }
+
+    /** @var \Drupal\file\Entity\File $file */
+    $referenced_entities = $thumbnail->referencedEntities();
+    $file = reset($referenced_entities);
+
+    if (!$file) {
+      return;
+    }
+
+    // Create responsive_image render array using the thumbnail uri.
+    $alt = \Drupal::service('ys_layouts.media_alt_resolver')->resolve($media);
+    $variables['responsive_media_thumbnail'] = [
+      '#theme' => 'responsive_image',
+      '#uri' => $file->getFileUri(),
+      '#responsive_image_style_id' => $responsive_image_style_id,
+      '#height' => $thumbnail?->height,
+      '#width' => $thumbnail?->width,
+      '#attributes' => [
+        'loading' => 'lazy',
+        'alt' => $alt,
+      ],
+    ];
   }
 }
 
@@ -103,5 +268,246 @@ function atomic_theme_suggestions_field_alter(array &$suggestions, array $variab
 
     // Add a theme suggestion for the field based on the parent node's view mode.
     $suggestions[] = 'field__' . $variables['element']['#entity_type'] . '__' . $field_name . '__' . $view_mode;
+  }
+}
+
+/**
+ * Implements hook_preprocess_views_view().
+ *
+ * Adds section wrapper and aria-label for YS Views Basic views.
+ */
+function atomic_preprocess_views_view(&$variables) {
+  $view = $variables['view'];
+
+  // Only process views_basic_scaffold and views_basic_scaffold_events views.
+  if (!in_array($view->id(), ['views_basic_scaffold', 'views_basic_scaffold_events'])) {
+    return;
+  }
+
+  // Content type labels for aria-label.
+  $content_type_labels = [
+    'post' => 'Posts',
+    'event' => 'Events',
+    'page' => 'Pages',
+    'profile' => 'Profiles',
+  ];
+
+  // Default aria-label.
+  $aria_label = 'Content';
+
+  // Extract content type from view arguments if available.
+  if (!empty($view->args)) {
+    // Views basic passes JSON parameters in the arguments.
+    // The content type filter is typically in the first argument.
+    $first_arg = reset($view->args);
+    if ($first_arg && is_string($first_arg)) {
+      if (isset($content_type_labels[$first_arg])) {
+        $aria_label = $content_type_labels[$first_arg] . " collection";
+      }
+    }
+  }
+
+  // Add section wrapper variables.
+  $variables['use_section_wrapper'] = TRUE;
+  $variables['section_aria_label'] = $aria_label;
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ *
+ * Attempt to pre-set the main content ID based on whether
+ * the node associated is in a content collection.
+ */
+function atomic_preprocess_html(array &$variables) {
+  $variables['main_content_id'] = '#main-content';
+  $variables['secondary_nav_present'] = FALSE;
+
+  $node = \Drupal::routeMatch()->getParameter('node');
+  if ($node instanceof Node && $node->bundle() == 'page') {
+    if (_node_is_a_collection($node)) {
+      $bid = $node->book['bid'];
+      // Add cache tags so the HTML re-renders when the collection nav
+      // position or book structure changes.
+      $cache_metadata = new CacheableMetadata();
+      $cache_metadata->addCacheTags(['ys_collection_nav:' . $bid, 'node:' . $bid]);
+      \Drupal::service('renderer')->addCacheableDependency($variables, $cache_metadata);
+
+      // Page is just a normal collection (not using primary nav).
+      if (_get_collection_nav_position($bid) !== 'in_header') {
+        $variables['secondary_nav_present'] = TRUE;
+        $variables['main_content_id'] = '#main-content-after-secondary-nav';
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_layout for page_meta().
+ *
+ * Checks if page uses collection primary nav and hides the secondary nav.
+ */
+function atomic_preprocess_layout__page_meta(&$variables) {
+  /** @var \Drupal\node\Entity\Node $entity_node */
+  $entity_node = $variables['content']['#entity'];
+
+  if (_node_is_a_collection($entity_node)) {
+    $bid = $entity_node->book['bid'];
+    // Add cache tags so the layout re-renders when the collection nav
+    // position or book structure changes.
+    $cache_metadata = new CacheableMetadata();
+    $cache_metadata->addCacheTags(['ys_collection_nav:' . $bid, 'node:' . $bid]);
+    \Drupal::service('renderer')->addCacheableDependency($variables, $cache_metadata);
+
+    $variables['show_secondary_nav'] = TRUE;
+
+    if (_get_collection_nav_position($bid) === 'in_header') {
+      $variables['show_secondary_nav'] = FALSE;
+    }
+  }
+}
+
+/**
+ * Helper function to determine if a node is part of a book. 
+ *
+ * @param Node $node
+ * @return void
+ */
+function _node_is_a_collection($node) {
+  return ($node->book) ? TRUE : FALSE;
+}
+
+/**
+ * Helper function to get the collection navigation position.
+ *
+ * @param int $nid
+ *   The node ID of the book root.
+ *
+ * @return string
+ *   The navigation position value (e.g., 'in_header',
+ *   'in_content'), or empty string if not set.
+ */
+function _get_collection_nav_position(int $nid) {
+  $cid = 'collection:nav_position:' . $nid;
+
+  // Try to get from persistent cache first.
+  if ($cache = \Drupal::cache()->get($cid)) {
+    return $cache->data;
+  }
+
+  /** @var \Drupal\node\Entity\Node $node */
+  $node = Node::load($nid);
+  $nav_position = $node?->field_collection_nav_position?->getString() ?: '';
+
+  // Store in persistent cache with cache tags for targeted invalidation.
+  \Drupal::cache()->set($cid, $nav_position, -1, ['ys_collection_nav:' . $nid]);
+
+  return $nav_position;
+}
+
+/**
+ * Helper function to get collection navigation details.
+ *
+ * All $variables set are passed back to the calling function.
+ *
+ * @param \Drupal\node\Entity\Node $node
+ *   The current node.
+ * @param array $variables
+ *   The template variables array.
+ */
+function _get_collection_nav_details(Node $node, array &$variables) {
+  $bid = $node->book['bid'];
+  $book_manager = \Drupal::service('book.manager');
+  $book_tree_data = $book_manager->bookTreeAllData($bid);
+  $book_tree = $book_manager->bookTreeOutput($book_tree_data);
+
+  /** @var \Drupal\node\Entity\Node $parent_node */
+  $parent_node = \Drupal::EntityTypeManager()->getStorage('node')->load($bid);
+
+  if ($parent_node) {
+    $variables['collection_nav_name'] = $parent_node->getTitle();
+    $variables['collection_nav_link'] = $parent_node->toUrl()->toString();
+    $variables['collection_nav_menu_items'] = _process_collection_nav_menu_items($book_tree['#items']);
+  }
+}
+
+/**
+ * Helper function to duplicate and add menu items to collection nav menu.
+ *
+ * Any item with a "submenu" gets duplicated.
+ *
+ * @param array|null $items
+ *   The menu items to process.
+ *
+ * @return array|null
+ *   The processed menu items, or NULL if empty.
+ */
+function _process_collection_nav_menu_items($items) {
+  if (empty($items)) {
+    return NULL;
+  }
+
+  $menu_items = reset($items)['below'];
+
+  foreach ($menu_items as &$menuItem) {
+    // Skip menu items that do not have subitems.
+    if (empty($menuItem['below'])) {
+      continue;
+    }
+
+    // Clone top level menu item.
+    $clonedMenuItem = $menuItem;
+
+    // We don't want any other subitems, just the top level.
+    $clonedMenuItem['below'] = NULL;
+
+    // Default the node_title to the menu title.
+    $clonedMenuItem['node_title'] = $clonedMenuItem['title'];
+
+    // If the menu item is associated with a node, replace the node_title
+    // with the node's title.
+    if ($menuItem['url']->isRouted()) {
+      $routeParameters = $menuItem['url']->getRouteParameters();
+
+      if (array_key_exists('node', $routeParameters)) {
+        $nodeId = $routeParameters['node'];
+
+        if ($nodeId) {
+          /** @var \Drupal\node\Entity\Node $node */
+          $node = \Drupal::entityTypeManager()->getStorage('node')->load($nodeId);
+
+          if ($node) {
+            $clonedMenuItem['node_title'] = $node->getTitle();
+          }
+        }
+      }
+    }
+
+    // Add cloned item to the beginning of the menu.
+    array_unshift($menuItem['below'], $clonedMenuItem);
+  }
+
+  return $menu_items;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view_alter() for media entities.
+ *
+ * Suppresses the contextual edit pencil on media rendered as a reference
+ * from a Resource node. Authors can still reach the media edit form via
+ * the parent node's Edit screen. Scoped to Resource only per YISP-122;
+ * site-wide application is documented as a follow-up pitch in
+ * docs-local/2026-04-30-suppress-media-contextual-links-option-2.md.
+ *
+ * Implemented at the entity_view_alter stage (rather than preprocess) so
+ * the unset happens before contextual.module's preprocess injects the
+ * pencil's data-contextual-token attribute and contextual-region class.
+ */
+function atomic_media_view_alter(array &$build, MediaInterface $entity, EntityViewDisplayInterface $display) {
+  if (!isset($entity->_referringItem)) {
+    return;
+  }
+  $parent = $entity->_referringItem->getEntity();
+  if ($parent instanceof Node && $parent->bundle() === 'resource') {
+    unset($build['#contextual_links']);
   }
 }

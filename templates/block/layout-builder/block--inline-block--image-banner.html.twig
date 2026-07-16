@@ -2,13 +2,14 @@
 
 {% set image_banner__video = paragraph.field_media.entity.field_media_video_file.entity.uri.value is not empty %}
 {% set image_banner__image_size = content.field_style_variation.0['#markup']|default('tall') %}
+{% set image_banner__width = content.field_style_width.0['#markup']|default('site') %}
 
 {% block content %}
   {% embed "@molecules/banner/image/yds-image-banner.twig" with {
     image_banner__content__background: content.field_style_color.0['#markup'],
     image_banner__overlay_variation: 'full',
     image_banner__size: content.field_style_variation.0['#markup'],
-    image_banner__width: 'site',
+    image_banner__width: image_banner__width,
   } %}
     {% block image_banner__video %}
       {% if paragraph.field_media.entity.field_media_video_file.entity.uri.value is not empty %}

@@ -3,7 +3,7 @@
 
 {% set dom_id_class = dom_id ? 'js-view-dom-id-' ~ dom_id %}
 
-<div class={{ dom_id_class }}>
+<section class={{ dom_id_class }} aria-label="{{ section_aria_label }}">
   {{ title_prefix }}
   {{ title }}
   {{ title_suffix }}
@@ -19,7 +19,9 @@
   {% if rows -%}
     {{ rows }}
   {% elseif empty -%}
-    {{ empty }}
+    <div class="view-empty-wrapper">
+      {{ empty }}
+    </div>
   {% endif %}
   {{ pager }}
 
@@ -33,4 +35,4 @@
   {% endif %}
 
   {{ feed_icons }}
-</div>
+</section>
