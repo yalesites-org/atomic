@@ -615,4 +615,24 @@ class SdcSchemaValidationTest extends UnitTestCase {
     $this->assertNotEmpty($this->validate('utility-nav', []));
   }
 
+  /**
+   * In This Section (Wave 7, global chrome): a valid item tree passes; the
+   * required items array is enforced.
+   */
+  public function testInThisSectionValid(): void {
+    $this->assertSame([], $this->validate('in-this-section', [
+      'in_this_section__items' => [
+        ['title' => 'Section Home', 'url' => '/section', 'is_active' => TRUE],
+        [
+          'title' => 'Child',
+          'url' => '/section/a',
+          'below' => [['title' => 'Grandchild', 'url' => '/section/a/g']],
+        ],
+      ],
+      'site_section_wrap__theme' => 'one',
+    ]));
+    // Omitting the required in_this_section__items fails.
+    $this->assertNotEmpty($this->validate('in-this-section', ['site_section_wrap__theme' => 'one']));
+  }
+
 }
