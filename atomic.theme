@@ -20,6 +20,16 @@ function atomic_preprocess_region__header(&$variables) {
   $variables['site_name'] = \Drupal::config('system.site')->get('name');
   $variables['header_variant'] = 'normal';
 
+  // Flatten the utility drop-button menu tree to string URLs so it can cross the
+  // site-header SDC prop boundary. The SDC isolates its render context, so the
+  // tree can no longer be pulled in the template with
+  // drupal_menu('utility-drop-button-navigation')['#items'] and passed to the
+  // organism via context inheritance; the flattened copy is rendered with
+  // menu__contextual: true instead (mirrors the nav SDCs).
+  $dropdown = \Drupal::service('twig_tweak.menu_view_builder')
+    ->build('utility-drop-button-navigation');
+  $variables['utility_nav__dropdown__items'] = _atomic_flatten_menu_items($dropdown['#items'] ?? []);
+
   $node = \Drupal::routeMatch()->getParameter('node');
   if ($node instanceof Node && $node->bundle() == 'page') {
     if (_node_is_a_collection($node)) {

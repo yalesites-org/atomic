@@ -635,4 +635,43 @@ class SdcSchemaValidationTest extends UnitTestCase {
     $this->assertNotEmpty($this->validate('in-this-section', ['site_section_wrap__theme' => 'one']));
   }
 
+  /**
+   * Site header: the global chrome header (Wave 7 / #1413).
+   */
+  public function testSiteHeaderValid(): void {
+    $this->assertSame([], $this->validate('site-header', [
+      'site_header__site_name' => 'Yale University',
+      'site_header__site_link' => '/',
+      'site_header__branding_name' => 'Yale University',
+      'site_header__branding_link' => 'https://www.yale.edu',
+      'site_header__border_thickness' => '8',
+      'site_header__theme' => 'three',
+      'site_header__accent' => 'one',
+      'site_header__menu__variation' => 'mega',
+      'site_header__nav_position' => 'left',
+      'utility_nav__search' => 1,
+      'utility_nav__dropdown_link__content' => 'Quick Links',
+      'utility_nav__dropdown_link__url' => '#',
+      'utility_nav__dropdown__items' => [
+        ['title' => 'Faculty', 'url' => '/about-us', 'is_active' => FALSE],
+        [
+          'title' => 'Students',
+          'url' => '/posts',
+          'below' => [['title' => 'News', 'url' => '/posts']],
+        ],
+      ],
+    ]));
+    // The dials are nullable (getThemeSetting/getHeaderSetting can return
+    // NULL); the header must not white-screen when they do.
+    $this->assertSame([], $this->validate('site-header', [
+      'site_header__theme' => NULL,
+      'site_header__menu__variation' => NULL,
+      'utility_nav__search' => NULL,
+    ]));
+    // A wrong-typed search flag (neither bool/int nor null) fails predictably.
+    $this->assertNotEmpty($this->validate('site-header', [
+      'utility_nav__search' => ['unexpected'],
+    ]));
+  }
+
 }
