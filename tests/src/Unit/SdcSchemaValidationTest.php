@@ -600,4 +600,19 @@ class SdcSchemaValidationTest extends UnitTestCase {
     $this->assertNotEmpty($this->validate('primary-nav', ['menu__variation' => 'basic']));
   }
 
+  /**
+   * Utility Navigation (Wave 7, global chrome): a valid item tree passes; the
+   * required items array is enforced.
+   */
+  public function testUtilityNavValid(): void {
+    $this->assertSame([], $this->validate('utility-nav', [
+      'utility_nav__items' => [
+        ['title' => 'Give', 'url' => '/give'],
+        ['title' => 'Log in', 'url' => '/caslogin', 'is_cas' => TRUE],
+      ],
+    ]));
+    // Omitting the required utility_nav__items fails.
+    $this->assertNotEmpty($this->validate('utility-nav', []));
+  }
+
 }
