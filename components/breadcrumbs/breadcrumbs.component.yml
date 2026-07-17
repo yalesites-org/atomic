@@ -6,10 +6,12 @@ description: >
   Site breadcrumb trail. Thin SDC wrapper over the component library's
   @organisms/menu/breadcrumbs/yds-breadcrumbs.twig template; the real markup, SCSS,
   and JS stay in component-library-twig. Global chrome (Wave 7 / #1362): this is the
-  component contract. It is NOT yet wired into the live render path — the standalone
-  breadcrumb block is disabled and the live trail is produced by the bespoke
-  title-breadcrumb combo block (ys-title-breadcrumb.html.twig + YaleSitesBreadcrumbsManager).
-  Wiring chrome to SDCs is a pending decision (see the epic decisions log).
+  component contract, and it IS wired into the live render path: the ys_breadcrumb_block
+  theme hook is overridden by atomic/templates/navigation/ys-breadcrumb-block.html.twig,
+  which renders atomic:breadcrumbs. The live trail is produced by the bespoke
+  title-breadcrumb combo (ys-title-breadcrumb.html.twig). Caveat: the Layout Builder
+  preview branch of ys-title-breadcrumb.html.twig still includes the raw CLT template
+  directly, so the SDC covers the front-end path, not the LB preview.
 props:
   type: object
   required:

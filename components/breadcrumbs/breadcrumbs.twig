@@ -7,9 +7,12 @@
  # `items`). `directory` is threaded so the nested icon atoms resolve the SVG
  # sprite path.
  #
- # Contract only: not yet wired into the live render path (the standalone
- # breadcrumb block is disabled; the live trail comes from the bespoke
- # title-breadcrumb combo). See docs/sdc + the epic decisions log.
+ # Wired into the live render path via
+ # atomic/templates/navigation/ys-breadcrumb-block.html.twig (the ys_breadcrumb_block
+ # theme-hook override renders atomic:breadcrumbs). The live trail comes from the bespoke
+ # title-breadcrumb combo. Caveat: the LB-preview branch of ys-title-breadcrumb.html.twig
+ # still includes the raw CLT template, so the SDC covers the front-end path, not the LB
+ # preview.
  #}
 {{ include('@organisms/menu/breadcrumbs/yds-breadcrumbs.twig', {
   breadcrumbs__items: breadcrumbs__items,
