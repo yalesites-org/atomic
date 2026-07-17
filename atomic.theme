@@ -8,6 +8,7 @@
 use Drupal\node\Entity\Node;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Url;
 use Drupal\media\MediaInterface;
 
 /**
@@ -66,6 +67,56 @@ function atomic_preprocess_menu(&$variables, $hook) {
       }
     }
   }
+
+  // Provide a flattened, SDC-safe copy of the menu tree (plain arrays, string
+  // URLs) for the navigation Single Directory Components. The render tree holds
+  // \Drupal\Core\Url objects and menu-link entities that cannot cross an SDC
+  // prop boundary; the nav SDCs pass this copy with menu__contextual: true so
+  // the shared CLT menu engine uses the string URL directly.
+  $variables['menu__flattened_items'] = _atomic_flatten_menu_items($variables['items']);
+}
+
+/**
+ * Flattens a Drupal menu tree into a plain, SDC-safe array.
+ *
+ * Preserves only the fields the component-library menu templates consume,
+ * converting each item's Url object to a string and recursing into `below`.
+ * Non-serializable values (menu-link entities, Attribute objects) are dropped.
+ *
+ * @param array $items
+ *   Menu items as prepared for the `menu` theme hook.
+ *
+ * @return array
+ *   The flattened items (string URLs, recursive `below`).
+ */
+function _atomic_flatten_menu_items(array $items): array {
+  $flattened = [];
+  foreach ($items as $item) {
+    $url = $item['url'] ?? '';
+    $flat = [
+      'title' => isset($item['title']) ? (string) $item['title'] : '',
+      'url' => $url instanceof Url ? $url->toString() : (string) $url,
+      'is_active' => !empty($item['is_active']),
+      'below' => !empty($item['below']) ? _atomic_flatten_menu_items($item['below']) : [],
+    ];
+    if (isset($item['is_cas'])) {
+      $flat['is_cas'] = (bool) $item['is_cas'];
+    }
+    if (isset($item['list__item__is_heading'])) {
+      $flat['list__item__is_heading'] = (bool) $item['list__item__is_heading'];
+    }
+    if (isset($item['heading_cta'])) {
+      $flat['heading_cta'] = (string) $item['heading_cta'];
+    }
+    if (isset($item['node_title'])) {
+      $flat['node_title'] = (string) $item['node_title'];
+    }
+    if (!empty($item['list__item__modifiers']) && is_array($item['list__item__modifiers'])) {
+      $flat['list__item__modifiers'] = $item['list__item__modifiers'];
+    }
+    $flattened[] = $flat;
+  }
+  return $flattened;
 }
 
 /**

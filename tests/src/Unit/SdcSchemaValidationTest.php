@@ -559,4 +559,45 @@ class SdcSchemaValidationTest extends UnitTestCase {
     ]));
   }
 
+  /**
+   * Site Footer (Wave 7, global chrome): valid props pass; a bad variation fails.
+   */
+  public function testSiteFooterValid(): void {
+    $this->assertSame([], $this->validate('site-footer', [
+      'site_footer__variation' => 'mega',
+      'site_footer__theme' => 'two',
+      'site_footer__accent' => 'three',
+      'site_footer__border_thickness' => '8',
+    ]));
+    // The theme dials are nullable (getThemeSetting can return NULL).
+    $this->assertSame([], $this->validate('site-footer', ['site_footer__theme' => NULL]));
+    // An out-of-enum variation fails.
+    $this->assertNotEmpty($this->validate('site-footer', ['site_footer__variation' => 'jumbo']));
+  }
+
+  /**
+   * Primary Navigation (Wave 7, global chrome): a valid item tree passes; the
+   * required items array is enforced.
+   */
+  public function testPrimaryNavValid(): void {
+    $this->assertSame([], $this->validate('primary-nav', [
+      'primary_nav__items' => [
+        ['title' => 'Home', 'url' => '/', 'is_active' => TRUE],
+        [
+          'title' => 'About',
+          'url' => '/about',
+          'below' => [['title' => 'Team', 'url' => '/about/team']],
+        ],
+      ],
+      'menu__variation' => 'mega',
+    ]));
+    // menu__variation is nullable (getHeaderSetting can return NULL).
+    $this->assertSame([], $this->validate('primary-nav', [
+      'primary_nav__items' => [['title' => 'Home', 'url' => '/']],
+      'menu__variation' => NULL,
+    ]));
+    // Omitting the required primary_nav__items fails.
+    $this->assertNotEmpty($this->validate('primary-nav', ['menu__variation' => 'basic']));
+  }
+
 }
