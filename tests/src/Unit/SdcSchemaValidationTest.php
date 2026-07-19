@@ -559,4 +559,119 @@ class SdcSchemaValidationTest extends UnitTestCase {
     ]));
   }
 
+  /**
+   * Site Footer (Wave 7, global chrome): valid props pass; a bad variation fails.
+   */
+  public function testSiteFooterValid(): void {
+    $this->assertSame([], $this->validate('site-footer', [
+      'site_footer__variation' => 'mega',
+      'site_footer__theme' => 'two',
+      'site_footer__accent' => 'three',
+      'site_footer__border_thickness' => '8',
+    ]));
+    // The theme dials are nullable (getThemeSetting can return NULL).
+    $this->assertSame([], $this->validate('site-footer', ['site_footer__theme' => NULL]));
+    // An out-of-enum variation fails.
+    $this->assertNotEmpty($this->validate('site-footer', ['site_footer__variation' => 'jumbo']));
+  }
+
+  /**
+   * Primary Navigation (Wave 7, global chrome): a valid item tree passes; the
+   * required items array is enforced.
+   */
+  public function testPrimaryNavValid(): void {
+    $this->assertSame([], $this->validate('primary-nav', [
+      'primary_nav__items' => [
+        ['title' => 'Home', 'url' => '/', 'is_active' => TRUE],
+        [
+          'title' => 'About',
+          'url' => '/about',
+          'below' => [['title' => 'Team', 'url' => '/about/team']],
+        ],
+      ],
+      'menu__variation' => 'mega',
+    ]));
+    // menu__variation is nullable (getHeaderSetting can return NULL).
+    $this->assertSame([], $this->validate('primary-nav', [
+      'primary_nav__items' => [['title' => 'Home', 'url' => '/']],
+      'menu__variation' => NULL,
+    ]));
+    // Omitting the required primary_nav__items fails.
+    $this->assertNotEmpty($this->validate('primary-nav', ['menu__variation' => 'basic']));
+  }
+
+  /**
+   * Utility Navigation (Wave 7, global chrome): a valid item tree passes; the
+   * required items array is enforced.
+   */
+  public function testUtilityNavValid(): void {
+    $this->assertSame([], $this->validate('utility-nav', [
+      'utility_nav__items' => [
+        ['title' => 'Give', 'url' => '/give'],
+        ['title' => 'Log in', 'url' => '/caslogin', 'is_cas' => TRUE],
+      ],
+    ]));
+    // Omitting the required utility_nav__items fails.
+    $this->assertNotEmpty($this->validate('utility-nav', []));
+  }
+
+  /**
+   * In This Section (Wave 7, global chrome): a valid item tree passes; the
+   * required items array is enforced.
+   */
+  public function testInThisSectionValid(): void {
+    $this->assertSame([], $this->validate('in-this-section', [
+      'in_this_section__items' => [
+        ['title' => 'Section Home', 'url' => '/section', 'is_active' => TRUE],
+        [
+          'title' => 'Child',
+          'url' => '/section/a',
+          'below' => [['title' => 'Grandchild', 'url' => '/section/a/g']],
+        ],
+      ],
+      'site_section_wrap__theme' => 'one',
+    ]));
+    // Omitting the required in_this_section__items fails.
+    $this->assertNotEmpty($this->validate('in-this-section', ['site_section_wrap__theme' => 'one']));
+  }
+
+  /**
+   * Site header: the global chrome header (Wave 7 / #1413).
+   */
+  public function testSiteHeaderValid(): void {
+    $this->assertSame([], $this->validate('site-header', [
+      'site_header__site_name' => 'Yale University',
+      'site_header__site_link' => '/',
+      'site_header__branding_name' => 'Yale University',
+      'site_header__branding_link' => 'https://www.yale.edu',
+      'site_header__border_thickness' => '8',
+      'site_header__theme' => 'three',
+      'site_header__accent' => 'one',
+      'site_header__menu__variation' => 'mega',
+      'site_header__nav_position' => 'left',
+      'utility_nav__search' => 1,
+      'utility_nav__dropdown_link__content' => 'Quick Links',
+      'utility_nav__dropdown_link__url' => '#',
+      'utility_nav__dropdown__items' => [
+        ['title' => 'Faculty', 'url' => '/about-us', 'is_active' => FALSE],
+        [
+          'title' => 'Students',
+          'url' => '/posts',
+          'below' => [['title' => 'News', 'url' => '/posts']],
+        ],
+      ],
+    ]));
+    // The dials are nullable (getThemeSetting/getHeaderSetting can return
+    // NULL); the header must not white-screen when they do.
+    $this->assertSame([], $this->validate('site-header', [
+      'site_header__theme' => NULL,
+      'site_header__menu__variation' => NULL,
+      'utility_nav__search' => NULL,
+    ]));
+    // A wrong-typed search flag (neither bool/int nor null) fails predictably.
+    $this->assertNotEmpty($this->validate('site-header', [
+      'utility_nav__search' => ['unexpected'],
+    ]));
+  }
+
 }

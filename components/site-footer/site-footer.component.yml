@@ -1,0 +1,65 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Site Footer
+status: stable
+group: Organisms
+description: >
+  The global site footer (Wave 7 / #1362). Thin SDC wrapper over
+  @organisms/site-footer/yds-site-footer.twig; the real markup and SCSS stay in
+  component-library-twig. The footer is global chrome (rendered from the footer
+  region via the ys_core footer block), not a Layout Builder block, so its
+  render-path adapter is ys_core/templates/ys-footer-block.html.twig.
+props:
+  type: object
+  properties:
+    site_footer__variation:
+      title: Footer variation
+      description: >
+        Layout variation. The ys_core footer block chooses this from the
+        `footer_variation` context value (basic when unset). The organism
+        branches on it, so the value set is closed.
+      type: string
+      enum:
+        - basic
+        - mega
+      default: basic
+    site_footer__theme:
+      title: Footer theme (dial)
+      description: >
+        Footer color theme. Sourced from the atomic theme setting
+        `footer_theme` at render (getThemeSetting), not a Layout Builder block
+        field, so there is no field formatter to derive a closed enum from.
+        Typed as a nullable string because getThemeSetting can return NULL and
+        SDC validates NULL against the declared type; over-strict enums would
+        assertion-fail (white-screen) on every page in dev.
+      type:
+        - string
+        - "null"
+      default: one
+    site_footer__accent:
+      title: Footer accent color (dial)
+      description: >
+        Accent color for footer links/interactive elements. Sourced from the
+        theme setting `footer_accent` (see the theme note on site_footer__theme).
+      type:
+        - string
+        - "null"
+      default: one
+    site_footer__border_thickness:
+      title: Border thickness
+      description: >
+        Decorative top-border thickness (a border.thickness design-token key).
+        Set by the render-path adapter; nullable string for the same reason as
+        the theme dials.
+      type:
+        - string
+        - "null"
+      default: "0"
+slots:
+  footer__content:
+    title: Footer content
+    required: true
+    description: >
+      The rendered footer body (basic or mega layout, logos, link columns,
+      social links, meta). Populated by the ys_core footer block template.
+      Named footer__content (not footer__inner) to avoid colliding with the CLT
+      organism's own footer__inner block, which this wrapper forwards it into.
