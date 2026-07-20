@@ -85,9 +85,6 @@ calendar:
 audio-player:
   js:
     node_modules/@yalesites-org/component-library-twig/dist/js/01-atoms/audio/yds-audio-player.js: {}
-ys_embed:
-  dependencies:
-    - core/jquery
 in-this-section:
   js:
     node_modules/@yalesites-org/component-library-twig/dist/js/02-molecules/menu/menu-in-this-section-toggle/yds-menu-in-this-section-toggle.js: {}
@@ -95,6 +92,9 @@ in-this-section:
 utility-nav-dropdown-menu:
   js:
     node_modules/@yalesites-org/component-library-twig/dist/js/03-organisms/menu/utility-nav/utility-nav-dropdown-menu.js: {}
+ys_embed:
+  dependencies:
+    - core/jquery
 read-time:
   js:
     node_modules/@yalesites-org/component-library-twig/dist/js/02-molecules/read-time/yds-read-time.js: {}
