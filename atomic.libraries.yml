@@ -97,6 +97,9 @@ calendar:
   dependencies:
     - core/drupal
     - core/drupal.ajax
+audio-player:
+  js:
+    node_modules/@yalesites-org/component-library-twig/dist/js/01-atoms/audio/yds-audio-player.js: {}
 in-this-section:
   js:
     node_modules/@yalesites-org/component-library-twig/dist/js/02-molecules/menu/menu-in-this-section-toggle/yds-menu-in-this-section-toggle.js: {}
