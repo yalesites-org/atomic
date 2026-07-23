@@ -8,8 +8,11 @@
   color: var(--gin-bg-green);
 }
 
-div[contenteditable="true"] .ck-anchor, 
-div[contenteditable="true"] #drupal-off-canvas [data-drupal-ck-style-fence] .ck-anchor {
+div[contenteditable="true"] .ck-anchor,
+div[contenteditable="true"]
+  #drupal-off-canvas
+  [data-drupal-ck-style-fence]
+  .ck-anchor {
   color: var(--gin-bg-green) !important;
   text-decoration: underline;
 }
@@ -20,9 +23,9 @@ div[contenteditable="true"] #drupal-off-canvas [data-drupal-ck-style-fence] .ck-
 }
 
 /* Removes the border style in code blocks within ckeditor */
- .ck-content pre code {
-   border: 0;
- }
+.ck-content pre code {
+  border: 0;
+}
 
 .glb-table .ck-content * {
   padding: 0;
@@ -64,7 +67,9 @@ div[contenteditable="true"] #drupal-off-canvas [data-drupal-ck-style-fence] .ck-
   color: black !important;
 }
 
-#drupal-off-canvas-wrapper .ui-dialog-content div:not([data-drupal-ck-style-fence] *) {
+#drupal-off-canvas-wrapper
+  .ui-dialog-content
+  div:not([data-drupal-ck-style-fence] *) {
   width: 100%;
   max-width: 100%;
 }
@@ -75,4 +80,19 @@ div[contenteditable="true"] #drupal-off-canvas [data-drupal-ck-style-fence] .ck-
 */
 .gin--dark-mode .ck-widget.table table td.ck-editor__nested-editable:focus {
   color: black;
+}
+
+/*
+ * Make bold visually apparent inside the editing surface. The editor renders in
+ * a fallback font stack (Helvetica/Arial) that has no distinct 500 weight, so a
+ * <strong> styled at the front-end mallory-medium weight (500) rounds to normal
+ * and looks unbolded while editing -- even though it renders correctly on the
+ * published page, where Mallory (which has a real 500) is loaded. Force an
+ * unambiguous bold weight in the editor only so editors get immediate visual
+ * confirmation. Italic and other style-based formatting already render in the
+ * fallback font and are unaffected. See yalesites-org/YaleSites-Internal#1455.
+ */
+.ck-content strong,
+.ck-content b {
+  font-weight: 700;
 }
