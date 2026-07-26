@@ -401,3 +401,17 @@ th.field-label {
 #block-yalesitesfooterblock .contextual-region {
   display: none;
 }
+
+/*
+ * Let an open Chosen dropdown escape the block-configuration form wrapper.
+ *
+ * gin_lb sets `overflow: auto` on .glb-canvas-form__settings so it scrolls as a
+ * flex child, but our `flex-grow: unset` above makes it content-sized, so that
+ * overflow never scrolls -- it only clips. It was cutting off Chosen's
+ * absolutely-positioned dropdown on short forms such as In-Line Message, where
+ * the Icon picker sits near the end of the form. The :has() guard limits this
+ * to the moment a dropdown is open, so no other form behavior changes.
+ */
+.glb-canvas-form__settings:has(.chosen-with-drop) {
+  overflow: visible;
+}
