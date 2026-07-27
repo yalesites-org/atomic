@@ -16,23 +16,25 @@
 {% elseif item_variation == 'modal' %}
 
 {#
-  Note: The below check for 'not iterable' is what prevents an error when
-  duplicating paragraphs or attempting to preview modal contents of a newly
-  created paragraph prior to save. This is because the paragraph ID has not
-  yet been created and so cannot be passed to the twig_tweak function.
+  Note: the paragraph is rendered from the entity object (the twig_tweak `view`
+  filter) rather than by ID (`drupal_entity('paragraph', id, ...)`). An unsaved
+  paragraph — a newly added gallery item, or one belonging to a block that was
+  just cloned in Layout Builder — has no ID yet, so rendering by ID silently
+  produced an empty modal in the Layout Builder preview even though the media
+  reference was there.
 #}
 
   {% embed "@organisms/galleries/media-grid/_yds-media-grid-modal-item.twig" with {
     media_grid__items: content.field_gallery_items['#items'],
   } %}
     {% block media_grid__modal__media %}
-      {% if item.entity.id.0.value is not iterable %}
-        {{ drupal_entity('paragraph', item.entity.id.0.value|default(''), 'gallery_modal_media') }}
+      {% if item.entity %}
+        {{ item.entity|view('gallery_modal_media') }}
       {% endif %}
     {% endblock %}
     {% block media_grid__modal__content %}
-      {% if item.entity.id.0.value is not iterable %}
-        {{ drupal_entity('paragraph', item.entity.id.0.value|default(''), 'gallery_modal_content') }}
+      {% if item.entity %}
+        {{ item.entity|view('gallery_modal_content') }}
       {% endif %}
     {% endblock %}
   {% endembed %}
