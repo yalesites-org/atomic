@@ -360,6 +360,11 @@ th.field-label {
   display: none;
 }
 
+/* Fix for .layout-builder-block word-break */
+.audio-embed.layout-builder-block {
+  word-break: normal;
+}
+
 /* Fix for caption in image banner */
 /* This is an override for a core CSS file for tables which has too broad styles for .caption */
 .js-layout-builder-block .image-banner__image figcaption.caption  {
