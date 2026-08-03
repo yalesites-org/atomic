@@ -16,23 +16,29 @@
 {% elseif item_variation == 'modal' %}
 
 {#
-  Note: The below check for 'not iterable' is what prevents an error when
-  duplicating paragraphs or attempting to preview modal contents of a newly
-  created paragraph prior to save. This is because the paragraph ID has not
-  yet been created and so cannot be passed to the twig_tweak function.
+  Note: The modal renders the referenced paragraph from the in-memory entity
+  rather than re-loading it by ID. A paragraph that has not been saved yet has
+  no ID, so a load-by-ID lookup returned nothing and the modal came up empty --
+  which is what left cloned and brand-new gallery blocks without their enlarged
+  images in the Layout Builder preview.
+
+  The entity type is checked first because 'item.entity' does not fail closed:
+  when the reference is dangling, Twig falls through to FieldItemBase::getEntity()
+  and hands back the HOST gallery block, which would otherwise be rendered
+  inside every modal slot.
 #}
 
   {% embed "@organisms/galleries/media-grid/_yds-media-grid-modal-item.twig" with {
     media_grid__items: content.field_gallery_items['#items'],
   } %}
     {% block media_grid__modal__media %}
-      {% if item.entity.id.0.value is not iterable %}
-        {{ drupal_entity('paragraph', item.entity.id.0.value|default(''), 'gallery_modal_media') }}
+      {% if item.entity.entityTypeId == 'paragraph' %}
+        {{ item.entity|view('gallery_modal_media') }}
       {% endif %}
     {% endblock %}
     {% block media_grid__modal__content %}
-      {% if item.entity.id.0.value is not iterable %}
-        {{ drupal_entity('paragraph', item.entity.id.0.value|default(''), 'gallery_modal_content') }}
+      {% if item.entity.entityTypeId == 'paragraph' %}
+        {{ item.entity|view('gallery_modal_content') }}
       {% endif %}
     {% endblock %}
   {% endembed %}
