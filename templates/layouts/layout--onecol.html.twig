@@ -7,6 +7,20 @@
  * - in_preview: Whether the plugin is being rendered in preview mode.
  * - content: The content for this layout.
  * - attributes: HTML attributes for the layout <div>.
+ * - settings: The section configuration, including the selected theme (see
+ *   \Drupal\ys_layouts\Plugin\Layout\YSLayoutOneColumn).
+ *
+ * The `yds-layout` class plus `data-component-theme` reuse the section color
+ * rules in component-library-twig's `_yds-layout.scss` -- added only when a
+ * theme other than "Default - no color" is picked, so an unthemed section's
+ * markup is unchanged. Deliberately does NOT embed `@organisms/layout/layout`
+ * the way Two Column/Three Column do: see docs/color-theme.md in
+ * yalesites-project (the "Layout Builder Sections" section) for why, and see
+ * ys_layouts/layouts/onecol/onecol.css (attached via YSLayoutOneColumn's
+ * plugin definition) for the themed-only vertical padding this still needs,
+ * including how `data-component-padding` below still zeroes it out.
+ *
+ * @ingroup themeable
  */
 #}
 {%
@@ -15,6 +29,12 @@
     'layout--onecol',
   ]
 %}
+{% set theme = settings.theme|default('default') %}
+{% if theme != 'default' %}
+  {% set classes = classes|merge(['yds-layout']) %}
+  {% set attributes = attributes.setAttribute('data-component-theme', theme) %}
+  {% set attributes = attributes.setAttribute('data-component-padding', settings.padding|default('default')) %}
+{% endif %}
 {% if content.content %}
   <div{{ attributes.addClass(classes) }}>
     <div {{ region_attributes.content.addClass('layout__region', 'layout__region--content') }}>
