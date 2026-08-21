@@ -22,6 +22,15 @@ props:
       type: string
       enum: [general, marketing]
       default: general
+    inline_message__icon_name:
+      title: Icon
+      description: >
+        Machine name of the chosen icon from field_icon. An empty value (or
+        '_none') renders a text-only message; the value is always supplied from
+        Drupal, so it is authoritative over the type-derived default icon.
+      type:
+        - string
+        - "null"
     inline_message__heading_level:
       title: Heading level
       type:
