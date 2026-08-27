@@ -15,21 +15,30 @@ global:
     node_modules/@yalesites-org/component-library-twig/dist/js/link-treatment.js: {}
   dependencies:
     - core/drupal
+    - core/once
 disable-menu:
   js:
     js/disable-menu.js: {}
 accordion:
   js:
     node_modules/@yalesites-org/component-library-twig/dist/js/components/02-molecules/accordion/yds-accordion.js: {}
+  dependencies:
+    - core/once
 alert:
   js:
     node_modules/@yalesites-org/component-library-twig/dist/js/components/02-molecules/alert/yds-alert.js: {}
+  dependencies:
+    - core/once
 primary-nav:
   js:
     node_modules/@yalesites-org/component-library-twig/dist/js/components/03-organisms/menu/primary-nav/yds-primary-nav.js: {}
+  dependencies:
+    - core/once
 secondary-nav:
   js:
     node_modules/@yalesites-org/component-library-twig/dist/js/components/03-organisms/menu/secondary-nav/yds-secondary-nav.js: {}
+  dependencies:
+    - core/once
 reference-card:
   js:
     node_modules/@yalesites-org/component-library-twig/dist/js/components/02-molecules/cards/reference-card/yds-reference-card.js: {}
@@ -39,15 +48,23 @@ custom-card:
 breadcrumbs:
   js:
     node_modules/@yalesites-org/component-library-twig/dist/js/components/03-organisms/menu/breadcrumbs/yds-breadcrumbs.js: {}
+  dependencies:
+    - core/once
 tabs:
   js:
     node_modules/@yalesites-org/component-library-twig/dist/js/components/02-molecules/tabs/yds-tabs.js: {}
+  dependencies:
+    - core/once
 gallery:
   js:
     node_modules/@yalesites-org/component-library-twig/dist/js/components/03-organisms/galleries/media-grid/yds-media-grid-interactive.js: {}
+  dependencies:
+    - core/once
 background-video:
   js:
     node_modules/@yalesites-org/component-library-twig/dist/js/components/01-atoms/videos/video-background/yds-video-background.js: {}
+  dependencies:
+    - core/once
 fontawesome:
   css:
     theme:
@@ -61,15 +78,21 @@ layout-builder:
 text-link:
   js:
     node_modules/@yalesites-org/component-library-twig/dist/js/components/01-atoms/controls/text-link/yds-text-link.js: {}
+  dependencies:
+    - core/once
 text:
   js:
     node_modules/@yalesites-org/component-library-twig/dist/js/components/01-atoms/typography/text/yds-text.js: {}
 text-copy-button:
   js:
     node_modules/@yalesites-org/component-library-twig/dist/js/components/01-atoms/controls/text-copy-button/yds-text-copy-button.js: {}
+  dependencies:
+    - core/once
 event-localist:
   js:
     node_modules/@yalesites-org/component-library-twig/dist/js/components/02-molecules/meta/event-meta/event-meta-localist.js: {}
+  dependencies:
+    - core/once
 chosen-select:
   js:
     node_modules/@yalesites-org/component-library-twig/dist/js/components/01-atoms/forms/select/yds-select.js: {}
@@ -82,16 +105,23 @@ calendar:
   dependencies:
     - core/drupal
     - core/drupal.ajax
+    - core/once
 audio-player:
   js:
     node_modules/@yalesites-org/component-library-twig/dist/js/components/01-atoms/audio/yds-audio-player.js: {}
+  dependencies:
+    - core/once
 in-this-section:
   js:
     node_modules/@yalesites-org/component-library-twig/dist/js/components/02-molecules/menu/menu-in-this-section-toggle/yds-menu-in-this-section-toggle.js: {}
     node_modules/@yalesites-org/component-library-twig/dist/js/components/03-organisms/site-in-this-section/yds-site-in-this-section.js: {}
+  dependencies:
+    - core/once
 utility-nav-dropdown-menu:
   js:
     node_modules/@yalesites-org/component-library-twig/dist/js/components/03-organisms/menu/utility-nav/utility-nav-dropdown-menu.js: {}
+  dependencies:
+    - core/once
 ys_embed:
   dependencies:
     - core/jquery
