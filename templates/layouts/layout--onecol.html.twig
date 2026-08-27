@@ -7,6 +7,38 @@
  * - in_preview: Whether the plugin is being rendered in preview mode.
  * - content: The content for this layout.
  * - attributes: HTML attributes for the layout <div>.
+ * - settings: The section configuration, including the selected theme (see
+ *   \Drupal\ys_layouts\Plugin\Layout\YSLayoutOneColumn).
+ *
+ * The `yds-layout` class plus `data-component-theme` reuse the section color
+ * rules in component-library-twig's `_yds-layout.scss` -- added only when a
+ * theme other than "Default - no color" is picked, so an unthemed section's
+ * markup is unchanged. Deliberately does NOT embed `@organisms/layout/layout`
+ * the way Two Column/Three Column do: see docs/color-theme.md in
+ * yalesites-project (the "Layout Builder Sections" section) for why, and see
+ * ys_layouts/layouts/onecol/onecol.css (attached via YSLayoutOneColumn's
+ * plugin definition) for the themed-only vertical padding this still needs,
+ * including how `data-component-padding` below still zeroes it out.
+ *
+ * The wrapper renders when the region has content OR a theme is picked, so a
+ * themed but empty section still shows its colour band the way Two Column and
+ * Three Column sections do. (`LayoutDefault::build()` only copies regions that
+ * hold components, so `content.content` is unset for an empty section, while
+ * `content` stays truthy because build() always adds `#settings`/`#layout`.)
+ *
+ * Note it does NOT simply guard on `content` the way the sibling templates do,
+ * even though that would be more uniform. An UNTHEMED empty section has to keep
+ * rendering nothing, because several CSS rules select on which onecol section
+ * is first or last among its siblings -- `.main-content .layout.layout--onecol:
+ * last-of-type .layout__region--content > *:last-child` supplies the page's
+ * bottom margin before the footer (atomic/css/layout-builder.css), and
+ * `.main-content > *:first-child` supplies the top margin
+ * (component-library-twig's page-layouts.scss). The post, event, and page
+ * default displays each ship a TRAILING EMPTY layout_onecol "Content Section",
+ * so rendering empty unthemed sections would hand `:last-of-type` to an empty
+ * wrapper and drop that bottom margin on every node using those displays.
+ *
+ * @ingroup themeable
  */
 #}
 {%
@@ -15,9 +47,24 @@
     'layout--onecol',
   ]
 %}
-{% if content.content %}
+{% set theme = settings.theme|default('default') %}
+{% if theme != 'default' %}
+  {% set classes = classes|merge(['yds-layout']) %}
+  {% set attributes = attributes.setAttribute('data-component-theme', theme) %}
+  {% set attributes = attributes.setAttribute('data-component-padding', settings.padding|default('default')) %}
+{% endif %}
+{% if content.content or theme != 'default' %}
+  {#
+    template_preprocess_layout() only builds region_attributes for regions that
+    actually hold components, so this is undefined for a section with no blocks
+    -- reachable now that the wrapper no longer depends on the region existing.
+    The sibling templates only print their region attributes, which is null-safe;
+    this one adds classes, and a method call on an undefined variable throws once
+    a site turns on Twig's strict_variables.
+  #}
+  {% set region_attributes_content = region_attributes.content|default(create_attribute()) %}
   <div{{ attributes.addClass(classes) }}>
-    <div {{ region_attributes.content.addClass('layout__region', 'layout__region--content') }}>
+    <div {{ region_attributes_content.addClass('layout__region', 'layout__region--content') }}>
       {{ content.content }}
     </div>
   </div>
