@@ -101,7 +101,23 @@ chosen-select:
     - libraries/chosen
 calendar:
   js:
-    node_modules/@yalesites-org/component-library-twig/dist/js/components/03-organisms/calendar/yds-calendar.js: {}
+    # This file is a real ES module, unlike every other component script here.
+    # The calendar and the modal component both import micromodal, and Rollup
+    # hoists a module shared by two entries into dist/assets/, leaving this entry
+    # with a top-level `import`. The webpack build inlined micromodal into each
+    # entry instead, which is why this used to be a plain script.
+    #
+    # A classic script containing `import` is a parse-time SyntaxError, so the
+    # whole file would fail to execute and Drupal.behaviors.eventsCalendar would
+    # never register -- an inert calendar with no console clue beyond the parse
+    # error. `type: module` is what makes the import legal; it defers execution to
+    # after parsing but still before DOMContentLoaded, so the behavior is
+    # registered before Drupal attaches behaviors. preprocess: false keeps
+    # aggregation from concatenating a module into a classic bundle.
+    node_modules/@yalesites-org/component-library-twig/dist/js/components/03-organisms/calendar/yds-calendar.js:
+      attributes:
+        type: module
+      preprocess: false
   dependencies:
     - core/drupal
     - core/drupal.ajax
