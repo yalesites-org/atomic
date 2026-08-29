@@ -4,6 +4,7 @@
 
 {% embed "@molecules/cards/reference-card/yds-reference-card.twig" with {
   reference_card__heading: heading,
+  reference_card__heading_level: node.card_heading_level|default('3'),
   reference_card__subheading: content.field_position,
   reference_card__url: url,
   reference_card__snippet: content.field_subtitle,
