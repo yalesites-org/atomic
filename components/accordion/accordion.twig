@@ -1,0 +1,29 @@
+{#
+ # SDC thin wrapper for the Accordion molecule. See the callout shim and
+ # docs/sdc/recipe-convert-a-component-to-sdc.md for the slot-forwarding pattern.
+ #
+ # Two slots:
+ #  - accordion__heading: the CLT template consumes this as a *variable*
+ #    (heading text), so the captured slot is passed through as accordion__heading.
+ #  - accordion__content: injected into the CLT template's accordion__items block
+ #    (named distinctly to avoid a block-name collision).
+ #
+ # JS/CSS attach via libraryOverrides (atomic/accordion). `directory` is threaded
+ # so the nested icon atom resolves the SVG sprite path.
+ #}
+{% set accordion__heading_slot = block('accordion__heading') %}
+{% set accordion__content_slot = block('accordion__content') %}
+{% embed '@molecules/accordion/yds-accordion.twig' with {
+  accordion__heading: accordion__heading_slot,
+  accordion__alignment: accordion__alignment,
+  accordion__theme: accordion__theme,
+  accordion__width: accordion__width,
+  accordion__content_slot: accordion__content_slot,
+  directory: directory,
+} only %}
+  {% block accordion__items %}{{ accordion__content_slot|raw }}{% endblock %}
+{% endembed %}
+{% if false %}
+  {% block accordion__heading %}{% endblock %}
+  {% block accordion__content %}{% endblock %}
+{% endif %}

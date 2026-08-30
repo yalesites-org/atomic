@@ -1,0 +1,23 @@
+{#
+ # SDC thin wrapper for the Inline Message molecule. heading and content are
+ # consumed as variables by the template (heading -> heading atom; content ->
+ # text atom, which prints it with |raw). directory is threaded for the icon.
+ # See docs/sdc/recipe-convert-a-component-to-sdc.md.
+ #}
+{% set inline_message__heading_slot = block('inline_message__heading') %}
+{% set inline_message__content_slot = block('inline_message__content') %}
+{{ include('@molecules/inline-message/yds-inline-message.twig', {
+  inline_message__type: inline_message__type,
+  inline_message__theme: inline_message__theme,
+  inline_message__icon_name: inline_message__icon_name,
+  inline_message__heading_level: inline_message__heading_level,
+  inline_message__heading: inline_message__heading_slot|trim,
+  inline_message__content: inline_message__content_slot,
+  inline_message__link__content: inline_message__link__content,
+  inline_message__link__url: inline_message__link__url,
+  directory: directory,
+}, with_context = false) }}
+{% if false %}
+  {% block inline_message__heading %}{% endblock %}
+  {% block inline_message__content %}{% endblock %}
+{% endif %}

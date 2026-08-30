@@ -1,0 +1,43 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Reference Card
+status: stable
+group: Organisms
+description: >
+  A single referenced-content card, rendered through the card collection.
+  Thin SDC wrapper over @organisms/card-collection/yds-card-collection.twig.
+props:
+  type: object
+  properties:
+    card_collection__source_type:
+      title: Source node type
+      description: The referenced node's bundle (drives the card layout).
+      type:
+        - string
+        - "null"
+    card_collection__type:
+      title: Collection type
+      type: string
+      default: single
+    card_collection__width:
+      title: Width
+      type: string
+      default: site
+    card_collection__featured:
+      title: Featured
+      description: '"true" when the style variation is "featured".'
+      type: string
+      enum:
+        - "true"
+        - "false"
+      default: "false"
+    animate__item:
+      title: Animate item
+      type: string
+      default: enabled
+slots:
+  cards:
+    title: Cards
+    required: true
+    description: >
+      The referenced content (from field_content_ref). Injected into the CLT
+      card_collection__cards block.

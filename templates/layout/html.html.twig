@@ -43,11 +43,12 @@
     {% set secondary_nav_present = secondary_nav_present |default(FALSE) %}
 
     {% if secondary_nav_present %}
-      {% include "@molecules/link-skip/yds-link-skip.twig" with {
-        link_skip__content: 'Skip to secondary menu'|t ,
+      {% embed "atomic:link-skip" with {
         link_skip__url: '#block-atomic-custombooknavigation',
         link_skip__extra_class: 'visually-hidden focusable',
-      }%}
+      } %}
+        {% block link_skip__content_slot %}{{ 'Skip to secondary menu'|t }}{% endblock %}
+      {% endembed %}
     {% endif %}
 
     {#
@@ -62,11 +63,12 @@
         components/_settings/config.css (for link jupming adjustments)
         templates/navigation/book-tree.html.twig (for the secondary nav bypass div)
     #}
-    {% include "@molecules/link-skip/yds-link-skip.twig" with {
-      link_skip__content: 'Skip to main content'|t ,
+    {% embed "atomic:link-skip" with {
       link_skip__url: main_content_id,
       link_skip__extra_class: 'visually-hidden focusable',
-    }%}
+    } %}
+      {% block link_skip__content_slot %}{{ 'Skip to main content'|t }}{% endblock %}
+    {% endembed %}
 
     {{ page_top }}
     {{ page }}

@@ -3,11 +3,10 @@
 {% set video_banner__width = content.field_style_width.0['#markup']|default('max') %}
 
 {% block content %}
-
-  {% embed "@molecules/banner/video/yds-video-banner.twig" with {
+  {% embed 'atomic:video-banner' with {
     video_banner__width: video_banner__width,
   } %}
-    {% block video_banner__video %}
+    {% block video %}
       {{ content.field_media }}
     {% endblock %}
   {% endembed %}

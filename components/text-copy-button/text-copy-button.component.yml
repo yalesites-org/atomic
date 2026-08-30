@@ -1,0 +1,38 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Text Copy Button
+status: stable
+group: Atoms
+description: >
+  A button that copies adjacent text to the clipboard. Thin SDC wrapper over
+  @atoms/controls/text-copy-button/yds-text-copy-button.twig; JS attaches via
+  libraryOverrides (atomic/text-copy-button).
+libraryOverrides:
+  dependencies:
+    - atomic/text-copy-button
+props:
+  type: object
+  properties:
+    text_copy_button__pre_text:
+      title: Pre-text
+      description: The text shown next to the button and copied to the clipboard.
+      type:
+        - string
+        - "null"
+    text_copy_button__pre_text_tag:
+      title: Pre-text wrapper tag
+      description: HTML tag wrapping the pre-text (span default; div for block markup). Nullable; the template applies its own default.
+      type:
+        - string
+        - "null"
+    text_copy_button__component_theme:
+      title: Theme
+      type:
+        - string
+        - "null"
+slots:
+  text_copy_button__content_slot:
+    title: Button content
+    required: true
+    description: >
+      The button content. Named text_copy_button__content_slot (not
+      text_copy_button__content) to avoid a collision with the template's block.

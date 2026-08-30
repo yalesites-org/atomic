@@ -1,0 +1,12 @@
+{#
+ # SDC thin wrapper for the Lists atom. The slot is injected into the template's
+ # list__content block. See docs/sdc/recipe-convert-a-component-to-sdc.md.
+ #}
+{% set list__content_slot = block('list__content_slot') %}
+{% embed '@atoms/lists/yds-list.twig' with {
+  list__type: list__type,
+  list__content_slot: list__content_slot,
+} only %}
+  {% block list__content %}{{ list__content_slot|trim|raw }}{% endblock %}
+{% endembed %}
+{% if false %}{% block list__content_slot %}{% endblock %}{% endif %}

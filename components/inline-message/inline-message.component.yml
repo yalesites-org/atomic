@@ -1,0 +1,57 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Inline Message
+status: stable
+group: Molecules
+description: >
+  An inline informational/marketing message with an icon, heading, body and
+  optional link. Thin SDC wrapper over
+  @molecules/inline-message/yds-inline-message.twig.
+props:
+  type: object
+  properties:
+    inline_message__theme:
+      title: Theme (dial)
+      description: >
+        Color theme. Enum from ys_themes.component_overrides.yml
+        (inline_message.field_style_color, list_key formatter).
+      type: string
+      enum: [one, two, three, four, five]
+      default: one
+    inline_message__type:
+      title: Type
+      type: string
+      enum: [general, marketing]
+      default: general
+    inline_message__icon_name:
+      title: Icon
+      description: >
+        Machine name of the chosen icon from field_icon. An empty value (or
+        '_none') renders a text-only message; the value is always supplied from
+        Drupal, so it is authoritative over the type-derived default icon.
+      type:
+        - string
+        - "null"
+    inline_message__heading_level:
+      title: Heading level
+      type:
+        - string
+        - "null"
+    inline_message__link__content:
+      title: Link text
+      type:
+        - string
+        - "null"
+    inline_message__link__url:
+      title: Link URL
+      type:
+        - string
+        - "null"
+slots:
+  inline_message__heading:
+    title: Heading
+    required: false
+    description: The message heading (plain text).
+  inline_message__content:
+    title: Content
+    required: false
+    description: The message body (rich text; rendered via the text atom).

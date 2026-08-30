@@ -1,0 +1,25 @@
+{#
+ # SDC thin wrapper for Profile Meta. Scalar props feed the CLT template; the
+ # image is injected into the profile__image block (SDC slot renamed to
+ # profile_image to avoid a block-name collision). directory is threaded for the
+ # nested atoms. Create-only — no consumer repointed yet.
+ # See docs/sdc/recipe-convert-a-component-to-sdc.md.
+ #}
+{% set profile_image_slot %}{{ block('profile_image')|raw }}{% endset %}
+{% embed '@molecules/meta/profile-meta/yds-profile-meta.twig' with {
+  profile_meta__heading: profile_meta__heading,
+  profile_meta__title_line: profile_meta__title_line,
+  profile_meta__subtitle_line: profile_meta__subtitle_line,
+  profile_meta__department: profile_meta__department,
+  profile_meta__pronouns: profile_meta__pronouns,
+  profile_meta__image_orientation: profile_meta__image_orientation,
+  profile_meta__image_style: profile_meta__image_style,
+  profile_meta__image_alignment: profile_meta__image_alignment,
+  profile_image_slot: profile_image_slot,
+  directory: directory,
+} only %}
+  {% block profile__image %}
+    {% if profile_image_slot|trim %}{{ profile_image_slot|raw }}{% else %}{{ parent() }}{% endif %}
+  {% endblock %}
+{% endembed %}
+{% if false %}{% block profile_image %}{% endblock %}{% endif %}

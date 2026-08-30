@@ -1,0 +1,80 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Facts and Figures
+status: stable
+group: Organisms
+description: >
+  A group of facts/figures (stat cards) with an optional heading, intro text and
+  background image. Thin SDC wrapper over
+  @organisms/facts-and-figures-group/yds-facts-and-figures-group.twig; the real
+  markup and SCSS stay in component-library-twig. Dial enums are generated from
+  ys_themes.component_overrides.yml (facts.field_style_*).
+props:
+  type: object
+  properties:
+    facts_and_figures__group__heading:
+      title: Heading
+      type:
+        - string
+        - "null"
+    facts_and_figures__group__content:
+      title: Intro text
+      type:
+        - string
+        - "null"
+    facts_and_figures__group__alignment:
+      title: Alignment (dial)
+      type: string
+      enum:
+        - left
+        - center
+      default: left
+    facts_and_figures__group__grid_count:
+      title: Grid count (dial - field_style_width)
+      type: string
+      enum:
+        - two
+        - three
+        - four
+      default: four
+    facts_and_figures__group__presentation_style:
+      title: Presentation style
+      description: From field_style_variation; the CLT default is "basic".
+      type:
+        - string
+        - "null"
+      default: basic
+    facts_and_figures__group__width:
+      title: Width
+      type: string
+      default: site
+    facts_and_figures__group__theme:
+      title: Theme (dial)
+      type: string
+      enum:
+        - one
+        - two
+        - three
+        - four
+        - five
+      default: one
+    facts_and_figures__group__bg_image:
+      title: Has background image
+      description: '"true" when a background media is present, else "false".'
+      type: string
+      enum:
+        - "true"
+        - "false"
+      default: "false"
+slots:
+  facts__items:
+    title: Fact items
+    required: true
+    description: >
+      The individual fact/figure cards (from field_facts_items). Injected into
+      the CLT facts_and_figures__group__items block.
+  facts__image:
+    title: Background image
+    required: false
+    description: >
+      Optional background media (from field_media). Injected into the CLT
+      facts_and_figures__group__image block.

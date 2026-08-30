@@ -1,0 +1,26 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Text
+status: stable
+group: Atoms
+description: >
+  Rich-text / body-copy wrapper. Thin SDC wrapper over
+  @atoms/typography/text/yds-text.twig; the real template and SCSS stay in
+  component-library-twig.
+props:
+  type: object
+  properties:
+    text__element:
+      title: Wrapper element
+      description: The HTML element to wrap the content in (div, p, pre, ...).
+      type: string
+      default: div
+      examples:
+        - div
+        - p
+slots:
+  text__content:
+    title: Content
+    required: true
+    description: >
+      The rich-text content. The underlying template prints it with |raw to
+      support WYSIWYG output, so pass already-sanitized Drupal content.

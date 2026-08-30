@@ -1,0 +1,11 @@
+{#
+ # SDC thin wrapper for the Text atom. The CLT template consumes text__content
+ # as a *variable* (printed with |raw), so the captured slot is passed through
+ # as text__content. See docs/sdc/recipe-convert-a-component-to-sdc.md.
+ #}
+{% set text__content_slot = block('text__content') %}
+{{ include('@atoms/typography/text/yds-text.twig', {
+  text__element: text__element,
+  text__content: text__content_slot|trim,
+}, with_context = false) }}
+{% if false %}{% block text__content %}{% endblock %}{% endif %}

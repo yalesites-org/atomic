@@ -1,0 +1,126 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Publication Meta
+status: stable
+group: Molecules
+description: >
+  Resource / publication detail meta — heading, category, publish date, authors,
+  journal info, citation/abstract, download or embedded video, and a keyed
+  metadata grid. Thin SDC wrapper over
+  @molecules/meta/publication-meta/yds-publication-detail.twig (the template that
+  Resource nodes actually render; the resource-meta Storybook template has no
+  live consumer). Props-only. Create-only: the ys_layouts resource_meta_block
+  still includes the CLT template directly. The text-copy-button JS attaches via
+  libraryOverrides. Rendered-HTML props (citation, abstract, document_image,
+  video embed) are typed permissively.
+libraryOverrides:
+  dependencies:
+    - atomic/text-copy-button
+props:
+  type: object
+  properties:
+    publication_detail__heading:
+      title: Heading
+      type: string
+    publication_detail__category:
+      title: Category
+      type:
+        - string
+        - "null"
+    publication_detail__publish_date:
+      title: Publish date
+      type:
+        - string
+        - "null"
+    publication_detail__authors:
+      title: Authors
+      description: Array of { label, url }.
+      type: array
+    publication_detail__journal_publication_name:
+      title: Journal / publication name
+      type:
+        - string
+        - "null"
+    publication_detail__journal_publication_issue:
+      title: Journal / publication issue
+      type:
+        - string
+        - "null"
+    publication_detail__citation:
+      title: Citation
+      type:
+        - string
+        - object
+        - "null"
+    publication_detail__abstract:
+      title: Abstract
+      type:
+        - string
+        - object
+        - "null"
+    publication_detail__external_source:
+      title: External source
+      description: "{ url, title }."
+      type:
+        - object
+        - array
+        - "null"
+    publication_detail__download_url:
+      title: Download URL
+      type:
+        - string
+        - "null"
+    publication_detail__download_label:
+      title: Download label
+      type: string
+      default: Download
+    publication_detail__download_aria_label:
+      title: Download aria-label
+      type:
+        - string
+        - "null"
+    publication_detail__resource_type:
+      title: Resource type
+      description: Media bundle — "document" or "video".
+      type:
+        - string
+        - "null"
+    publication_detail__media_id:
+      title: Media ID
+      type:
+        - integer
+        - string
+        - "null"
+    publication_detail__document_image:
+      title: Document image
+      description: Responsive image render (thumbnail).
+      type:
+        - string
+        - object
+        - "null"
+    publication_detail__metadata:
+      title: Metadata
+      description: Keyed taxonomy data (label + items render arrays).
+      type:
+        - object
+        - array
+    publication_detail__description:
+      title: Description
+      type:
+        - string
+        - object
+        - "null"
+    publication_detail__width:
+      title: Width
+      type: string
+      default: site
+    video_embed__content__1:
+      title: Video embed
+      description: >
+        Rendered media markup for a video resource (the wrapper supplies the
+        media entity render); consumed only when resource_type is "video".
+      type:
+        - string
+        - object
+        - "null"
+  required:
+    - publication_detail__heading
