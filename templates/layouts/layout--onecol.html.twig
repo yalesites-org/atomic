@@ -10,15 +10,39 @@
  * - settings: The section configuration, including the selected theme (see
  *   \Drupal\ys_layouts\Plugin\Layout\YSLayoutOneColumn).
  *
- * The `yds-layout` class plus `data-component-theme` reuse the section color
- * rules in component-library-twig's `_yds-layout.scss` -- added only when a
- * theme other than "Default - no color" is picked, so an unthemed section's
- * markup is unchanged. Deliberately does NOT embed `@organisms/layout/layout`
- * the way Two Column/Three Column do: see docs/color-theme.md in
- * yalesites-project (the "Layout Builder Sections" section) for why, and see
- * ys_layouts/layouts/onecol/onecol.css (attached via YSLayoutOneColumn's
- * plugin definition) for the themed-only vertical padding this still needs,
- * including how `data-component-padding` below still zeroes it out.
+ * Renders through `@organisms/layout/layout` (`yds-layout.twig`) exactly like
+ * Two Column (70/30), Two Column (50/50) and Three Column (33/33/33), so all
+ * four section layouts emit ONE signature from ONE template:
+ *
+ *   <div class="yds-layout layout" data-component-theme="X"
+ *        data-component-layout="Y" …>
+ *
+ * `component__layout: 'one-column'` is what tells the organism this is a
+ * single-region layout, so it renders the content directly in the section
+ * element instead of wrapping it in the `__inner` flex row and a `__primary`
+ * column. Adding a new section type (a 30/70, say) means a new
+ * `component__layout` value there, not a new template here.
+ *
+ * This layout used to hand-roll the `yds-layout` class and the
+ * `data-component-theme` attribute itself, and only when a theme was picked.
+ * It now always renders through the organism (YaleSites-Internal#1613), so an
+ * unthemed section carries `data-component-theme="default"` where it
+ * previously carried no section markup at all. Two rules exist because of
+ * that, and both are load-bearing:
+ *  - `_yds-layout.scss` excludes `one-column` from the `[data-component-theme=
+ *    'default']` section-margin rule. One column's page-level margins come
+ *    from `.main-content > *:first-child` (page-layouts.scss) and
+ *    `.main-content .layout.layout--onecol:last-of-type` (layout-builder.css),
+ *    so applying section margins would double them on every page.
+ *  - `ys_layouts/layouts/onecol/onecol.css` scopes its vertical padding to a
+ *    themed section, since `yds-layout` is no longer a themed-only signal.
+ * Everything `--color-layout-border` feeds (the CTA atom's fill, the divider
+ * atom, tabs, pull-quote) is already guarded on
+ * `[data-component-theme]:not([data-component-theme='default'])`, so an
+ * unthemed section picks up none of it.
+ *
+ * `layout--onecol` is passed through as an extra class because core's own
+ * stylesheets and both page-margin rules above select on it.
  *
  * The wrapper renders when the region has content OR a theme is picked, so a
  * themed but empty section still shows its colour band the way Two Column and
@@ -41,31 +65,34 @@
  * @ingroup themeable
  */
 #}
-{%
-  set classes = [
-    'layout',
-    'layout--onecol',
-  ]
-%}
 {% set theme = settings.theme|default('default') %}
-{% if theme != 'default' %}
-  {% set classes = classes|merge(['yds-layout']) %}
-  {% set attributes = attributes.setAttribute('data-component-theme', theme) %}
-  {% set attributes = attributes.setAttribute('data-component-padding', settings.padding|default('default')) %}
-{% endif %}
 {% if content.content or theme != 'default' %}
   {#
     template_preprocess_layout() only builds region_attributes for regions that
     actually hold components, so this is undefined for a section with no blocks
-    -- reachable now that the wrapper no longer depends on the region existing.
+    -- reachable because the wrapper no longer depends on the region existing.
     The sibling templates only print their region attributes, which is null-safe;
     this one adds classes, and a method call on an undefined variable throws once
     a site turns on Twig's strict_variables.
   #}
   {% set region_attributes_content = region_attributes.content|default(create_attribute()) %}
-  <div{{ attributes.addClass(classes) }}>
-    <div {{ region_attributes_content.addClass('layout__region', 'layout__region--content') }}>
-      {{ content.content }}
+  {% if in_preview %}
+    <div {{ attributes }}>
+  {% endif %}
+  {% embed "@organisms/layout/layout/yds-layout.twig" with {
+    component__layout: 'one-column',
+    layout__padding: settings.padding|default('default'),
+    layout__divider: 'false',
+    component__theme: theme,
+    layout__extra_classes: ['layout--onecol'],
+  } %}
+    {% block layout__primary %}
+      <div {{ region_attributes_content.addClass('layout__region', 'layout__region--content') }}>
+        {{ content.content }}
+      </div>
+    {% endblock %}
+  {% endembed %}
+  {% if in_preview %}
     </div>
-  </div>
+  {% endif %}
 {% endif %}
