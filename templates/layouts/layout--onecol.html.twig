@@ -10,11 +10,18 @@
  * - settings: The section configuration, including the selected theme (see
  *   \Drupal\ys_layouts\Plugin\Layout\YSLayoutOneColumn).
  *
- * The `yds-layout` class plus `data-component-theme` reuse the section color
+ * The `yds-layout` class plus `data-section-theme` reuse the section color
  * rules in component-library-twig's `_yds-layout.scss` -- added only when a
  * theme other than "Default - no color" is picked, so an unthemed section's
- * markup is unchanged. Deliberately does NOT embed `@organisms/layout/layout`
- * the way Two Column/Three Column do: see docs/color-theme.md in
+ * markup is unchanged. The attribute is `data-section-theme` and NOT
+ * `data-component-theme`: the latter is the BLOCK colour dial and maps a
+ * different set of colour slots, so while one attribute carried both meanings
+ * no colour reset could be correct for both (YaleSites-Internal#1630).
+ *
+ * Deliberately does NOT embed `@organisms/layout/layout` the way Two
+ * Column/Three Column do -- so this is a SECOND, independent emitter of the
+ * section signature and must be kept in step with `yds-layout.twig`. See
+ * docs/color-theme.md in
  * yalesites-project (the "Layout Builder Sections" section) for why, and see
  * ys_layouts/layouts/onecol/onecol.css (attached via YSLayoutOneColumn's
  * plugin definition) for the themed-only vertical padding this still needs,
@@ -50,7 +57,7 @@
 {% set theme = settings.theme|default('default') %}
 {% if theme != 'default' %}
   {% set classes = classes|merge(['yds-layout']) %}
-  {% set attributes = attributes.setAttribute('data-component-theme', theme) %}
+  {% set attributes = attributes.setAttribute('data-section-theme', theme) %}
   {% set attributes = attributes.setAttribute('data-component-padding', settings.padding|default('default')) %}
 {% endif %}
 {% if content.content or theme != 'default' %}
