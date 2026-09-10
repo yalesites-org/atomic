@@ -14,7 +14,7 @@
  * Two Column (70/30), Two Column (50/50) and Three Column (33/33/33), so all
  * four section layouts emit ONE signature from ONE template:
  *
- *   <div class="yds-layout layout" data-component-theme="X"
+ *   <div class="yds-layout layout" data-section-theme="X"
  *        data-component-layout="Y" …>
  *
  * `component__layout: 'one-column'` is what tells the organism this is a
@@ -23,13 +23,22 @@
  * column. Adding a new section type (a 30/70, say) means a new
  * `component__layout` value there, not a new template here.
  *
- * This layout used to hand-roll the `yds-layout` class and the
- * `data-component-theme` attribute itself, and only when a theme was picked.
- * It now always renders through the organism (YaleSites-Internal#1613), so an
- * unthemed section carries `data-component-theme="default"` where it
- * previously carried no section markup at all. Two rules exist because of
- * that, and both are load-bearing:
- *  - `_yds-layout.scss` excludes `one-column` from the `[data-component-theme=
+ * The section colour rides on the `component__theme` prop, which the organism
+ * emits as `data-section-theme`. That attribute is deliberately NOT
+ * `data-component-theme`: the latter is the BLOCK colour dial and maps a
+ * different set of colour slots, so while one attribute carried both meanings
+ * no colour reset could be correct for both (YaleSites-Internal#1630). The
+ * prop kept its `component__theme` name through that split, so this template
+ * passes the theme straight through and the organism names the attribute.
+ *
+ * Until YaleSites-Internal#1613 this layout hand-rolled the `yds-layout` class
+ * and the section attribute itself, and only when a theme was picked -- a
+ * second, independent emitter of the section signature that had to be kept in
+ * step with `yds-layout.twig`. Going through the organism collapses that back
+ * to one emitter, at the cost that an unthemed section now carries
+ * `data-section-theme="default"` where it previously carried no section markup
+ * at all. Two rules exist because of that, and both are load-bearing:
+ *  - `_yds-layout.scss` excludes `one-column` from the `[data-section-theme=
  *    'default']` section-margin rule. One column's page-level margins come
  *    from `.main-content > *:first-child` (page-layouts.scss) and
  *    `.main-content .layout.layout--onecol:last-of-type` (layout-builder.css),
@@ -38,7 +47,7 @@
  *    themed section, since `yds-layout` is no longer a themed-only signal.
  * Everything `--color-layout-border` feeds (the CTA atom's fill, the divider
  * atom, tabs, pull-quote) is already guarded on
- * `[data-component-theme]:not([data-component-theme='default'])`, so an
+ * `[data-section-theme]:not([data-section-theme='default'])`, so an
  * unthemed section picks up none of it.
  *
  * `layout--onecol` is passed through as an extra class because core's own
