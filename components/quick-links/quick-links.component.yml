@@ -1,0 +1,51 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Quick Links
+status: stable
+group: Molecules
+description: >
+  A promotional/subtle quick-links block (heading, optional description/image,
+  and a list of links). Thin SDC wrapper over
+  @molecules/quick-links/yds-quick-links.twig.
+props:
+  type: object
+  properties:
+    quick_links__variation:
+      title: Variation
+      type: string
+      enum: [promotional, subtle]
+      default: promotional
+    quick_links__heading:
+      title: Heading
+      type:
+        - string
+        - "null"
+    quick_links__background_color:
+      title: Theme
+      description: Nullable; the template applies its own default ('one') when absent.
+      type:
+        - string
+        - "null"
+
+    quick_links__width:
+      title: Width
+      type:
+        - string
+        - "null"
+    quick_links__alignment:
+      title: Alignment
+      type:
+        - string
+        - "null"
+slots:
+  quick_links__description:
+    title: Description
+    required: false
+    description: Optional description (rendered via the text atom).
+  quick_links__image_slot:
+    title: Image
+    required: false
+    description: Optional image (named __image_slot to avoid the template's image block).
+  quick_links__links_slot:
+    title: Links
+    required: false
+    description: The list of links (named __links_slot to avoid the template's links block).

@@ -1,0 +1,16 @@
+{#
+ # SDC thin wrapper for the CTA atom. cta__content is consumed as a variable by
+ # the template (passed to the base control), so the captured slot is passed
+ # through. See docs/sdc/recipe-convert-a-component-to-sdc.md.
+ #}
+{% set cta__content_slot = block('cta__content') %}
+{{ include('@atoms/controls/cta/yds-cta.twig', {
+  cta__href: cta__href,
+  cta__hover_style: cta__hover_style,
+  cta__radius: cta__radius,
+  cta__style: cta__style,
+  cta__outline_weight: cta__outline_weight,
+  cta__control_type: cta__control_type,
+  cta__content: cta__content_slot|trim,
+}, with_context = false) }}
+{% if false %}{% block cta__content %}{% endblock %}{% endif %}

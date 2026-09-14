@@ -1,0 +1,28 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Taxonomy Display
+status: stable
+group: Molecules
+description: >
+  Displays taxonomy terms grouped by label. Thin SDC wrapper over
+  @molecules/taxonomy-display/yds-taxonomy-display.twig.
+props:
+  type: object
+  properties:
+    taxonomy_display__theme:
+      title: Theme
+      type: string
+      enum: [default, one, two, three]
+      default: default
+    taxonomy_display__width:
+      title: Width
+      description: Layout width; the template defaults to "site".
+      type:
+        - string
+        - "null"
+slots:
+  taxonomy_display__content:
+    title: Taxonomy content
+    required: true
+    description: >
+      The rendered taxonomy items. Named taxonomy_display__content (not
+      taxonomy_display__items) to avoid a collision with the template's block.

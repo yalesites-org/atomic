@@ -1,0 +1,13 @@
+{#
+ # SDC thin wrapper for Taxonomy Display. The slot is injected into the
+ # template's taxonomy_display__items block.
+ #}
+{% set taxonomy_display__content = block('taxonomy_display__content') %}
+{% embed '@molecules/taxonomy-display/yds-taxonomy-display.twig' with {
+  taxonomy_display__theme: taxonomy_display__theme,
+  taxonomy_display__width: taxonomy_display__width,
+  taxonomy_display__content: taxonomy_display__content,
+} only %}
+  {% block taxonomy_display__items %}{{ taxonomy_display__content|raw }}{% endblock %}
+{% endembed %}
+{% if false %}{% block taxonomy_display__content %}{% endblock %}{% endif %}

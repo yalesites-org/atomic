@@ -1,0 +1,9 @@
+{#
+ # SDC thin wrapper for Basic Meta. The captured slot is passed as the
+ # basic_meta variable (the template forwards it to the text atom's content).
+ #}
+{% set basic_meta_content = block('basic_meta_content') %}
+{{ include('@molecules/meta/basic-meta/yds-basic-meta.twig', {
+  basic_meta: basic_meta_content|trim,
+}, with_context = false) }}
+{% if false %}{% block basic_meta_content %}{% endblock %}{% endif %}

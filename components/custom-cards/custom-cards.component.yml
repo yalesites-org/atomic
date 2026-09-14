@@ -1,0 +1,26 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Custom Cards
+status: stable
+group: Organisms
+description: >
+  A collection of manually-authored custom cards. Thin SDC wrapper over
+  @organisms/custom-card-collection/yds-custom-card-collection.twig.
+props:
+  type: object
+  properties:
+    custom_card_collection__heading:
+      title: Heading
+      type:
+        - string
+        - "null"
+    custom_card_collection__width:
+      title: Width
+      type: string
+      default: site
+slots:
+  cards:
+    title: Cards
+    required: true
+    description: >
+      The custom card items (from field_cards). Injected into the CLT
+      custom_card_collection__cards block.

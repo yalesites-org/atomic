@@ -1,0 +1,19 @@
+{#
+ # SDC thin wrapper for a single Reference Card (rendered via the card
+ # collection). The referenced content is injected into the CLT
+ # card_collection__cards block. directory is threaded for nested atoms.
+ # See docs/sdc/recipe-convert-a-component-to-sdc.md.
+ #}
+{% set rc_cards %}{{ block('cards')|raw }}{% endset %}
+{% embed '@organisms/card-collection/yds-card-collection.twig' with {
+  card_collection__source_type: card_collection__source_type,
+  card_collection__type: card_collection__type,
+  card_collection__width: card_collection__width,
+  card_collection__featured: card_collection__featured,
+  animate__item: animate__item,
+  rc_cards: rc_cards,
+  directory: directory,
+} only %}
+  {% block card_collection__cards %}{{ rc_cards|raw }}{% endblock %}
+{% endembed %}
+{% if false %}{% block cards %}{% endblock %}{% endif %}

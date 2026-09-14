@@ -1,0 +1,18 @@
+{#
+ # SDC thin wrapper for the Wrapped Callout molecule. Both slots feed the text
+ # atom (which prints with |raw), so a plain |trim capture is safe and keeps an
+ # empty slot falsy for the template's {% if %} checks.
+ #}
+{% set wrapped_callout__callout_slot = block('wrapped_callout__callout') %}
+{% set wrapped_callout__content_slot = block('wrapped_callout__content') %}
+{{ include('@molecules/wrapped-callout/yds-wrapped-callout.twig', {
+  wrapped_callout__width: wrapped_callout__width,
+  wrapped_callout__alignment: wrapped_callout__alignment,
+  wrapped_callout__theme: wrapped_callout__theme,
+  wrapped_callout__callout: wrapped_callout__callout_slot|trim,
+  wrapped_callout__content: wrapped_callout__content_slot|trim,
+}, with_context = false) }}
+{% if false %}
+  {% block wrapped_callout__callout %}{% endblock %}
+  {% block wrapped_callout__content %}{% endblock %}
+{% endif %}

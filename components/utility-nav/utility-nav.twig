@@ -1,0 +1,14 @@
+{#
+ # SDC thin wrapper for the Utility Navigation menu (global chrome, Wave 7 / #1362).
+ #
+ # Delegates to @organisms/menu/utility-nav/_utility-nav--menu.twig (which drives
+ # the shared @molecules/menu engine). menu__contextual: true tells the engine the
+ # item urls are already plain strings (the adapter flattens the Drupal menu tree
+ # via atomic.theme _atomic_flatten_menu_items()), so _yds-menu-item.twig skips its
+ # ->toString() call. `directory` is threaded so nested atoms resolve asset paths.
+ #}
+{{ include('@organisms/menu/utility-nav/_utility-nav--menu.twig', {
+  utility_nav__items: utility_nav__items,
+  menu__contextual: true,
+  directory: directory,
+}, with_context = false) }}

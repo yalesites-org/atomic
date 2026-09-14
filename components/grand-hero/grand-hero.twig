@@ -1,0 +1,46 @@
+{#
+ # SDC thin wrapper for the Grand Hero banner. heading and snippet are rendered
+ # field content captured as Markup and passed as the CLT template's variables;
+ # the background video/image and the optional overlay image are injected into
+ # the CLT blocks. Each captured slot is passed in the embed's with{} so it is in
+ # scope inside the isolated (only) embed's block overrides. The video flag and
+ # has_overlay_image flag are props the block computes (context can't cross the
+ # SDC boundary). directory is threaded for nested atoms.
+ # See docs/sdc/recipe-convert-a-component-to-sdc.md.
+ #}
+{% set gh_heading %}{{ block('heading')|raw }}{% endset %}
+{% set gh_snippet %}{{ block('snippet')|raw }}{% endset %}
+{% set gh_video %}{{ block('video')|raw }}{% endset %}
+{% set gh_image %}{{ block('image')|raw }}{% endset %}
+{% set gh_overlay %}{{ block('overlay_image')|raw }}{% endset %}
+{% embed '@molecules/banner/grand-hero/yds-grand-hero.twig' with {
+  grand_hero__heading: gh_heading|trim is empty ? '' : gh_heading,
+  grand_hero__snippet: gh_snippet|trim,
+  grand_hero__heading__level: grand_hero__heading__level,
+  grand_hero__link__content: grand_hero__link__content,
+  grand_hero__link__url: grand_hero__link__url,
+  grand_hero__link__content_two: grand_hero__link__content_two,
+  grand_hero__link__url_two: grand_hero__link__url_two,
+  grand_hero__content__background: grand_hero__content__background,
+  grand_hero__overlay_variation: grand_hero__overlay_variation,
+  grand_hero__size: grand_hero__size,
+  grand_hero__width: grand_hero__width,
+  grand_hero__replace_heading: grand_hero__replace_heading,
+  grand_hero__video: grand_hero__video,
+  grand_hero__has_overlay_image: grand_hero__has_overlay_image,
+  gh_video: gh_video,
+  gh_image: gh_image,
+  gh_overlay: gh_overlay,
+  directory: directory,
+} only %}
+  {% block grand_hero__video %}{{ gh_video|raw }}{% endblock %}
+  {% block grand_hero__image %}{{ gh_image|raw }}{% endblock %}
+  {% block grand_hero__overlay_image %}{{ gh_overlay|raw }}{% endblock %}
+{% endembed %}
+{% if false %}
+  {% block heading %}{% endblock %}
+  {% block snippet %}{% endblock %}
+  {% block video %}{% endblock %}
+  {% block image %}{% endblock %}
+  {% block overlay_image %}{% endblock %}
+{% endif %}
