@@ -1,0 +1,72 @@
+{#
+/**
+ * @file
+ * Shared reference card for the profile card and list-item view modes (#1648).
+ *
+ * These two view modes rendered byte-identical templates apart from the
+ * heading level, so the markup lives here once and each caller passes the
+ * level it needs:
+ *
+ * @code
+ * {% include '@atomic/node/_profile-reference-card.html.twig' with {
+ *   default_heading_level: '2',
+ * } %}
+ * @endcode
+ *
+ * `{% include %}` inherits the caller's context by default, so `node`,
+ * `content`, `label` and `url` all resolve here without being passed
+ * explicitly. Only what actually differs is a parameter.
+ *
+ * Available variables:
+ * - default_heading_level: the heading level to use when the author has not
+ *   chosen one on the listing ('2' for cards, '3' for list items).
+ */
+#}
+{% set heading = content.field_teaser_title.0 ? content.field_teaser_title : label %}
+{% set url = content.field_external_source[0]['#url']|render ? content.field_external_source[0]['#url']|render : url %}
+
+{# Profile data pass-throughs (#1648). Email and phone are plain strings so the
+   card can build the mailto:/tel: links itself; they come from
+   atomic_preprocess_node() rather than from `content`, which keeps them
+   independent of the field formatter and of whether the fields are enabled on
+   the view display. Keep this comment out here: Twig comments are not legal
+   inside a tag, and one placed in the `with {}` hash below stops the template
+   compiling at all. #}
+{% embed "@molecules/cards/reference-card/yds-reference-card.twig" with {
+  reference_card__heading: heading,
+  reference_card__heading_level: node.card_heading_level|default(default_heading_level),
+  reference_card__subheading: content.field_position,
+  reference_card__url: url,
+  reference_card__snippet: content.field_subtitle,
+  reference_card__image: node.show_thumbnail ? 'true' : 'false',
+  reference_card__image_aria: heading[0]['#context'].value,
+  reference_card__overlay: node.pin_label,
+  show_categories: node.show_categories,
+  show_tags: node.show_tags,
+  reference_card__department: content.field_department,
+  reference_card__email: profile_email,
+  reference_card__phone: profile_phone,
+  reference_card__pronouns: content.field_pronouns,
+  show_department: node.show_department,
+  show_email: node.show_email,
+  show_phone: node.show_phone,
+  show_pronouns: node.show_pronouns,
+} %}
+
+  {% block reference_card__tags %}
+    {{ content.field_tags }}
+  {% endblock %}
+  {% block reference_card__categories %}
+    {{ content.field_affiliation }}
+  {% endblock %}
+  {% block reference_card__image %}
+    {% if content.field_teaser_media[0] %}
+      {{ content.field_teaser_media }}
+    {% elseif content.field_media[0] %}
+      {{ content.field_media }}
+    {% elseif getCoreSetting('image_fallback.teaser') %}
+      {{ drupal_entity('media', getCoreSetting('image_fallback.teaser'), 'profile_directory_card_1_1_') }}
+    {% endif %}
+
+  {% endblock %}
+{% endembed %}
