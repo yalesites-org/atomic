@@ -1,5 +1,13 @@
+{#
+ # The id makes the item a fragment target so a Beacon citation can link
+ # straight to it. Derived from the paragraph entity rather than a loop index
+ # so it survives a cache rebuild and stays unique when a page holds more than
+ # one Accordion block. A paragraph that has not been saved yet - the Layout
+ # Builder preview - has no id, and is rendered without one.
+ #}
 {% include "@molecules/accordion/_yds-accordion-item.twig" with {
   accordion__item__heading: content.field_heading,
   accordion__item__content: content.field_content,
   accordion__item__heading__level: attributes.heading_level|default(3),
+  accordion__item__id: paragraph.id() ? 'accordion-item-' ~ paragraph.id() : '',
 } %}
