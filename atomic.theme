@@ -310,6 +310,18 @@ function atomic_preprocess_views_view(&$variables) {
   // Add section wrapper variables.
   $variables['use_section_wrapper'] = TRUE;
   $variables['section_aria_label'] = $aria_label;
+
+  // After a filter auto-submit, announce the updated result count to assistive
+  // tech (WCAG 2.1 SC 4.1.3). The behavior reads this count, keyed by view DOM
+  // id, and announces only on filter-driven updates (not the initial render).
+  $result_count = $view->total_rows ?? count($view->result ?? []);
+  $variables['#attached']['library'][] = 'atomic/views-basic-filter-status';
+  $settings = &$variables['#attached']['drupalSettings']['ysViewsBasicFilter'];
+  $settings[$variables['dom_id']] = (int) $result_count;
+
+  // Keep the page from scrolling to the results on every filter auto-submit;
+  // the scroll-to-top is only wanted on pager clicks. (#1299 QA)
+  $variables['#attached']['library'][] = 'atomic/views-basic-filter-scroll';
 }
 
 /**
