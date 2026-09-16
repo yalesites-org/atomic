@@ -1,34 +1,6 @@
 
-{% set heading = content.field_teaser_title.0 ? content.field_teaser_title : label %}
-{% set url = content.field_external_source[0]['#url']|render ? content.field_external_source[0]['#url']|render : url %}
-
-{% embed "@molecules/cards/reference-card/yds-reference-card.twig" with {
-  reference_card__heading: heading,
-  reference_card__heading_level: node.card_heading_level|default('2'),
-  reference_card__subheading: content.field_position,
-  reference_card__url: url,
-  reference_card__snippet: content.field_subtitle,
-  reference_card__image: node.show_thumbnail ? 'true' : 'false',
-  reference_card__image_aria: heading[0]['#context'].value,
-  reference_card__overlay: node.pin_label,
-  show_categories: node.show_categories,
-  show_tags: node.show_tags,
+{# The card and list-item view modes render the same reference card and differ
+   only in heading level, so the markup lives in the shared partial (#1648). #}
+{% include '@atomic/node/_profile-reference-card.html.twig' with {
+  default_heading_level: '2',
 } %}
-
-  {% block reference_card__tags %}
-    {{ content.field_tags }}
-  {% endblock %}
-  {% block reference_card__categories %}
-    {{ content.field_affiliation }}
-  {% endblock %}
-  {% block reference_card__image %}
-    {% if content.field_teaser_media[0] %}
-      {{ content.field_teaser_media }}
-    {% elseif content.field_media[0] %}
-      {{ content.field_media }}
-    {% elseif getCoreSetting('image_fallback.teaser') %}
-      {{ drupal_entity('media', getCoreSetting('image_fallback.teaser'), 'profile_directory_card_1_1_') }}
-    {% endif %}
-
-  {% endblock %}
-{% endembed %}
