@@ -150,9 +150,14 @@ function atomic_preprocess_node(&$variables) {
     // view-row templates and the ResourceMetaBlock produce identical output.
     // Non-affiliated authors come back with url === NULL; templates render
     // those as plain text.
+    //
+    // ys_layouts is an optional integration (see atomic.info.yml): without it
+    // the list is empty and the resource templates omit the byline, which is
+    // the same thing they do for a resource that has no authors.
     $author_cache_tags = [];
-    $variables['resource_authors'] = \Drupal::service('ys_layouts.resource_author_builder')
-      ->build($node, $author_cache_tags);
+    $variables['resource_authors'] = \Drupal::hasService('ys_layouts.resource_author_builder')
+      ? \Drupal::service('ys_layouts.resource_author_builder')->build($node, $author_cache_tags)
+      : [];
     if ($author_cache_tags) {
       $variables['#cache']['tags'] = \Drupal\Core\Cache\Cache::mergeTags(
         $variables['#cache']['tags'] ?? [],
@@ -228,7 +233,13 @@ function atomic_preprocess_node(&$variables) {
     }
 
     // Create responsive_image render array using the thumbnail uri.
-    $alt = \Drupal::service('ys_layouts.media_alt_resolver')->resolve($media);
+    //
+    // ys_layouts is an optional integration (see atomic.info.yml): without it
+    // the alt falls back to the media label, the behaviour this call site had
+    // before the resolver service existed.
+    $alt = \Drupal::hasService('ys_layouts.media_alt_resolver')
+      ? \Drupal::service('ys_layouts.media_alt_resolver')->resolve($media)
+      : (string) $media->label();
     $variables['responsive_media_thumbnail'] = [
       '#theme' => 'responsive_image',
       '#uri' => $file->getFileUri(),
