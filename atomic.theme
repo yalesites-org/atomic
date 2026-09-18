@@ -426,6 +426,17 @@ function _get_collection_nav_position(int $nid) {
  *   The template variables array.
  */
 function _get_collection_nav_details(Node $node, array &$variables) {
+  // The book module is contrib from Drupal 10 on, and atomic declares no
+  // dependency on it (see atomic.info.yml). Every caller reaches this via
+  // _node_is_a_collection(), which is FALSE without the module - but only
+  // because $node->book is a magic property that nothing sets, which is an
+  // accident rather than a guard. Without the service there is no collection
+  // nav to build, so the variables stay unset and the header renders without
+  // one.
+  if (!\Drupal::hasService('book.manager')) {
+    return;
+  }
+
   $bid = $node->book['bid'];
   $book_manager = \Drupal::service('book.manager');
   $book_tree_data = $book_manager->bookTreeAllData($bid);

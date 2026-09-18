@@ -15,6 +15,11 @@ core_version_requirement: ^9 || ^10 || ^11
 # the same way they do for a resource with no authors. A real dependency would
 # make core refuse to install the theme without ys_layouts, defeating atomic's
 # use as a standalone starter theme - hence a note rather than a key.
+#
+# _get_collection_nav_details() likewise uses `book.manager`, from the contrib
+# book module, to build the collection navigation. That call site is guarded
+# the same way; without the module a node is never part of a collection, so
+# there is no nav to build and the header renders without one.
 
 libraries:
   - atomic/global
