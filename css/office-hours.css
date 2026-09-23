@@ -1,0 +1,40 @@
+/**
+ * @file
+ * Front-end styles for the Office Hours block's schedule table.
+ *
+ * The schedule is rendered by the contrib module's "Table" formatter and has no
+ * component in the library, so the platform's generic table styles apply to it
+ * and those are written for a full-width data table. Two of their assumptions
+ * made it wider than a narrow layout section:
+ *
+ * - The library gives every cell `min-width: 8rem`, so three columns reserve
+ *   24rem before any content.
+ * - The contrib CSS sets `white-space: nowrap` on the comment cell, so an
+ *   editor's note cannot wrap and widens the table by however long it is.
+ *
+ * The table keeps `width: 100%`, so relaxing the floor does not shrink the
+ * schedule where there is room; it only lets the columns compress where there
+ * is not. Selectors are scoped to the layout so they out-specify the library
+ * rules rather than depending on stylesheet order.
+ *
+ * @see https://github.com/yalesites-org/YaleSites-Internal/issues/1705
+ */
+
+:is(.layout, .yds-layout) .office-hours__table :is(th, td) {
+  min-width: 0;
+}
+
+:is(.layout, .yds-layout) .office-hours__item-comments {
+  white-space: normal;
+}
+
+/* The exception and season tables now title themselves with a <caption>. The
+ * library puts captions below their table, which suits a CKEditor table's
+ * trailing note but turns a table's own title into what looks like a footnote
+ * on whatever sits above it. A table title belongs on top.
+ *
+ * @see https://github.com/yalesites-org/YaleSites-Internal/issues/1706
+ */
+:is(.layout, .yds-layout) .office-hours__table caption {
+  caption-side: top;
+}
