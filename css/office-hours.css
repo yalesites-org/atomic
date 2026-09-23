@@ -27,3 +27,14 @@
 :is(.layout, .yds-layout) .office-hours__item-comments {
   white-space: normal;
 }
+
+/* The exception and season tables now title themselves with a <caption>. The
+ * library puts captions below their table, which suits a CKEditor table's
+ * trailing note but turns a table's own title into what looks like a footnote
+ * on whatever sits above it. A table title belongs on top.
+ *
+ * @see https://github.com/yalesites-org/YaleSites-Internal/issues/1706
+ */
+:is(.layout, .yds-layout) .office-hours__table caption {
+  caption-side: top;
+}
