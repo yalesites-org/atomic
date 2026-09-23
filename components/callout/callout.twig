@@ -1,0 +1,33 @@
+{#
+ # SDC thin wrapper for the Callout molecule.
+ #
+ # The canonical template + SCSS live in the component library
+ # (@molecules/callout/yds-callout.twig). This shim maps SDC props onto the
+ # template's variables and forwards the callout__content slot into the
+ # template's callout__items block.
+ #
+ # Slot forwarding pattern (see docs/sdc/recipe-convert-a-component-to-sdc.md):
+ #  - The slot is named callout__content, distinct from the CLT template's own
+ #    callout__items block, to avoid a Twig block-name collision.
+ #  - block('callout__content') captures the override so this works whether the
+ #    component is rendered via the SDC render element (#slots) or a Twig
+ #    {% embed %} block override.
+ #  - The captured value is passed through the (isolated, `only`) embed context
+ #    so it is in scope inside the override, and printed with |raw because it is
+ #    already-rendered, trusted Drupal output (block() returns a plain string).
+ #  - The receiver block is guarded by {% if false %} so it is registered at
+ #    compile time (for block() to find) but does not also render inline.
+ #  - `directory` is threaded so nested atoms (CTA/icon) resolve asset paths;
+ #    SDC does not inject `directory`.
+ #}
+{% set callout__content_slot = block('callout__content') %}
+{% embed '@molecules/callout/yds-callout.twig' with {
+  callout__background_color: callout__background_color,
+  callout__alignment: callout__alignment,
+  callout__overlay_background_image: callout__overlay_background_image,
+  callout__content_slot: callout__content_slot,
+  directory: directory,
+} only %}
+  {% block callout__items %}{{ callout__content_slot|raw }}{% endblock %}
+{% endembed %}
+{% if false %}{% block callout__content %}{% endblock %}{% endif %}

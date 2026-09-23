@@ -1,0 +1,56 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Callout
+status: stable
+group: Molecules
+description: >
+  A callout block (heading, text, optional link) with a theme "dial". Thin SDC
+  wrapper over @molecules/callout/yds-callout.twig; the real markup and SCSS stay
+  in component-library-twig.
+props:
+  type: object
+  properties:
+    callout__background_color:
+      title: Theme (dial)
+      description: >
+        Component color theme. Enum is generated from
+        ys_themes.component_overrides.yml (callout.field_style_color) so the
+        Drupal-side allowed values and this schema cannot drift. field_style_color
+        uses the list_key formatter, so the machine keys are the runtime values.
+      type: string
+      enum:
+        - one
+        - two
+        - three
+        - four
+        - five
+      default: one
+    callout__alignment:
+      title: Alignment
+      description: >
+        Horizontal alignment of the callout content. Enum from
+        ys_themes.component_overrides.yml (callout.field_style_alignment,
+        list_key formatter).
+      type: string
+      enum:
+        - left
+        - center
+      default: center
+    callout__overlay_background_image:
+      title: Overlay background image URL
+      description: >
+        URL of an optional background image overlay. NOTE: the Storybook props
+        file types this as a boolean toggle, but the block template passes a file
+        URL string at render time, so the real prop type is string. The type is
+        nullable because the block template passes NULL when no overlay image is
+        set, and SDC validates NULL against the declared type.
+      type:
+        - string
+        - 'null'
+slots:
+  callout__content:
+    title: Callout content
+    required: true
+    description: >
+      The rendered callout item(s). Populated from the field_callout field in the
+      Layout Builder block template. Named callout__content (not callout__items)
+      to avoid colliding with the CLT template's internal callout__items block.

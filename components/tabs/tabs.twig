@@ -1,0 +1,22 @@
+{#
+ # SDC thin wrapper for the Tabs molecule. The label and content slots are built
+ # by the consumer using the shared tabs__id (so aria-controls links to panel
+ # ids) and injected into the template's tab__label / tab__content__container
+ # blocks. JS attaches via libraryOverrides (atomic/tabs).
+ # See docs/sdc/recipe-convert-a-component-to-sdc.md (internal-state-coupled slots).
+ #}
+{% set tab__label_slot %}{{ block('tab__label_slot')|raw }}{% endset %}
+{% set tab__content_slot %}{{ block('tab__content_slot')|raw }}{% endset %}
+{% embed '@molecules/tabs/yds-tabs.twig' with {
+  tabs__id: tabs__id,
+  tabs__theme: tabs__theme,
+  tab__label_slot: tab__label_slot,
+  tab__content_slot: tab__content_slot,
+} only %}
+  {% block tab__label %}{{ tab__label_slot|raw }}{% endblock %}
+  {% block tab__content__container %}{{ tab__content_slot|raw }}{% endblock %}
+{% endembed %}
+{% if false %}
+  {% block tab__label_slot %}{% endblock %}
+  {% block tab__content_slot %}{% endblock %}
+{% endif %}

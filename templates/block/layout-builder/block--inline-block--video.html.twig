@@ -10,13 +10,12 @@
     {% set video__alignment = "center" %}
   {% endif %}
 
-  {% embed "@molecules/video/yds-video.twig" with {
-    video__heading: content.field_heading.0,
-    video__text: content.field_text,
+  {% embed 'atomic:video' with {
     video__width: video__width|default('site'),
     video__alignment: video__alignment|default('left'),
   } %}
-
+    {% block video__heading %}{{ content.field_heading.0 }}{% endblock %}
+    {% block video__text %}{{ content.field_text }}{% endblock %}
     {% block video__video %}
       <div class="video-container" data-video-isolated="true">
         <div class="video-content-wrapper">
@@ -24,7 +23,6 @@
         </div>
       </div>
     {% endblock %}
-
   {% endembed %}
 
 {% endblock %}

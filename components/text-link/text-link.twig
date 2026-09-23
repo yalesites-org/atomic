@@ -1,0 +1,16 @@
+{#
+ # SDC thin wrapper for the Text Link atom. The slot is injected into the
+ # template's link__content block; link__style is mapped onto the template's
+ # `link_style` variable (source uses a single underscore).
+ # See docs/sdc/recipe-convert-a-component-to-sdc.md.
+ #}
+{% set link__content_slot = block('link__content_slot') %}
+{% embed '@atoms/controls/text-link/yds-text-link.twig' with {
+  link__url: link__url,
+  link__type: link__type,
+  link_style: link__style,
+  link__content_slot: link__content_slot,
+} only %}
+  {% block link__content %}{{ link__content_slot|trim|raw }}{% endblock %}
+{% endembed %}
+{% if false %}{% block link__content_slot %}{% endblock %}{% endif %}

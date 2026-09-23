@@ -10,11 +10,13 @@
   } %}
 
   <div {{ add_attributes(view__attibutes) }}>
-    {% embed "@organisms/component-wrapper/yds-component-wrapper.twig" with {
+    {% embed 'atomic:component-wrapper' with {
       component_wrapper__width: component_wrapper__width|default('site'),
+      component_wrapper__alignment: 'center',
+      component_wrapper__heading__level: '2',
       component_wrapper__label: content.field_heading.0 ? content.field_heading : '',
       }%}
-      {% block component_wrapper_inner %}
+      {% block inner %}
         {# {% if content.field_heading_links.0 %}
           <div class="cta-group">
             {{ content.field_heading_links|children }}

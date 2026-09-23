@@ -1,0 +1,20 @@
+{#
+ # SDC thin wrapper for the Primary Navigation organism (global chrome, Wave 7 / #1362).
+ #
+ # The canonical template + SCSS/JS live in the component library
+ # (@organisms/menu/primary-nav/yds-primary-nav.twig, which drives the shared
+ # @molecules/menu engine). This shim maps SDC props onto the template's variables.
+ #
+ # menu__contextual: true tells the shared menu engine that item urls are already
+ # plain strings (the render-path adapter flattens the Drupal menu tree with
+ # atomic.theme _atomic_flatten_menu_items(), converting Url objects to strings),
+ # so _yds-menu-item.twig skips its ->toString() call. primary_nav__items is passed
+ # positionally (not via ambient `items`) because SDC does not inherit Twig context.
+ # `directory` is threaded so nested icon atoms resolve the SVG sprite path.
+ #}
+{{ include('@organisms/menu/primary-nav/yds-primary-nav.twig', {
+  primary_nav__items: primary_nav__items,
+  menu__variation: menu__variation,
+  menu__contextual: true,
+  directory: directory,
+}, with_context = false) }}

@@ -1,34 +1,41 @@
 {% extends "@atomic/block/layout-builder/_layout-builder-block-template.twig" %}
 
+{% set gh_is_video = paragraph.field_media.entity.field_media_video_file.entity.uri.value is not empty %}
+{% set gh_overlay_media = content.field_overlay_png.0['#media'] %}
+{% set gh_has_overlay = content.field_overlay_png.0['#media'] is defined %}
 {% set grand_hero__width = content.field_style_width.0['#markup']|default('site') %}
 
 {% block content %}
-
-  {% embed "@molecules/banner/grand-hero/yds-grand-hero.twig" with {
-    grand_hero__heading: content.field_heading,
-    grand_hero__heading__level: content.field_heading_level.0['#markup'],
-    grand_hero__snippet: content.field_text.0,
+  {# Dial values are defaulted here (adapter layer); the video and overlay flags
+     are computed from the fields and passed as props (the SDC boundary can't
+     carry the pre-SDC context flags). The overlay image markup (Drupal
+     image-style processing that used to live in the CLT template) is built here
+     and passed via the grand_hero__overlay_image slot. #}
+  {% embed 'atomic:grand-hero' with {
+    grand_hero__heading__level: content.field_heading_level.0['#markup']|default('2'),
     grand_hero__link__content: content.field_link.0['#title'],
     grand_hero__link__url: content.field_link.0['#url_title'],
     grand_hero__link__content_two: content.field_link_two.0['#title'],
     grand_hero__link__url_two: content.field_link_two.0['#url_title'],
-    grand_hero__content__background: content.field_style_color.0['#markup'],
-    grand_hero__overlay_variation: content.field_style_position.0['#markup'],
-    grand_hero__size: content.field_style_variation.0['#markup'],
+    grand_hero__content__background: content.field_style_color.0['#markup']|default('one'),
+    grand_hero__overlay_variation: content.field_style_position.0['#markup']|default('full'),
+    grand_hero__size: content.field_style_variation.0['#markup']|default('full'),
     grand_hero__width: grand_hero__width,
-    grand_hero__overlay_png: content.field_overlay_png,
-    grand_hero__replace_heading: content.field_replace_heading_with_image.0['#markup'],
+    grand_hero__replace_heading: content.field_replace_heading_with_image.0['#markup']|default('No'),
+    grand_hero__video: gh_is_video ? 'true' : 'false',
+    grand_hero__has_overlay_image: gh_has_overlay,
   } %}
-    {% block grand_hero__video %}
-      {% if paragraph.field_media.entity.field_media_video_file.entity.uri.value is not empty %}
-        {% set grand_hero__video = true %}
-        {{ content.field_media }}
-      {% endif %}
-    {% endblock %}
-
-    {% block grand_hero__image %}
-      {% if paragraph.field_media.entity.field_media_video_file.entity.uri.value is empty %}
-        {{ content.field_media }}
+    {% block heading %}{{ content.field_heading }}{% endblock %}
+    {% block snippet %}{{ content.field_text.0 }}{% endblock %}
+    {% block video %}{% if gh_is_video %}{{ content.field_media }}{% endif %}{% endblock %}
+    {% block image %}{% if not gh_is_video %}{{ content.field_media }}{% endif %}{% endblock %}
+    {% block overlay_image %}
+      {% if gh_overlay_media.field_media_image.entity is defined %}
+        {% include "@atoms/images/image/_responsive-image.twig" with {
+          image__src: gh_overlay_media.field_media_image.entity.uri.value|image_style('grand_hero_overlay_image'),
+          image__alt: gh_overlay_media.field_media_image.alt|default('Overlay Image'),
+          image__class: 'overlay-responsive-image',
+        } %}
       {% endif %}
     {% endblock %}
   {% endembed %}

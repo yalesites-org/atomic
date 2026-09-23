@@ -1,0 +1,50 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: In This Section
+status: stable
+group: Organisms
+description: >
+  The "in this section" secondary navigation for book/collection pages (global
+  chrome, Wave 7 / #1362). Thin SDC wrapper over
+  @organisms/site-in-this-section/yds-site-in-this-section.twig (which wraps the
+  secondary-nav organism). The book tree carries \Drupal\Core\Url objects that
+  cannot cross the SDC prop boundary, so the render-path adapter
+  (book-tree.html.twig) passes a flattened, string-URL copy of the tree
+  (atomic.theme _atomic_flatten_menu_items(), via atomic_preprocess_book_tree)
+  and this wrapper renders it with menu__contextual: true.
+props:
+  type: object
+  required:
+    - in_this_section__items
+  properties:
+    in_this_section__items:
+      title: Menu items
+      description: >
+        The flattened book/section tree. Each item has a title, a string url, an
+        is_active flag, and a recursive `below`.
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+          url:
+            type:
+              - string
+              - "null"
+          is_active:
+            type: boolean
+          below:
+            type: array
+    site_section_wrap__theme:
+      title: Section navigation theme (dial)
+      description: >
+        Color theme for the section navigation, from the book_navigation theme
+        setting; nullable because getThemeSetting can return NULL.
+      type:
+        - string
+        - "null"
+      default: one
+libraryOverrides:
+  dependencies:
+    - atomic/secondary-nav
+    - atomic/in-this-section

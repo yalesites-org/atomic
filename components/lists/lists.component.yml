@@ -1,0 +1,28 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Lists
+status: stable
+group: Atoms
+description: >
+  An ordered or unordered list. Thin SDC wrapper over
+  @atoms/lists/yds-list.twig; the real template and SCSS stay in
+  component-library-twig. Seeded by scripts/sdc/generate-sdc.js, then refined:
+  the codegen's story-only list__items array-prop was dropped in favor of the
+  list__content slot.
+props:
+  type: object
+  properties:
+    list__type:
+      title: List type
+      description: HTML list element type (ul for unordered, ol for ordered).
+      type: string
+      enum:
+        - ul
+        - ol
+      default: ul
+slots:
+  list__content_slot:
+    title: List content
+    required: true
+    description: >
+      The list items. Named list__content_slot (not list__content) to avoid a
+      collision with the template's own list__content block.

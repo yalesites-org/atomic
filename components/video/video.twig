@@ -1,0 +1,23 @@
+{#
+ # SDC thin wrapper for the Video molecule. heading feeds the heading atom
+ # ({{ }} auto-escape) so it is captured as Markup; text feeds the text atom
+ # (|raw internally) so a |trim capture is safe; the video markup is injected
+ # into the video__video block.
+ #}
+{% set video__heading_slot %}{{ block('video__heading')|raw }}{% endset %}
+{% set video__text_slot = block('video__text') %}
+{% set video__video_slot %}{{ block('video__video')|raw }}{% endset %}
+{% embed '@molecules/video/yds-video.twig' with {
+  video__width: video__width,
+  video__alignment: video__alignment,
+  video__heading: video__heading_slot|trim is empty ? '' : video__heading_slot,
+  video__text: video__text_slot|trim,
+  video__video_slot: video__video_slot,
+} only %}
+  {% block video__video %}{{ video__video_slot|raw }}{% endblock %}
+{% endembed %}
+{% if false %}
+  {% block video__heading %}{% endblock %}
+  {% block video__text %}{% endblock %}
+  {% block video__video %}{% endblock %}
+{% endif %}

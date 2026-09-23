@@ -1,0 +1,33 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: View Embed
+status: stable
+group: Organisms
+description: >
+  A Views-driven listing block (post list, event list, directory). Thin SDC
+  wrapper that renders a Drupal view via drupal_view(); the row markup stays in
+  the view's own row templates (ys_views_basic -> @organisms/card-collection),
+  so this SDC wraps only the stable drupal_view() embed API, not the rows, and
+  is unaffected by the Views Block Rework (#1161).
+props:
+  type: object
+  required:
+    - view_id
+    - display_id
+  properties:
+    view_id:
+      title: View ID
+      description: "The Drupal view machine name (e.g. post_list, event_list, directory)."
+      type: string
+    display_id:
+      title: Display ID
+      description: "The view display to render (e.g. full, block_1)."
+      type: string
+    argument:
+      title: Contextual argument
+      description: >
+        Passed to the view as its first contextual argument. Historically the
+        block heading text (content.field_heading.0['#text']); null when the
+        block has no heading.
+      type:
+        - string
+        - "null"

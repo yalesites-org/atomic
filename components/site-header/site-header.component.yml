@@ -1,0 +1,202 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Site Header
+status: stable
+group: Organisms
+description: >
+  The global site header (Wave 7 / #1413, split from #1362). Thin SDC wrapper
+  over @organisms/site-header/yds-site-header.twig; the real markup and SCSS stay
+  in component-library-twig. The header is global chrome (rendered from the header
+  region), not a Layout Builder block, so its render-path adapter is the theme's
+  templates/layout/region--header.html.twig. Because an SDC isolates its render
+  context (unlike the previous non-`only` embed), every value the organism and its
+  nested utility-nav include consumed via context inheritance is threaded here as
+  an explicit prop or slot. The dropdown menu tree is flattened to string URLs in
+  atomic_preprocess_region__header() (via _atomic_flatten_menu_items) so it can
+  cross the prop boundary; the wrapper renders it with menu__contextual: true.
+props:
+  type: object
+  properties:
+    site_header__site_name:
+      title: Site name
+      description: The site name text (system.site name), shown as the branding link.
+      type:
+        - string
+        - "null"
+    site_header__site_link:
+      title: Site link
+      description: URL the site branding links to.
+      type:
+        - string
+        - "null"
+      default: /
+    site_header__collection_nav_name:
+      title: Collection nav name
+      description: >
+        Label for the collection's in-header primary navigation (only set on
+        collection pages whose nav position is "in header").
+      type:
+        - string
+        - "null"
+    site_header__collection_nav_link:
+      title: Collection nav link
+      description: URL for the collection in-header nav branding link.
+      type:
+        - string
+        - "null"
+    site_header__collection_nav_position:
+      title: Collection nav position
+      description: >
+        "in_header" when a collection renders its primary nav inside the header,
+        otherwise empty. Drives the organism's collection branding + data attr.
+      type:
+        - string
+        - "null"
+    site_header__branding_name:
+      title: Site-wide branding name
+      description: University-wide branding name (Yale University) in the secondary bar.
+      type:
+        - string
+        - "null"
+    site_header__branding_link:
+      title: Site-wide branding link
+      description: URL for the university-wide branding link.
+      type:
+        - string
+        - "null"
+    site_header__border_thickness:
+      title: Border thickness
+      description: >
+        Decorative navigation border thickness (a border.thickness token key). Set
+        by the render-path adapter; nullable string like the other header dials.
+      type:
+        - string
+        - "null"
+      default: "8"
+    site_header__theme:
+      title: Header theme (dial)
+      description: >
+        Header color theme. Sourced from the atomic theme setting `header_theme`
+        at render (getThemeSetting), which can return NULL, so it is typed as a
+        nullable string; an over-strict enum would assertion-fail (white-screen)
+        on every page in dev.
+      type:
+        - string
+        - "null"
+      default: one
+    site_header__accent:
+      title: Header accent color (dial)
+      description: >
+        Accent color for header links/interactive elements. Sourced from the theme
+        setting `header_accent` (see the note on site_header__theme).
+      type:
+        - string
+        - "null"
+      default: one
+    site_header__menu__variation:
+      title: Menu variation
+      description: >
+        Display style (basic | mega | focus). Sourced from the header_variation
+        setting; nullable because getHeaderSetting can return NULL, in which case
+        the CLT template defaults to basic.
+      type:
+        - string
+        - "null"
+      default: basic
+    site_header__nav_position:
+      title: Navigation position
+      description: Horizontal alignment of the primary navigation (left | center | right).
+      type:
+        - string
+        - "null"
+      default: left
+    utility_nav__search:
+      title: Utility search enabled
+      description: >
+        Whether the utility search form renders. Sourced from the
+        search.enable_search_form header setting (an integer 0/1), so typed as a
+        nullable boolean-or-integer.
+      type:
+        - boolean
+        - integer
+        - "null"
+    utility_nav__link__content:
+      title: Utility CTA content
+      description: Label for the optional utility-bar call-to-action link (cta_content).
+      type:
+        - string
+        - "null"
+    utility_nav__link__url:
+      title: Utility CTA url
+      description: URL for the optional utility-bar call-to-action link (cta_url).
+      type:
+        - string
+        - "null"
+    utility_nav__dropdown_link__content:
+      title: Utility dropdown button title
+      description: >
+        Label for the utility dropdown button (the dropdown_button_title setting);
+        empty/NULL disables the dropdown.
+      type:
+        - string
+        - "null"
+    utility_nav__dropdown_link__url:
+      title: Utility dropdown button url
+      description: URL for the dropdown button control ('#'; the menu opens in place).
+      type:
+        - string
+        - "null"
+    utility_nav__dropdown__items:
+      title: Utility dropdown items
+      description: >
+        The flattened utility-drop-button-navigation menu tree. Each item has a
+        title, a string url, an is_active flag, an optional is_cas flag, and a
+        recursive `below`. Flattened in atomic_preprocess_region__header so the
+        Url objects do not cross the SDC prop boundary.
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+          url:
+            type:
+              - string
+              - "null"
+          is_active:
+            type: boolean
+          is_cas:
+            type: boolean
+          list__item__is_heading:
+            type: boolean
+          heading_cta:
+            type: string
+          node_title:
+            type: string
+          list__item__modifiers:
+            type: array
+          below:
+            type: array
+slots:
+  primary_nav__content:
+    title: Primary navigation
+    required: true
+    description: >
+      The rendered primary navigation (the main_navigation block, or a collection's
+      in-header nav). Forwarded into the organism's site_header__primary_nav block.
+  background_image__content:
+    title: Background image
+    description: >
+      The rendered focus-header background image (responsive image), front page
+      only. Forwarded into the organism's site_header__background_image block; its
+      presence also toggles the organism's with-background-image data attribute.
+  utility_nav__content:
+    title: Utility navigation
+    description: >
+      The rendered utility_navigation block. Provided to the organism as
+      drupal_utility_nav so the CLT utility-nav template prefers it over its own
+      menu include.
+  site_name_image__content:
+    title: Site name image
+    description: >
+      An SVG site-name image (from the site_name_image setting) rendered in place
+      of the text site name. Provided to the organism as site_header__site_name_image.

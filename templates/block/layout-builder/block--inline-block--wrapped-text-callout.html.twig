@@ -8,13 +8,13 @@
     {% set wrapped_callout__width = "site" %}
   {% endif %}
 
-  {% embed "@molecules/wrapped-callout/yds-wrapped-callout.twig" with {
+  {% embed 'atomic:wrapped-callout' with {
     wrapped_callout__width: wrapped_callout__width|default('content'),
-    wrapped_callout__callout: content.field_callout_text.0,
-    wrapped_callout__content: content.field_text.0,
-    wrapped_callout__alignment: content.field_style_position.0['#markup'],
-    wrapped_callout__theme: content.field_style_color.0['#markup'],
+    wrapped_callout__alignment: content.field_style_position.0['#markup']|default('left'),
+    wrapped_callout__theme: content.field_style_color.0['#markup']|default('one'),
   } %}
+    {% block wrapped_callout__callout %}{{ content.field_callout_text.0 }}{% endblock %}
+    {% block wrapped_callout__content %}{{ content.field_text.0 }}{% endblock %}
   {% endembed %}
 
 {% endblock %}

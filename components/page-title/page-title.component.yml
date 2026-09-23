@@ -1,0 +1,100 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Page Title
+status: stable
+group: Molecules
+description: >
+  The page title region — title heading (h1), optional prefix icon, a meta line,
+  and slots for an overline, extra content, an image, meta-extra, and social
+  sharing links. Thin SDC wrapper over @molecules/page-title/yds-page-title.twig.
+  Create-only: its live consumers (node title, taxonomy pages, page/post meta
+  blocks) still include the CLT template directly, matching the Wave 0 precedent.
+props:
+  type: object
+  properties:
+    page_title__heading:
+      title: Heading
+      description: The page title text (rendered as an h1).
+      type: string
+    page_title__prefix:
+      title: Prefix icon
+      description: Optional icon name rendered before the title.
+      type:
+        - string
+        - "null"
+    page_title__meta:
+      title: Meta
+      description: Optional meta text; fills the basic-meta line under the title.
+      type:
+        - string
+        - "null"
+    page_title__display:
+      title: Display
+      description: >
+        Visibility of the title. Empty = visible; "hidden" suppresses the whole
+        component; "visually-hidden" keeps it for screen readers only.
+      type: string
+      enum:
+        - ""
+        - display
+        - hidden
+        - visually-hidden
+      default: ""
+    page_title__width:
+      title: Width
+      type: string
+      default: site
+    page_title__variation:
+      title: Variation
+      description: Optional data-component-variation value.
+      type:
+        - string
+        - "null"
+    page_title__blockname:
+      title: BEM block name
+      type:
+        - string
+        - "null"
+    page_title__base_class:
+      title: Base class
+      type:
+        - string
+        - "null"
+    page_title__additional_classes:
+      title: Additional classes
+      type:
+        - string
+        - array
+        - "null"
+    page_title__show_social_media_sharing_links:
+      title: Show social sharing links
+      description: '"true" or "false" (string), gates the social-links region.'
+      type: string
+      enum:
+        - "true"
+        - "false"
+      default: "false"
+  required:
+    - page_title__heading
+slots:
+  page_title__overline_slot:
+    title: Overline
+    required: false
+    description: Optional content above the title.
+  page_title__extra_slot:
+    title: Extra
+    required: false
+    description: Optional content after the title heading.
+  page_title__image_slot:
+    title: Image
+    required: false
+    description: Optional image markup beside the title.
+  page_title__meta_extra_slot:
+    title: Meta extra
+    required: false
+    description: Optional extra meta content (e.g. read time).
+  page_title__social_links_slot:
+    title: Social links
+    required: false
+    description: >
+      Overrides the default social-links widget (e.g. AddToAny in the post meta
+      block). Falls back to the CLT default when empty.
