@@ -3,7 +3,18 @@
 {% block content %}
 
   {% set style = content.field_style_variation[0]['#markup'] == 'featured' ? 'true' : 'false' %}
-  {% set type = content.field_content_ref[0]['#node'].getType() %}
+
+  {#
+   # The reference formatter drops the entity when it is unpublished for the
+   # current user or deleted, so there may be no node to read the type from.
+   # Guarded because that is the path this bug travels; it read as null rather
+   # than erroring only because strict_variables is off by default. This does
+   # not make the template strict-safe overall -- the style_variation lookup
+   # above has the same shape, and is left alone as it is out of scope here.
+   # @see ys_core_preprocess_block(), which guards this same path.
+   #}
+  {% set referenced_node = content.field_content_ref[0]['#node']|default(null) %}
+  {% set type = referenced_node ? referenced_node.getType() : null %}
 
   {% embed "@organisms/card-collection/yds-card-collection.twig" with {
     card_collection__source_type: type,
