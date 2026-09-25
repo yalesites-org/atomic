@@ -130,6 +130,39 @@ function atomic_preprocess_node(&$variables) {
       $variables['date_formatted'] = \Drupal::service('date.formatter')->format($date, '', 'c');
     }
   }
+
+  // Raw email and telephone for the profile cards (#1648).
+  //
+  // The reference card builds its own mailto:/tel: links, so it needs the
+  // plain values rather than rendered field output. Those used to be read in
+  // the template as `content.field_email[0]['#context'].value`, which reaches
+  // into a render array's internals: `#context` exists only because the
+  // basic_string and string formatters happen to be implemented as
+  // `#type => inline_template`. Switch field_telephone's formatter to
+  // "link to the referenced entity" -- one checkbox on the display -- and
+  // StringFormatter::viewElements() wraps the value in a `#type => link`
+  // instead, `#context` moves a level down, and the card silently loses its
+  // phone number with no error anywhere.
+  //
+  // Read from the entity here instead: formatter-independent, and it does not
+  // require the fields to be enabled on the view display at all, which is what
+  // decouples this from the config half of the change. Access is checked
+  // explicitly -- `content.*` respects field access for free, and dropping to
+  // the entity gives that up unless we ask.
+  //
+  // Deliberately no `?: ''` fallback: the templates test these with `{% if %}`,
+  // and an empty string here is meaningfully different from a field that has
+  // gone missing. A missing field surfaces as an undefined variable in
+  // development rather than a blank card in production.
+  if ($variables['node']->getType() === 'profile') {
+    foreach (['field_email' => 'profile_email', 'field_telephone' => 'profile_phone'] as $field => $key) {
+      $node = $variables['node'];
+      if ($node->hasField($field) && $node->get($field)->access('view')) {
+        $variables[$key] = trim((string) $node->get($field)->value);
+      }
+    }
+  }
+
   // Handle resource thumbnail processing.
   if ($variables['node']->getType() === 'resource') {
     $view_mode = $variables['elements']['#view_mode'] ?? 'default';
@@ -310,6 +343,18 @@ function atomic_preprocess_views_view(&$variables) {
   // Add section wrapper variables.
   $variables['use_section_wrapper'] = TRUE;
   $variables['section_aria_label'] = $aria_label;
+
+  // After a filter auto-submit, announce the updated result count to assistive
+  // tech (WCAG 2.1 SC 4.1.3). The behavior reads this count, keyed by view DOM
+  // id, and announces only on filter-driven updates (not the initial render).
+  $result_count = $view->total_rows ?? count($view->result ?? []);
+  $variables['#attached']['library'][] = 'atomic/views-basic-filter-status';
+  $settings = &$variables['#attached']['drupalSettings']['ysViewsBasicFilter'];
+  $settings[$variables['dom_id']] = (int) $result_count;
+
+  // Keep the page from scrolling to the results on every filter auto-submit;
+  // the scroll-to-top is only wanted on pager clicks. (#1299 QA)
+  $variables['#attached']['library'][] = 'atomic/views-basic-filter-scroll';
 }
 
 /**
