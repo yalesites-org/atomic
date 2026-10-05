@@ -26,12 +26,15 @@
   --color-slot-one: var(--global-themes-four-colors-slot-one);
 }
 
-body[data-font-pairing='yalenew'] .view-empty-wrapper h2,
-body:not([data-font-pairing]) .view-empty-wrapper h2 {
+body[data-heading-font='yalenew'] .view-empty-wrapper h2,
+body:not([data-heading-font]) .view-empty-wrapper h2 {
   font: var(--font-style-heading-h5-yale-new);
-  font-variant-numeric: oldstyle-nums;
   margin: 0 0 var(--size-spacing-2) 0;
   color: var(--color-slot-one);
+}
+
+body:not([data-heading-numerals='lining']) .view-empty-wrapper h2 {
+  font-variant-numeric: oldstyle-nums;
 }
 
 .view-empty-wrapper p.inline-message__text {
