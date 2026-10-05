@@ -1,0 +1,65 @@
+/* Yale branding for the Klaro consent notice and preference modal.
+ *
+ * Klaro renders its dialog client-side from the klaro-js library, so there is
+ * no Twig template to override -- all theming goes through the CSS custom
+ * properties the module exposes on ".klaro". Everything below maps one of those
+ * onto a design token so the banner tracks the rest of the site.
+ */
+
+.klaro {
+  --klaro-primary-color: var(--color-blue-yale);
+  --klaro-link-color: var(--color-blue-yale);
+  --klaro-link-color-hover: var(--color-blue-yale);
+  --klaro-link-decoration-line: underline;
+  --klaro-link-decoration-line-hover: none;
+
+  /* Buttons: solid Yale blue on white, inverting on hover. Yale blue on white
+   * is roughly 11:1, comfortably past the 4.5:1 AA threshold in both states. */
+  --klaro-button-bg: var(--color-blue-yale);
+  --klaro-button-text-color: var(--color-basic-white);
+  --klaro-button-border: 2px solid var(--color-blue-yale);
+  --klaro-button-border-radius: 0;
+  --klaro-button-padding: var(--size-spacing-4) var(--size-spacing-6);
+  --klaro-button-font-weight: 600;
+  --klaro-button-bg-hover: var(--color-basic-white);
+  --klaro-button-text-color-hover: var(--color-blue-yale);
+  --klaro-button-border-hover: 2px solid var(--color-blue-yale);
+
+  /* A thick, offset outline so the focused control is unmistakable against
+   * both the white dialog and any page content behind it (WCAG 2.4.7). */
+  --klaro-button-focus-outline: 3px solid var(--color-blue-yale);
+  --klaro-button-focus-outline-offset: 3px;
+  --klaro-dialog-focus-outline: 3px solid var(--color-blue-yale);
+  --klaro-slider-bg: var(--color-gray-500);
+  --klaro-slider-bg-active: var(--color-blue-yale);
+  --klaro-slider-bg-required: var(--color-gray-700);
+  --font-family: inherit;
+  --title-font-family: inherit;
+  --font-size: 1rem;
+}
+
+/* Keep the notice narrow enough to leave page content readable, and let it
+ * take the full width only once the viewport is too small for a side panel --
+ * at 320px a fixed-width panel would otherwise overflow and break reflow. */
+.klaro .cookie-notice:not(.cookie-modal-notice) {
+  max-width: 30rem;
+}
+
+@media (width <= 30rem) {
+  .klaro .cookie-notice:not(.cookie-modal-notice) {
+    right: 0;
+    bottom: 0;
+    left: 0;
+    max-width: none;
+  }
+}
+
+/* The click-to-load placeholder that stands in for a blocked embed. It has to
+ * read as part of the page rather than as a broken component, so it borrows
+ * the same border and spacing language as other embedded content. */
+.klaro .context-notice {
+  padding: var(--size-spacing-6);
+  border: 1px solid var(--color-gray-200);
+  background-color: var(--color-basic-white);
+  color: var(--color-gray-800);
+}
