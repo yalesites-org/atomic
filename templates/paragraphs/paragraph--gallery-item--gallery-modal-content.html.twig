@@ -1,4 +1,12 @@
+{#
+ # The id makes the caption a fragment target so a Beacon citation can link
+ # straight to this gallery item. Derived from the paragraph entity, not from
+ # `data-media-grid-modal-item`, which is a render-time loop index and changes
+ # whenever items are reordered. An unsaved paragraph has no id and is
+ # rendered without one.
+ #}
 {% include "@organisms/galleries/media-grid/_yds-media-grid-modal-item--content.twig" with {
   modal_item__heading: content.field_heading.0,
   modal_item__content: content.field_text,
+  modal_item__id: paragraph.id() ? 'gallery-item-' ~ paragraph.id() : '',
 } %}
