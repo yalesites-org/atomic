@@ -27,6 +27,14 @@ props:
       type:
         - string
         - "null"
+    inline_message__icon_name:
+      title: Icon
+      description: >
+        Machine name of the chosen icon, '_none' for no icon. Leave unset to
+        fall back to the type-derived default icon.
+      type:
+        - string
+        - "null"
     inline_message__link__content:
       title: Link text
       type:
