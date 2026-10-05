@@ -11,8 +11,9 @@ props:
     link_grid__theme:
       title: Theme (dial)
       description: >
-        field_style_color (list_key), plus "inherit" when placed in a 50/50
-        two-column layout.
+        field_style_color (list_key). "inherit" remains a supported component
+        value, but the Drupal block no longer sets it: the 50/50 two-column
+        layout override was removed upstream (issue 1153).
       type: string
       enum: [one, two, three, four, five, inherit]
       default: one
