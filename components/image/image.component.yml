@@ -1,0 +1,27 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Image
+status: stable
+group: Atoms
+description: >
+  An image, optionally wrapped in a <figure> with a caption. Thin SDC wrapper
+  over @atoms/images/image/yds-image.twig; the responsive-image markup is
+  provided as a slot (it is typically a Drupal responsive-image render array).
+props:
+  type: object
+  properties:
+    figure__caption:
+      title: Caption
+      description: >
+        Optional caption. When present the image is wrapped in a <figure>. Passed
+        as already-rendered markup (the template prints it with |raw for WYSIWYG).
+      type:
+        - string
+        - "null"
+slots:
+  image__content:
+    title: Image markup
+    required: true
+    description: >
+      The image markup (typically a Drupal responsive-image render array). Named
+      image__content (not image__image) to avoid a collision with the template's
+      own image__image block.

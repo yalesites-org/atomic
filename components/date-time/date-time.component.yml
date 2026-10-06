@@ -1,0 +1,53 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Date Time
+status: stable
+group: Atoms
+description: >
+  A formatted date/time range (<time> element). Thin SDC wrapper over
+  @atoms/date-time/yds-date-time.twig; the real formatting logic and SCSS stay
+  in component-library-twig.
+props:
+  type: object
+  required:
+    - date_time__start
+  properties:
+    date_time__start:
+      title: Start
+      description: Start date/time (a Unix timestamp or a date string Twig's date filter accepts).
+      type:
+        - string
+        - number
+    date_time__end:
+      title: End
+      description: Optional end date/time; defaults to the start when omitted.
+      type:
+        - string
+        - number
+        - "null"
+    date_time__all_day:
+      title: All day
+      type:
+        - boolean
+        - "null"
+    date_time__format:
+      title: Format
+      description: Named format configuration.
+      type: string
+      enum:
+        - time
+        - date
+        - date_and_time
+        - all_day
+        - day__full
+        - year_only
+        - month_year
+        - same_day_diff_time
+        - date_time_multiple_days
+        - localist_same_day
+      default: date_and_time
+    date_time__format_override:
+      title: Format override
+      description: Advanced — override the named format with a specific format key.
+      type:
+        - string
+        - "null"

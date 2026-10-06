@@ -1,0 +1,47 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: CTA
+status: stable
+group: Atoms
+description: >
+  A call-to-action button/link. Thin SDC wrapper over
+  @atoms/controls/cta/yds-cta.twig; the real template and SCSS stay in
+  component-library-twig. Strong Web Component candidate (Wave 10).
+props:
+  type: object
+  properties:
+    cta__href:
+      title: URL
+      description: The URL the CTA points to (rendered as a link when set).
+      type:
+        - string
+        - "null"
+    cta__hover_style:
+      title: Hover style
+      type: string
+      enum: [fade, rise, swipe]
+      default: fade
+    cta__radius:
+      title: Corner radius
+      type: string
+      enum: [none, soft, pill]
+      default: none
+    cta__style:
+      title: Fill style
+      type: string
+      enum: [filled, outline]
+      default: filled
+    cta__outline_weight:
+      title: Outline weight
+      type: string
+      enum: ["1", "2", "4"]
+      default: "2"
+    cta__control_type:
+      title: Control type
+      description: Whether the CTA renders as a link or a button.
+      type: string
+      default: link
+slots:
+  cta__content:
+    title: CTA content
+    required: true
+    description: The CTA label/content. Consumed as a variable by the template.

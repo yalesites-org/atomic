@@ -1,0 +1,12 @@
+{#
+ # SDC thin wrapper for the Divider atom.
+ #
+ # The canonical template and SCSS live in the component library
+ # (@atoms/divider/yds-divider.twig). This shim only maps SDC props onto the
+ # template's variables. `with_context = false` keeps the include isolated to
+ # the props declared in divider.component.yml.
+ #}
+{{ include('@atoms/divider/yds-divider.twig', {
+  divider__width: divider__width,
+  divider__position: divider__position,
+}, with_context = false) }}

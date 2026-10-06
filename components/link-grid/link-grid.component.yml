@@ -1,0 +1,47 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Link Grid
+status: stable
+group: Molecules
+description: >
+  A grid of up to four link columns with an optional overall heading. Thin SDC
+  wrapper over @molecules/link-grid/yds-link-grid.twig.
+props:
+  type: object
+  properties:
+    link_grid__theme:
+      title: Theme (dial)
+      description: >
+        field_style_color (list_key). "inherit" remains a supported component
+        value, but the Drupal block no longer sets it: the 50/50 two-column
+        layout override was removed upstream (issue 1153).
+      type: string
+      enum: [one, two, three, four, five, inherit]
+      default: one
+    link_grid__width:
+      title: Width
+      type:
+        - string
+        - "null"
+    link_grid__line_treatment:
+      title: Line treatment
+      type:
+        - string
+        - "null"
+slots:
+  link_grid__heading:
+    title: Heading
+    required: false
+    description: Optional overall heading.
+  link_grid__col_one:
+    title: Column one links
+    required: false
+    description: Links for column one (named __col_one to avoid the template's link block).
+  link_grid__col_two:
+    title: Column two links
+    required: false
+  link_grid__col_three:
+    title: Column three links
+    required: false
+  link_grid__col_four:
+    title: Column four links
+    required: false

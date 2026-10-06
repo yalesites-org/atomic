@@ -1,0 +1,69 @@
+{#
+ # SDC thin wrapper for the Site Header organism (global chrome, Wave 7 / #1413,
+ # split from #1362).
+ #
+ # The canonical template + SCSS live in the component library
+ # (@organisms/site-header/yds-site-header.twig). This shim maps SDC props onto the
+ # organism's variables and forwards four markup-captured slots.
+ #
+ # Why so many props: the previous region--header.html.twig embedded the organism
+ # WITHOUT `only`, so region-scope values (utility search flag, CTA links, dropdown
+ # links/items, site-name image, background image) reached the organism's nested
+ # utility-nav include via Twig context inheritance. An SDC isolates context, so
+ # each is threaded explicitly here.
+ #
+ # Slot forwarding pattern (see the site-footer wrapper / docs/sdc): each slot is
+ # captured with block() so it works whether rendered via the SDC render element
+ # (#slots) or a Twig {% embed %} block override; the slot names are distinct from
+ # the organism's own block names to avoid a Twig block-name collision; the receiver
+ # blocks are guarded by {% if false %} so they register at compile time (for block()
+ # to find) without rendering inline. Captured values are printed |raw because they
+ # are already-rendered, trusted output.
+ #
+ # menu__contextual: true tells the shared CLT menu engine the dropdown item urls
+ # are already plain strings (flattened in atomic_preprocess_region__header), so
+ # _yds-menu-item.twig skips its ->toString() call. It only affects the dropdown:
+ # the primary/utility nav arrive as already-rendered slots, captured in the
+ # adapter's context, insulated from this flag.
+ #}
+{% set primary_nav__content_slot %}{{ block('primary_nav__content')|raw }}{% endset %}
+{% set background_image__content_slot %}{{ block('background_image__content')|raw }}{% endset %}
+{% set utility_nav__content_slot %}{{ block('utility_nav__content')|raw }}{% endset %}
+{% set site_name_image__content_slot %}{{ block('site_name_image__content')|raw }}{% endset %}
+
+{% embed '@organisms/site-header/yds-site-header.twig' with {
+  site_header__site_name: site_header__site_name,
+  site_header__site_link: site_header__site_link,
+  site_header__collection_nav_name: site_header__collection_nav_name,
+  site_header__collection_nav_link: site_header__collection_nav_link,
+  site_header__collection_nav_position: site_header__collection_nav_position,
+  site_header__branding_name: site_header__branding_name,
+  site_header__branding_link: site_header__branding_link,
+  site_header__border_thickness: site_header__border_thickness,
+  site_header__theme: site_header__theme,
+  site_header__accent: site_header__accent,
+  site_header__menu__variation: site_header__menu__variation,
+  site_header__nav_position: site_header__nav_position,
+  site_header__site_name_image: site_name_image__content_slot,
+  site_header__background_image: background_image__content_slot,
+  drupal_utility_nav: utility_nav__content_slot,
+  utility_nav__search: utility_nav__search,
+  utility_nav__link__content: utility_nav__link__content,
+  utility_nav__link__url: utility_nav__link__url,
+  utility_nav__dropdown_link__content: utility_nav__dropdown_link__content,
+  utility_nav__dropdown_link__url: utility_nav__dropdown_link__url,
+  utility_nav__dropdown__items: utility_nav__dropdown__items,
+  menu__contextual: true,
+  directory: directory,
+  primary_nav__content_slot: primary_nav__content_slot,
+  background_image__content_slot: background_image__content_slot,
+} only %}
+  {% block site_header__primary_nav %}{{ primary_nav__content_slot|raw }}{% endblock %}
+  {% block site_header__background_image %}{{ background_image__content_slot|raw }}{% endblock %}
+{% endembed %}
+{% if false %}
+  {% block primary_nav__content %}{% endblock %}
+  {% block background_image__content %}{% endblock %}
+  {% block utility_nav__content %}{% endblock %}
+  {% block site_name_image__content %}{% endblock %}
+{% endif %}

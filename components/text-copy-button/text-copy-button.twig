@@ -1,0 +1,15 @@
+{#
+ # SDC thin wrapper for the Text Copy Button atom. JS attaches via
+ # libraryOverrides. The slot is injected into the template's
+ # text_copy_button__content block; pre_text is passed as a variable.
+ #}
+{% set text_copy_button__content_slot = block('text_copy_button__content_slot') %}
+{% embed '@atoms/controls/text-copy-button/yds-text-copy-button.twig' with {
+  text_copy_button__pre_text: text_copy_button__pre_text,
+  text_copy_button__pre_text_tag: text_copy_button__pre_text_tag,
+  text_copy_button__component_theme: text_copy_button__component_theme,
+  text_copy_button__content_slot: text_copy_button__content_slot,
+} only %}
+  {% block text_copy_button__content %}{{ text_copy_button__content_slot|raw }}{% endblock %}
+{% endembed %}
+{% if false %}{% block text_copy_button__content_slot %}{% endblock %}{% endif %}

@@ -1,0 +1,37 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Text Link
+status: stable
+group: Atoms
+description: >
+  A text hyperlink with type/style variants. Thin SDC wrapper over
+  @atoms/controls/text-link/yds-text-link.twig; the real template and SCSS stay
+  in component-library-twig. Web Component candidate (Wave 10).
+props:
+  type: object
+  properties:
+    link__url:
+      title: URL
+      type:
+        - string
+        - "null"
+    link__type:
+      title: Link type
+      description: Link treatment; external/target-blank/download/with-chevron add an icon.
+      type: string
+      enum: [normal, download, external, target-blank, with-chevron]
+      default: normal
+    link__style:
+      title: Link style
+      description: >
+        Underline treatment. NOTE the source template reads this as `link_style`
+        (single underscore) — the shim maps link__style onto it.
+      type: string
+      enum: [underline, no-underline, no-animation]
+      default: underline
+slots:
+  link__content_slot:
+    title: Link content
+    required: true
+    description: >
+      The link content. Named link__content_slot (not link__content) to avoid a
+      collision with the template's own link__content block.

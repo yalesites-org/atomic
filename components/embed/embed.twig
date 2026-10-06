@@ -1,0 +1,12 @@
+{#
+ # SDC thin wrapper for the Embed molecule. The embedded content is injected
+ # into the template's embed__block block (captured as Markup to preserve it).
+ #}
+{% set embed__content %}{{ block('embed__content')|raw }}{% endset %}
+{% embed '@molecules/embed/yds-embed.twig' with {
+  embed__width: embed__width,
+  embed__content: embed__content,
+} only %}
+  {% block embed__block %}{{ embed__content|raw }}{% endblock %}
+{% endembed %}
+{% if false %}{% block embed__content %}{% endblock %}{% endif %}
