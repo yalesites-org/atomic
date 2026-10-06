@@ -228,16 +228,16 @@ div[data-drupal-selector="edit-block-form"] {
 }
 
 /* Layout component layout-builder link overrides. */
-.yds-layout.layout-builder__layout[data-component-theme="one"] .layout-builder__link.layout-builder__link--add,
-.yds-layout.layout-builder__layout[data-component-theme="three"] .layout-builder__link.layout-builder__link--add,
-.yds-layout.layout-builder__layout[data-component-theme="four"] .layout-builder__link.layout-builder__link--add {
+.yds-layout.layout-builder__layout[data-section-theme="one"] .layout-builder__link.layout-builder__link--add,
+.yds-layout.layout-builder__layout[data-section-theme="three"] .layout-builder__link.layout-builder__link--add,
+.yds-layout.layout-builder__layout[data-section-theme="four"] .layout-builder__link.layout-builder__link--add {
   background-color: white !important;
   border-color: transparent !important;
 }
 
-.yds-layout.layout-builder__layout[data-component-theme="one"] .layout-builder__link.layout-builder__link--add:hover,
-.yds-layout.layout-builder__layout[data-component-theme="three"] .layout-builder__link.layout-builder__link--add:hover,
-.yds-layout.layout-builder__layout[data-component-theme="four"] .layout-builder__link.layout-builder__link--add:hover {
+.yds-layout.layout-builder__layout[data-section-theme="one"] .layout-builder__link.layout-builder__link--add:hover,
+.yds-layout.layout-builder__layout[data-section-theme="three"] .layout-builder__link.layout-builder__link--add:hover,
+.yds-layout.layout-builder__layout[data-section-theme="four"] .layout-builder__link.layout-builder__link--add:hover {
   background-color: var(--gin-color-primary-hover) !important;
   border-color: white !important;
 }
