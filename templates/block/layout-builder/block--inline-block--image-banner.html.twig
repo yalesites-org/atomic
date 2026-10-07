@@ -10,6 +10,7 @@
     image_banner__overlay_variation: 'full',
     image_banner__size: content.field_style_variation.0['#markup'],
     image_banner__width: image_banner__width,
+    image_banner__video_playback: content.field_style_video_playback.0['#markup'],
   } %}
     {% block image_banner__video %}
       {% if paragraph.field_media.entity.field_media_video_file.entity.uri.value is not empty %}
