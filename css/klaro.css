@@ -242,25 +242,94 @@
   padding-right: 4rem;
 }
 
+/* Functional and Security are always on: no switch and no "Always active"
+ * label, the dialog intro says so instead. */
+.klaro .cookie-modal .cm-list-input.required + .cm-list-label .cm-switch,
+.klaro .cookie-modal .cm-list-input.required + .cm-list-label .cm-required {
+  display: none;
+}
+
+/* Klaro gives "Toggle all" an "only-required" state for "nothing optional is
+ * on". Its stylesheet draws that as a half-on slider, and the module maps
+ * Klaro's green shades onto Yale blue, so it read as on while every switch was
+ * off. Draw it as plainly off. */
+.klaro .cookie-modal .cm-list-input.only-required + .cm-list-label .slider {
+  background-color: var(--klaro-slider-bg);
+  opacity: 1;
+}
+
 .klaro
   .cookie-modal
-  .cm-modal
-  .cm-body
-  ul.cm-purposes
-  li.cm-purpose
-  span.cm-required {
-  color: var(--color-gray-700);
-  font-size: var(--font-size-15);
+  .cm-list-input.only-required
+  + .cm-list-label
+  .slider::before {
+  transform: none;
 }
 
-/* A locked switch reads as locked: paler than a live one. */
-.klaro .cookie-modal .cm-list-input.required:checked + .cm-list-label .slider {
-  opacity: 0.5;
-}
-
-/* "Embedded external content" is one switch for all its services. */
-.klaro li.cm-purpose:has(> [id="purpose-item-external_content"]) .cm-services {
+/* Categories are described in an accordion (klaro-a11y.js adds the button), so
+ * the per-service lists are never shown. */
+.klaro .cookie-modal .cm-services {
   display: none;
+}
+
+.klaro .cookie-modal .yds-klaro-disclosure {
+  display: flex;
+  align-items: center;
+  gap: var(--size-spacing-3);
+  margin: var(--size-spacing-3) 0 0;
+  padding: var(--size-spacing-2) 0;
+  border: 0;
+  background: none;
+  color: var(--color-blue-yale);
+  font: inherit;
+  font-size: var(--font-size-15);
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.klaro .cookie-modal .yds-klaro-disclosure:hover {
+  text-decoration: none;
+}
+
+.klaro .cookie-modal .yds-klaro-disclosure:focus-visible {
+  outline: var(--klaro-button-focus-outline);
+  outline-offset: var(--klaro-button-focus-outline-offset);
+}
+
+.klaro .cookie-modal .yds-klaro-disclosure::after {
+  content: "";
+  width: 0.5em;
+  height: 0.5em;
+  border-right: 2px solid currentcolor;
+  border-bottom: 2px solid currentcolor;
+  transform: translateY(-0.15em) rotate(45deg);
+  transition: transform var(--animation-speed-default);
+}
+
+.klaro .cookie-modal .yds-klaro-disclosure[aria-expanded="true"]::after {
+  transform: translateY(0.1em) rotate(-135deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .klaro .cookie-modal .yds-klaro-disclosure::after {
+    transition: none;
+  }
+}
+
+.klaro .cookie-modal li.cm-purpose[data-yds-accordion] > [id$="-description"] {
+  margin-top: var(--size-spacing-3);
+}
+
+.klaro
+  .cookie-modal
+  li.cm-purpose[data-yds-accordion]:not([data-yds-open])
+  > [id$="-description"] {
+  display: none;
+}
+
+.klaro .cookie-modal li.cm-purpose[data-yds-accordion] .cm-list-description {
+  margin: 0;
 }
 
 /* The click-to-load placeholder that stands in for a blocked embed. It has to

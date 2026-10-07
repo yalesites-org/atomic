@@ -1,8 +1,9 @@
 /**
  * @file
  * Accessibility fixes for the Klaro consent UI, which Klaro itself lacks:
- * focus trap and Escape for the preferences dialog, and bottom padding so the
- * fixed notice bar never covers the page footer.
+ * focus trap and Escape for the preferences dialog, an accordion button for each
+ * category's description, and bottom padding so the fixed notice bar never
+ * covers the page footer.
  */
 
 Drupal.behaviors.klaroA11y = {
@@ -35,6 +36,44 @@ Drupal.behaviors.klaroA11y = {
     }
 
     const resizer = new ResizeObserver(syncPadding);
+
+    // Categories whose description is open, by purpose id. Klaro re-renders the
+    // dialog, so the state lives here and the buttons are rebuilt from it.
+    // The observer does not watch attributes: only the one-time button insert
+    // re-triggers it, and that second pass finds the button and stops.
+    const openPurposes = new Set();
+
+    function enhanceAccordions() {
+      klaro.querySelectorAll('.cm-modal li.cm-purpose:not(.cm-toggle-all)').forEach((li) => {
+        const input = li.querySelector(':scope > .cm-list-input');
+        const body = li.querySelector(':scope > [id$="-description"]');
+        if (!input || !body || !body.textContent.trim()) {
+          return;
+        }
+        const id = input.id.replace('purpose-item-', '');
+        let button = li.querySelector(':scope > .yds-klaro-disclosure');
+        if (!button) {
+          button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'yds-klaro-disclosure';
+          button.id = `yds-klaro-disclosure-${id}`;
+          button.dataset.purpose = id;
+          button.textContent = Drupal.t('Details');
+          li.insertBefore(button, body);
+        }
+        const open = openPurposes.has(id);
+        button.setAttribute('aria-controls', body.id);
+        // Name: "Details Analytics", so each button is distinct.
+        button.setAttribute('aria-labelledby', `${button.id} ${input.id}-title`);
+        button.setAttribute('aria-expanded', String(open));
+        li.setAttribute('data-yds-accordion', '');
+        li.toggleAttribute('data-yds-open', open);
+        // Always-on rows have no switch, so their label is an empty tab stop.
+        if (input.classList.contains('required')) {
+          li.querySelector(':scope > .cm-list-label')?.setAttribute('tabindex', '-1');
+        }
+      });
+    }
 
     function focusables(modal) {
       return [...modal.querySelectorAll('a[href], button, input, select, textarea, [tabindex]')]
@@ -72,6 +111,7 @@ Drupal.behaviors.klaroA11y = {
           syncPadding();
         }
       }
+      enhanceAccordions();
       const open = !!klaro.querySelector(modalSelector);
       if (wasOpen && !open && closedByEscape) {
         // ponytail: Klaro's own klaro.drupal.js observer refocuses the notice
@@ -132,6 +172,17 @@ Drupal.behaviors.klaroA11y = {
       else if (!event.shiftKey && document.activeElement === last) {
         event.preventDefault();
         first.focus();
+      }
+    });
+
+    document.addEventListener('click', (event) => {
+      const button = event.target.closest('.yds-klaro-disclosure');
+      if (button) {
+        const id = button.dataset.purpose;
+        if (!openPurposes.delete(id)) {
+          openPurposes.add(id);
+        }
+        enhanceAccordions();
       }
     });
 
