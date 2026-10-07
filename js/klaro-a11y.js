@@ -41,6 +41,14 @@ Drupal.behaviors.klaroA11y = {
         .filter((el) => !el.disabled && el.tabIndex >= 0 && el.getClientRects().length > 0);
     }
 
+    // Klaro focuses into .cm-modal before it sets aria-modal, so test the
+    // element. Not while an Escape close is pending: Klaro refocuses its notice first.
+    function track(el) {
+      if (el && !closedByEscape && !el.closest('.cm-modal')) {
+        opener = el;
+      }
+    }
+
     function restoreFocus() {
       closedByEscape = false;
       const target = [opener, klaro.querySelector('.cn-learn-more'), document.getElementById('klaro_toggle_dialog')]
@@ -95,7 +103,10 @@ Drupal.behaviors.klaroA11y = {
     }
 
     document.addEventListener('keydown', (event) => {
-      const modal = document.querySelector(modalSelector);
+      if (!wasOpen) {
+        return;
+      }
+      const modal = klaro.querySelector(modalSelector);
       if (!modal) {
         return;
       }
@@ -126,21 +137,16 @@ Drupal.behaviors.klaroA11y = {
 
     // Click covers browsers that do not focus a clicked button (Safari).
     document.addEventListener('click', (event) => {
-      const el = event.target.closest('a[href], button, input, select, textarea, [tabindex]');
-      if (el && !closedByEscape && !el.closest('.cm-modal')) {
-        opener = el;
+      if (!closedByEscape) {
+        track(event.target.closest('a[href], button, input, select, textarea, [tabindex]'));
       }
     }, true);
 
     // Focus that lands outside the open dialog (click, script) is pulled back in.
     document.addEventListener('focusin', (event) => {
-      const modal = document.querySelector(modalSelector);
+      const modal = klaro?.querySelector(modalSelector);
       if (!modal) {
-        // Klaro focuses into .cm-modal before it sets aria-modal, so test the
-        // target. Not while an Escape close is pending: Klaro refocuses its notice first.
-        if (!closedByEscape && !event.target.closest('.cm-modal')) {
-          opener = event.target;
-        }
+        track(event.target);
       }
       else if (!modal.contains(event.target)) {
         const items = focusables(modal);

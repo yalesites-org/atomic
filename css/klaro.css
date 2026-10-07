@@ -60,11 +60,11 @@
 }
 
 /* klaro-a11y.js sets the bar height so the footer can scroll clear of the bar.
- * The base is component-library-twig's .site-footer padding. */
-.site-footer {
-  padding-bottom: calc(
-    var(--size-spacing-7) + var(--yds-klaro-bar-height, 0px)
-  );
+ * A spacer, so the footer's own padding is left alone. */
+.site-footer::after {
+  content: "";
+  display: block;
+  height: var(--yds-klaro-bar-height, 0);
 }
 
 @keyframes yds-klaro-slide-up {
