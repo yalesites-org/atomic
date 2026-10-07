@@ -1,9 +1,9 @@
 /**
  * @file
  * Accessibility fixes for the Klaro consent UI, which Klaro itself lacks:
- * focus trap and Escape for the preferences dialog, an accordion button for each
- * category's description, and bottom padding so the fixed notice bar never
- * covers the page footer.
+ * focus trap and Escape for the preferences dialog, the category name as an
+ * accordion button for its description, and bottom padding so the fixed
+ * notice bar never covers the page footer.
  */
 
 Drupal.behaviors.klaroA11y = {
@@ -51,20 +51,22 @@ Drupal.behaviors.klaroA11y = {
           return;
         }
         const id = input.id.replace('purpose-item-', '');
-        let button = li.querySelector(':scope > .yds-klaro-disclosure');
+        let button = li.querySelector(':scope > h2 > .yds-klaro-disclosure');
         if (!button) {
+          // The category name is the accordion trigger. Klaro's own title stays
+          // in the switch label, visually hidden, so the switch keeps its name.
+          const heading = document.createElement('h2');
+          heading.className = 'yds-klaro-disclosure-heading';
           button = document.createElement('button');
           button.type = 'button';
           button.className = 'yds-klaro-disclosure';
-          button.id = `yds-klaro-disclosure-${id}`;
           button.dataset.purpose = id;
-          button.textContent = Drupal.t('Details');
-          li.insertBefore(button, body);
+          button.textContent = li.querySelector(`#${input.id}-title`)?.textContent || id;
+          heading.append(button);
+          li.prepend(heading);
         }
         const open = openPurposes.has(id);
         button.setAttribute('aria-controls', body.id);
-        // Name: "Details Analytics", so each button is distinct.
-        button.setAttribute('aria-labelledby', `${button.id} ${input.id}-title`);
         button.setAttribute('aria-expanded', String(open));
         li.setAttribute('data-yds-accordion', '');
         li.toggleAttribute('data-yds-open', open);
@@ -90,7 +92,7 @@ Drupal.behaviors.klaroA11y = {
 
     function restoreFocus() {
       closedByEscape = false;
-      const target = [opener, klaro.querySelector('.cn-learn-more'), document.getElementById('klaro_toggle_dialog')]
+      const target = [opener, klaro.querySelector('.cn-learn-more')]
         .find((el) => el && el.isConnected);
       if (target) {
         target.focus();

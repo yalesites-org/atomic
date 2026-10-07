@@ -266,24 +266,26 @@
   transform: none;
 }
 
-/* Categories are described in an accordion (klaro-a11y.js adds the button), so
- * the per-service lists are never shown. */
+/* Categories are described in an accordion (klaro-a11y.js turns each category
+ * name into its button), so the per-service lists are never shown. */
 .klaro .cookie-modal .cm-services {
   display: none;
 }
 
+.klaro .cookie-modal .yds-klaro-disclosure-heading {
+  margin: 0;
+  padding-right: 4rem;
+  font: inherit;
+}
+
 .klaro .cookie-modal .yds-klaro-disclosure {
-  display: flex;
-  align-items: center;
-  gap: var(--size-spacing-3);
-  margin: var(--size-spacing-3) 0 0;
-  padding: var(--size-spacing-2) 0;
+  padding: 0;
   border: 0;
   background: none;
   color: var(--color-blue-yale);
   font: inherit;
-  font-size: var(--font-size-15);
   font-weight: 600;
+  text-align: left;
   text-decoration: underline;
   cursor: pointer;
 }
@@ -297,24 +299,19 @@
   outline-offset: var(--klaro-button-focus-outline-offset);
 }
 
-.klaro .cookie-modal .yds-klaro-disclosure::after {
-  content: "";
-  width: 0.5em;
-  height: 0.5em;
-  border-right: 2px solid currentcolor;
-  border-bottom: 2px solid currentcolor;
-  transform: translateY(-0.15em) rotate(45deg);
-  transition: transform var(--animation-speed-default);
-}
-
-.klaro .cookie-modal .yds-klaro-disclosure[aria-expanded="true"]::after {
-  transform: translateY(0.1em) rotate(-135deg);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .klaro .cookie-modal .yds-klaro-disclosure::after {
-    transition: none;
-  }
+/* The button shows the category name; Klaro's copy stays only as the
+ * switch's accessible name. */
+.klaro
+  .cookie-modal
+  li.cm-purpose[data-yds-accordion]
+  > .cm-list-label
+  .cm-list-title {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 .klaro .cookie-modal li.cm-purpose[data-yds-accordion] > [id$="-description"] {
