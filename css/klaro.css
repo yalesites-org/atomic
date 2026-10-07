@@ -38,20 +38,229 @@
   --font-size: 1rem;
 }
 
-/* Keep the notice narrow enough to leave page content readable, and let it
- * take the full width only once the viewport is too small for a side panel --
- * at 320px a fixed-width panel would otherwise overflow and break reflow. */
-.klaro .cookie-notice:not(.cookie-modal-notice) {
-  max-width: 30rem;
+.klaro .cookie-modal p,
+.klaro .cookie-modal li,
+.klaro .cookie-modal strong,
+.klaro .cookie-modal label {
+  color: var(--color-gray-800);
 }
 
-@media (width <= 30rem) {
-  .klaro .cookie-notice:not(.cookie-modal-notice) {
-    right: 0;
-    bottom: 0;
-    left: 0;
-    max-width: none;
+/* Notice: a slim full-width bar fixed to the bottom of the viewport. The
+ * content is capped at the site container width so it lines up with the header. */
+.klaro .cookie-notice:not(.cookie-modal-notice) {
+  right: 0;
+  bottom: 0;
+  left: 0;
+  max-width: none;
+  border-top: var(--border-thickness-1) solid var(--color-gray-200);
+  border-radius: 0;
+  background-color: var(--color-gray-100);
+  box-shadow: none;
+  animation: yds-klaro-slide-up var(--animation-speed-default) ease-out;
+}
+
+/* klaro-a11y.js sets the bar height so the footer can scroll clear of the bar.
+ * The base is component-library-twig's .site-footer padding. */
+.site-footer {
+  padding-bottom: calc(
+    var(--size-spacing-7) + var(--yds-klaro-bar-height, 0px)
+  );
+}
+
+@keyframes yds-klaro-slide-up {
+  from {
+    transform: translateY(100%);
   }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .klaro .cookie-notice:not(.cookie-modal-notice) {
+    animation: none;
+  }
+}
+
+.klaro .cookie-notice:not(.cookie-modal-notice) .cn-body {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--size-spacing-5);
+  box-sizing: content-box;
+
+  /* Content box is the site container width, with the same gutter as
+   * .site-header, so the edges line up with the header. */
+  max-width: var(--size-component-layout-width-site);
+  margin: 0 auto;
+  padding: var(--size-spacing-6) var(--size-spacing-site-gutter);
+}
+
+.klaro .cookie-notice:not(.cookie-modal-notice) .cn-body > p {
+  flex: 1;
+  margin: 0;
+  color: var(--color-gray-800);
+  font-family: inherit;
+  font-size: var(--font-size-15);
+  line-height: 1.5;
+}
+
+.klaro .cookie-notice:not(.cookie-modal-notice) .cn-body .cn-ok,
+.klaro .cookie-notice:not(.cookie-modal-notice) .cn-body div.cn-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--size-spacing-4);
+  margin: 0;
+}
+
+.klaro .cookie-notice:not(.cookie-modal-notice) .cn-body div.cn-buttons {
+  width: 100%;
+}
+
+.klaro .cookie-notice:not(.cookie-modal-notice) .cn-body a.cn-learn-more {
+  margin: 0;
+  color: var(--color-blue-yale);
+  font-size: var(--font-size-15);
+  text-align: center;
+}
+
+/* Decline and Accept are the same solid button: Klaro tints them differently
+ * (cm-btn-danger / cm-btn-success), which we neutralize. */
+.klaro
+  .cookie-notice:not(.cookie-modal-notice)
+  .cn-body
+  .cn-buttons
+  button.cm-btn {
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  background-color: var(--color-blue-yale);
+  color: var(--color-basic-white);
+}
+
+.klaro
+  .cookie-notice:not(.cookie-modal-notice)
+  .cn-body
+  .cn-buttons
+  button.cm-btn:hover {
+  background-color: var(--color-basic-white);
+  color: var(--color-blue-yale);
+}
+
+@media (min-width: 768px) {
+  .klaro .cookie-notice:not(.cookie-modal-notice) .cn-body {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--size-spacing-7);
+  }
+
+  .klaro .cookie-notice:not(.cookie-modal-notice) .cn-body .cn-ok,
+  .klaro .cookie-notice:not(.cookie-modal-notice) .cn-body div.cn-buttons {
+    flex-direction: row;
+    align-items: center;
+    width: auto;
+  }
+
+  .klaro .cookie-notice:not(.cookie-modal-notice) .cn-body .cn-ok {
+    flex: none;
+    gap: var(--size-spacing-6);
+  }
+
+  .klaro
+    .cookie-notice:not(.cookie-modal-notice)
+    .cn-body
+    .cn-buttons
+    button.cm-btn {
+    width: auto;
+    min-width: 10rem;
+  }
+}
+
+/* Preferences dialog: 720px, white, with the YaleNew heading font. */
+.klaro .cookie-modal .cm-modal.cm-klaro {
+  display: flex;
+  flex-direction: column;
+  max-width: 720px;
+  max-height: 96dvh;
+  overflow: hidden;
+  border-radius: 0;
+  background-color: var(--color-basic-white);
+  color: var(--color-gray-800);
+}
+
+.klaro .cookie-modal .cm-modal .cm-header,
+.klaro .cookie-modal .cm-modal .cm-footer {
+  flex: none;
+  border-color: var(--color-gray-200);
+}
+
+.klaro .cookie-modal .cm-modal .cm-header h1 {
+  font-family: var(--font-families-yalenew);
+  font-weight: var(--font-weights-yalenew-roman);
+}
+
+.klaro .cookie-modal .cm-modal .cm-body ul.cm-purposes li.cm-purpose {
+  box-sizing: border-box;
+  margin-top: var(--size-spacing-4);
+  padding: var(--size-spacing-5);
+  background-color: var(--color-gray-100);
+}
+
+/* Below 768px the three footer buttons do not fit in a row: stack them. */
+@media (width < 768px) {
+  .klaro .cookie-modal .cm-modal .cm-footer-buttons {
+    flex-direction: column;
+    gap: var(--size-spacing-4);
+  }
+
+  .klaro .cookie-modal .cm-modal .cm-footer-buttons .cm-btn {
+    width: 100%;
+    margin: 0;
+  }
+}
+
+/* Header and footer stay visible; only the category list scrolls. */
+.klaro .cookie-modal .cm-modal .cm-body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+}
+
+/* Put the switch on the right of each category row. */
+.klaro .cookie-modal .cm-purpose .cm-list-label .cm-switch,
+.klaro .cookie-modal .cm-purpose .cm-list-input {
+  top: var(--size-spacing-5);
+  right: var(--size-spacing-5);
+  left: auto;
+  width: 50px;
+  height: 30px;
+}
+
+.klaro .cookie-modal .cm-purpose .cm-list-label {
+  display: block;
+  padding-right: 4rem;
+}
+
+.klaro
+  .cookie-modal
+  .cm-modal
+  .cm-body
+  ul.cm-purposes
+  li.cm-purpose
+  span.cm-required {
+  color: var(--color-gray-700);
+  font-size: var(--font-size-15);
+}
+
+/* A locked switch reads as locked: paler than a live one. */
+.klaro .cookie-modal .cm-list-input.required:checked + .cm-list-label .slider {
+  opacity: 0.5;
+}
+
+/* "Embedded external content" is one switch for all its services. */
+.klaro li.cm-purpose:has(> [id="purpose-item-external_content"]) .cm-services {
+  display: none;
 }
 
 /* The click-to-load placeholder that stands in for a blocked embed. It has to
