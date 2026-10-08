@@ -2,8 +2,8 @@
  * @file
  * Accessibility fixes for the Klaro consent UI, which Klaro itself lacks:
  * focus trap and Escape for the preferences dialog, the category name as an
- * accordion button for its description, and bottom padding so the fixed
- * notice bar never covers the page footer.
+ * accordion button for its description, footer buttons in visual order, and
+ * bottom padding so the fixed notice bar never covers the page footer.
  */
 
 Drupal.behaviors.klaroA11y = {
@@ -62,6 +62,9 @@ Drupal.behaviors.klaroA11y = {
           button.className = 'yds-klaro-disclosure';
           button.dataset.purpose = id;
           button.textContent = li.querySelector(`#${input.id}-title`)?.textContent || id;
+          if (input.classList.contains('required')) {
+            button.textContent += ` ${Drupal.t('(always on)')}`;
+          }
           heading.append(button);
           li.prepend(heading);
         }
@@ -70,7 +73,7 @@ Drupal.behaviors.klaroA11y = {
         button.setAttribute('aria-expanded', String(open));
         li.setAttribute('data-yds-accordion', '');
         li.toggleAttribute('data-yds-open', open);
-        // Always-on rows have no switch, so their label is an empty tab stop.
+        // Always-on rows show a disabled switch; keep its label out of the tab order.
         if (input.classList.contains('required')) {
           li.querySelector(':scope > .cm-list-label')?.setAttribute('tabindex', '-1');
         }
@@ -114,6 +117,13 @@ Drupal.behaviors.klaroA11y = {
         }
       }
       enhanceAccordions();
+      // Accept all comes first in the footer, so DOM and tab order match the
+      // visual order (Accept all, Decline all, Save my choices).
+      const footer = klaro.querySelector('.cm-modal .cm-footer-buttons');
+      const acceptAll = footer?.querySelector(':scope > .cm-btn-accept-all');
+      if (acceptAll && footer.firstElementChild !== acceptAll) {
+        footer.prepend(acceptAll);
+      }
       const open = !!klaro.querySelector(modalSelector);
       if (wasOpen && !open && closedByEscape) {
         // ponytail: Klaro's own klaro.drupal.js observer refocuses the notice

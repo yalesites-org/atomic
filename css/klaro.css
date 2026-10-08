@@ -178,120 +178,153 @@
   }
 }
 
-/* Preferences dialog: 720px, white, with the YaleNew heading font. */
+/* Preferences dialog. Header and categories scroll together; the footer band
+ * stays pinned to the bottom so the buttons are always in reach. */
 .klaro .cookie-modal .cm-modal.cm-klaro {
+  --yds-klaro-gutter: 2.5rem;
+  --yds-klaro-row-pad: 1.25rem;
+  --yds-klaro-name-indent: 3.4rem;
+
   display: flex;
   flex-direction: column;
-  max-width: 720px;
+  max-width: 56rem;
   max-height: 96dvh;
-  overflow: hidden;
+  overflow-y: auto;
   border-radius: 0;
   background-color: var(--color-basic-white);
+  box-shadow: 0 8px 32px rgb(0 0 0 / 30%);
   color: var(--color-gray-800);
 }
 
-.klaro .cookie-modal .cm-modal .cm-header,
-.klaro .cookie-modal .cm-modal .cm-footer {
+.klaro .cookie-modal .cm-modal .cm-header {
   flex: none;
-  border-color: var(--color-gray-200);
+  padding: var(--yds-klaro-gutter) var(--yds-klaro-gutter) 0;
+  border: 0;
 }
 
-.klaro .cookie-modal .cm-modal .cm-header h1 {
-  font-family: var(--font-families-yalenew);
-  font-weight: var(--font-weights-yalenew-roman);
+.klaro .cookie-modal .cm-modal .cm-header h1.title {
+  margin: 0 0 var(--size-spacing-6);
+  padding-right: 2.5rem;
+  color: var(--color-blue-yale);
+  font: var(--font-style-heading-h2-yale-new);
 }
 
-.klaro .cookie-modal .cm-modal .cm-body ul.cm-purposes li.cm-purpose {
-  box-sizing: border-box;
-  margin-top: var(--size-spacing-4);
-  padding: var(--size-spacing-5);
-  background-color: var(--color-gray-100);
+.klaro .cookie-modal .cm-modal .cm-header p {
+  margin: 0;
+  font: var(--font-style-body-default);
 }
 
-/* Below 768px the three footer buttons do not fit in a row: stack them. */
-@media (width < 768px) {
-  .klaro .cookie-modal .cm-modal .cm-footer-buttons {
-    flex-direction: column;
-    gap: var(--size-spacing-4);
-  }
-
-  .klaro .cookie-modal .cm-modal .cm-footer-buttons .cm-btn {
-    width: 100%;
-    margin: 0;
-  }
+.klaro .cookie-modal .cm-modal .hide {
+  top: 1.5rem;
+  right: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
 }
 
-/* Header and footer stay visible; only the category list scrolls. */
+.klaro .cookie-modal .cm-modal .hide svg {
+  width: 20px;
+  height: 20px;
+  stroke: var(--color-blue-medium);
+}
+
+.klaro .cookie-modal .cm-modal .hide:hover svg {
+  stroke: var(--color-blue-yale);
+}
+
 .klaro .cookie-modal .cm-modal .cm-body {
-  flex: 1 1 auto;
-  overflow-y: auto;
+  flex: none;
+  padding: 2rem var(--yds-klaro-gutter) 1.5rem;
 }
 
-/* Put the switch on the right of each category row. */
-.klaro .cookie-modal .cm-purpose .cm-list-label .cm-switch,
-.klaro .cookie-modal .cm-purpose .cm-list-input {
-  top: var(--size-spacing-5);
-  right: var(--size-spacing-5);
-  left: auto;
-  width: 50px;
-  height: 30px;
+.klaro .cookie-modal .cm-modal .cm-body ul.cm-purposes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
-.klaro .cookie-modal .cm-purpose .cm-list-label {
-  display: block;
-  padding-right: 4rem;
-}
-
-/* Functional and Security are always on: no switch and no "Always active"
- * label, the dialog intro says so instead. */
-.klaro .cookie-modal .cm-list-input.required + .cm-list-label .cm-switch,
-.klaro .cookie-modal .cm-list-input.required + .cm-list-label .cm-required {
+/* "Toggle all services" duplicates Accept all / Decline all. */
+.klaro .cookie-modal .cm-modal .cm-body li.cm-toggle-all {
   display: none;
 }
 
-/* Klaro gives "Toggle all" an "only-required" state for "nothing optional is
- * on". Its stylesheet draws that as a half-on slider, and the module maps
- * Klaro's green shades onto Yale blue, so it read as on while every switch was
- * off. Draw it as plainly off. */
-.klaro .cookie-modal .cm-list-input.only-required + .cm-list-label .slider {
-  background-color: var(--klaro-slider-bg);
-  opacity: 1;
+/* One row per category: chevron, name, toggle on the right. */
+.klaro .cookie-modal .cm-modal .cm-body ul.cm-purposes li.cm-purpose {
+  box-sizing: border-box;
+  position: relative;
+  min-height: 4.5rem;
+  margin: 0;
+  padding: 0;
+  background-color: #eef2f6;
+  line-height: inherit;
 }
 
 .klaro
   .cookie-modal
-  .cm-list-input.only-required
-  + .cm-list-label
-  .slider::before {
-  transform: none;
-}
-
-/* Categories are described in an accordion (klaro-a11y.js turns each category
- * name into its button), so the per-service lists are never shown. */
-.klaro .cookie-modal .cm-services {
-  display: none;
+  .cm-modal
+  .cm-body
+  ul.cm-purposes
+  li.cm-purpose:has(> .cm-list-input.required) {
+  background-color: #e8edf2;
 }
 
 .klaro .cookie-modal .yds-klaro-disclosure-heading {
+  position: relative;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  min-height: 4.5rem;
   margin: 0;
-  padding-right: 4rem;
+  padding: 0.75rem calc(58px + 2 * var(--yds-klaro-row-pad)) 0.75rem
+    var(--yds-klaro-row-pad);
   font: inherit;
 }
 
 .klaro .cookie-modal .yds-klaro-disclosure {
+  display: flex;
+  align-items: center;
+  gap: 1.15rem;
   padding: 0;
   border: 0;
   background: none;
-  color: var(--color-blue-yale);
-  font: inherit;
-  font-weight: 600;
+  color: var(--color-gray-800);
+  font-family: var(--font-families-yalenew);
+  font-size: var(--font-scale-20-26);
+  font-weight: var(--font-weights-yalenew-roman);
+  line-height: 1.25;
   text-align: left;
-  text-decoration: underline;
   cursor: pointer;
 }
 
+/* Chevron: down when closed, up when open. */
+.klaro .cookie-modal .yds-klaro-disclosure::before {
+  content: "";
+  flex: none;
+  box-sizing: border-box;
+  width: 0.75rem;
+  height: 0.75rem;
+  margin: 0 0.125rem;
+  border-right: 2px solid var(--color-blue-yale);
+  border-bottom: 2px solid var(--color-blue-yale);
+  transform: translateY(-25%) rotate(45deg);
+}
+
+.klaro .cookie-modal .yds-klaro-disclosure[aria-expanded="true"]::before {
+  transform: translateY(25%) rotate(-135deg);
+}
+
+/* The whole row is the click target; the toggle sits above it. */
+.klaro .cookie-modal .yds-klaro-disclosure::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
 .klaro .cookie-modal .yds-klaro-disclosure:hover {
-  text-decoration: none;
+  text-decoration: underline;
 }
 
 .klaro .cookie-modal .yds-klaro-disclosure:focus-visible {
@@ -314,8 +347,14 @@
   white-space: nowrap;
 }
 
+/* "(always on)" is in the visible name instead. */
+.klaro .cookie-modal .cm-modal .cm-body li.cm-purpose span.cm-required {
+  display: none;
+}
+
 .klaro .cookie-modal li.cm-purpose[data-yds-accordion] > [id$="-description"] {
-  margin-top: var(--size-spacing-3);
+  margin: 0;
+  padding: 0 var(--yds-klaro-row-pad) 1.5rem var(--yds-klaro-name-indent);
 }
 
 .klaro
@@ -325,8 +364,179 @@
   display: none;
 }
 
-.klaro .cookie-modal li.cm-purpose[data-yds-accordion] .cm-list-description {
+.klaro
+  .cookie-modal
+  .cm-modal
+  .cm-body
+  li.cm-purpose[data-yds-accordion]
+  p.cm-list-description {
   margin: 0;
+  font: var(--font-style-body-default-condensed);
+}
+
+/* Categories are described in the accordion, so the per-service lists are
+ * never shown. */
+.klaro .cookie-modal .cm-services {
+  display: none;
+}
+
+/* Toggle: 58 x 34 with a 26px knob and a check mark when on. The input sits
+ * on top (transparent) so clicks hit it, not the row behind. */
+.klaro .cookie-modal .cm-purpose > .cm-list-input,
+.klaro .cookie-modal .cm-purpose > .cm-list-label {
+  position: absolute;
+  z-index: 1;
+  top: calc((4.5rem - 34px) / 2);
+  right: var(--yds-klaro-row-pad);
+  left: auto;
+  width: 58px;
+  height: 34px;
+  margin: 0;
+  padding: 0;
+}
+
+.klaro .cookie-modal .cm-purpose > .cm-list-input {
+  z-index: 2;
+  cursor: pointer;
+}
+
+.klaro .cookie-modal .cm-purpose > .cm-list-input:disabled {
+  cursor: default;
+}
+
+.klaro .cookie-modal .cm-purpose .cm-list-label .cm-switch {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.klaro .cookie-modal .cm-purpose .cm-list-label .slider {
+  width: 100%;
+  box-shadow: none;
+}
+
+.klaro .cookie-modal .cm-purpose .cm-list-label .slider::before {
+  bottom: 4px;
+  left: 4px;
+  width: 26px;
+  height: 26px;
+  background-color: var(--color-basic-white);
+}
+
+.klaro
+  .cookie-modal
+  .cm-purpose
+  .cm-list-input:checked
+  + .cm-list-label
+  .slider::before,
+.klaro
+  .cookie-modal
+  .cm-purpose
+  .cm-list-input.required
+  + .cm-list-label
+  .slider::before {
+  transform: translateX(24px);
+}
+
+.klaro
+  .cookie-modal
+  .cm-purpose
+  .cm-list-input:checked
+  + .cm-list-label
+  .slider::after,
+.klaro
+  .cookie-modal
+  .cm-purpose
+  .cm-list-input.required
+  + .cm-list-label
+  .slider::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 11px;
+  box-sizing: border-box;
+  width: 7px;
+  height: 12px;
+  border-right: 2px solid var(--color-basic-white);
+  border-bottom: 2px solid var(--color-basic-white);
+  transform: translateY(-60%) rotate(45deg);
+}
+
+/* Always on: light blue, checked, not operable (Klaro disables the input). */
+.klaro
+  .cookie-modal
+  .cm-purpose
+  .cm-list-input.required
+  + .cm-list-label
+  .slider {
+  background-color: var(--color-blue-light);
+  opacity: 1;
+  cursor: default;
+}
+
+/* Footer: its own band. Accept all and Decline all on the left, Save on the
+ * right. */
+.klaro .cookie-modal .cm-modal .cm-footer {
+  --klaro-button-padding: 1.1rem 1.75rem;
+  --klaro-button-font-size: var(--font-scale-17-20);
+  --klaro-button-font-weight: 700;
+  --klaro-button-line-height: 1;
+  --klaro-button-border-radius: 0;
+
+  position: sticky;
+  bottom: 0;
+  flex: none;
+  margin-top: auto;
+  padding: 1.25rem var(--yds-klaro-gutter);
+  border-top: 1px solid var(--color-gray-200);
+  background-color: var(--color-gray-100);
+}
+
+.klaro .cookie-modal .cm-modal .cm-footer-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.klaro .cookie-modal .cm-modal .cm-footer-buttons .cm-btn {
+  margin: 0;
+  font-family: var(--font-families-mallory-compact);
+}
+
+.klaro .cookie-modal .cm-modal .cm-footer-buttons .cm-btn-accept {
+  margin-left: auto;
+}
+
+.klaro .cookie-modal .cm-modal .cm-footer-buttons .cm-btn.cm-btn-decline {
+  --klaro-button-bg: transparent;
+  --klaro-button-text-color: var(--color-blue-yale);
+  --klaro-button-bg-hover: var(--color-blue-yale);
+  --klaro-button-text-color-hover: var(--color-basic-white);
+}
+
+/* Narrow: Accept and Decline share a row, Save goes full width below. */
+@media (width < 600px) {
+  .klaro .cookie-modal .cm-modal.cm-klaro {
+    --yds-klaro-gutter: 1.25rem;
+
+    right: 1rem;
+    left: 1rem;
+    width: auto;
+  }
+
+  .klaro .cookie-modal .cm-modal .cm-footer-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .klaro .cookie-modal .cm-modal .cm-footer-buttons .cm-btn {
+    width: 100%;
+  }
+
+  .klaro .cookie-modal .cm-modal .cm-footer-buttons .cm-btn-accept {
+    grid-column: 1 / -1;
+    margin: 0;
+  }
 }
 
 /* The click-to-load placeholder that stands in for a blocked embed. It has to
