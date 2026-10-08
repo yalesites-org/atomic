@@ -484,7 +484,9 @@
   --klaro-button-line-height: 1;
   --klaro-button-border-radius: 0;
 
+  /* Above the toggles (z-index 2) as rows scroll under it. */
   position: sticky;
+  z-index: 3;
   bottom: 0;
   flex: none;
   margin-top: auto;
