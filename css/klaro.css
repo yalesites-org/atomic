@@ -549,4 +549,26 @@
   border: 1px solid var(--color-gray-200);
   background-color: var(--color-basic-white);
   color: var(--color-gray-800);
+  /* Klaro's own `column wrap` pushes the buttons into a second column, outside
+   * the box, as soon as the box is shorter than its content. */
+  flex-flow: column nowrap;
+}
+
+/* Klaro copies the blocked iframe's width and height attributes onto the
+ * placeholder as an inline max-width and height. An oEmbed video iframe
+ * carries the provider's thumbnail size (200x113), which squeezed the notice
+ * into a corner of the video's 16:9 box. Fill the space the embed will take
+ * instead, growing past it when a narrow column cannot fit the notice, and
+ * let the grids stretch the notice box to fill it. `!important` is the only
+ * way past an inline style. */
+[data-type="placeholder"]:has(> .klaro.cm-as-context-notice) {
+  display: grid;
+  max-width: none !important;
+  height: auto !important;
+  min-height: 100%;
+}
+
+.klaro.cm-as-context-notice {
+  display: grid;
+  height: auto;
 }
