@@ -8,6 +8,8 @@
 use Drupal\node\Entity\Node;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Render\Element;
+use Drupal\office_hours\OfficeHoursDateHelper;
 use Drupal\media\MediaInterface;
 
 /**
@@ -532,4 +534,130 @@ function atomic_media_view_alter(array &$build, MediaInterface $entity, EntityVi
   if ($parent instanceof Node && $parent->bundle() === 'resource') {
     unset($build['#contextual_links']);
   }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for the Office Hours block.
+ *
+ * Hands the rows the contrib Office Hours "Table" formatter already computed
+ * (weekdays in the site's week order, exception dates inside its horizon) to
+ * the component library's office-hours molecule as plain data. The markup is
+ * in the Twig templates; the time format is the component's.
+ *
+ * Every regular weekday row and every exception is always rendered, each
+ * exception with its date, because the page may be served from a cache long
+ * after today: the internal page cache and the CDN ignore a bubbled max-age.
+ * Which rows show is decided again in the browser by the component's script,
+ * in the site time zone: an exception dated in the next seven days replaces
+ * its weekday's row, and the next three after that are "Upcoming changes"
+ * (YaleSites-Internal#1704). The pick made here is only the first paint, and
+ * what a visitor without JavaScript sees.
+ */
+function atomic_preprocess_block__inline_block__office_hours(array &$variables): void {
+  $field = $variables['content']['field_office_hours'] ?? [];
+  $rows = [];
+  foreach (Element::children($field) as $key) {
+    $rows += $field[$key]['#office_hours'] ?? [];
+  }
+
+  $date_formatter = \Drupal::service('date.formatter');
+  $now = \Drupal::time()->getRequestTime();
+  $week_end = strtotime('+7 days', strtotime('today', $now));
+  $regular = [];
+  $exceptions = [];
+  foreach ($rows as $day => $info) {
+    // Weekdays are 0-6, exception dates are timestamps. The exceptions
+    // section header is a row too (EXCEPTION_DAY_MIN); it is skipped.
+    if ($day < OfficeHoursDateHelper::DAYS_PER_WEEK) {
+      $regular[$day] = [
+        'label' => rtrim((string) $info['label'], ': '),
+        'weekday' => $day,
+      ] + _atomic_office_hours_day($info['items']);
+    }
+    elseif ($day > OfficeHoursDateHelper::EXCEPTION_DAY_MIN) {
+      $exceptions[$day] = [
+        'exception' => TRUE,
+        'date' => date('Y-m-d', $day),
+        'weekday' => (int) date('w', $day),
+        'this_week' => $day >= strtotime('today', $now) && $day < $week_end,
+      ] + _atomic_office_hours_day($info['items']);
+    }
+  }
+  $replaced = array_column(array_filter($exceptions, fn ($row) => $row['this_week']), 'weekday');
+
+  // Each weekday in the site's week order: its regular row, then every
+  // exception that falls on it, each hidden unless it is the one that shows.
+  $first_day = (int) \Drupal::config('system.date')->get('first_day');
+  $today = (int) date('w', $now);
+  $week = [];
+  for ($i = 0; $i < OfficeHoursDateHelper::DAYS_PER_WEEK; $i++) {
+    $weekday = ($first_day + $i) % OfficeHoursDateHelper::DAYS_PER_WEEK;
+    if (isset($regular[$weekday])) {
+      $week[] = ['hidden' => in_array($weekday, $replaced, TRUE)] + $regular[$weekday];
+    }
+    foreach ($exceptions as $day => $row) {
+      if ($row['weekday'] === $weekday) {
+        $week[] = [
+          'label' => $date_formatter->format($day, 'custom', 'l'),
+          'hidden' => !$row['this_week'],
+        ] + $row;
+      }
+    }
+  }
+  foreach ($week as &$row) {
+    $row['today'] = !$row['hidden'] && $row['weekday'] === $today;
+  }
+  unset($row);
+
+  $upcoming = [];
+  $shown = 0;
+  foreach ($exceptions as $day => $row) {
+    $show = !$row['this_week'] && $shown < 3;
+    $shown += (int) $show;
+    $upcoming[] = [
+      'label' => $date_formatter->format($day, 'custom', 'D, M j'),
+      'hidden' => !$show,
+    ] + $row;
+  }
+
+  $variables['office_hours'] = [
+    'name' => ($variables['content']['#block_content'] ?? NULL)?->label(),
+    'days' => $week,
+    'upcoming' => $upcoming,
+    'timezone' => \Drupal::config('system.date')->get('timezone.default'),
+  ];
+}
+
+/**
+ * Reduces one day's Office Hours items to the component's row shape.
+ *
+ * @param \Drupal\office_hours\Plugin\Field\FieldType\OfficeHoursItem[] $items
+ *   The day's time slots.
+ *
+ * @return array
+ *   The slots as 24-hour HHMM integers, the all-day and closed flags, and the
+ *   day's comment.
+ */
+function _atomic_office_hours_day(array $items): array {
+  $day = ['slots' => [], 'all_day' => FALSE, 'comment' => ''];
+  $comments = [];
+  foreach ($items as $item) {
+    if ($item->all_day) {
+      $day['all_day'] = TRUE;
+    }
+    elseif ($item->starthours !== NULL && $item->starthours !== '') {
+      $day['slots'][] = ['start' => (int) $item->starthours, 'end' => (int) $item->endhours];
+    }
+    if (trim((string) $item->comment) !== '') {
+      $comments[] = trim((string) $item->comment);
+    }
+  }
+  $day['closed'] = !$day['all_day'] && !$day['slots'];
+  // The editor's Closed control records a closed day as the comment "Closed".
+  // The Hours cell already says so, so it is not repeated as a note.
+  if ($day['closed']) {
+    $comments = array_filter($comments, fn ($comment) => strcasecmp($comment, 'Closed') !== 0);
+  }
+  $day['comment'] = implode(', ', array_unique($comments));
+  return $day;
 }
