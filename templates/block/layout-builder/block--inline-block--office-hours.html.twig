@@ -1,0 +1,27 @@
+{#
+ # Office Hours block: hands the schedule prepared in
+ # atomic_preprocess_block__inline_block__office_hours() to the component
+ # library's office-hours molecule.
+ #
+ # The block's title is the component's heading, so the wrapper's own title is
+ # switched off. With no hours entered the public page gets nothing at all, not
+ # even the title; Layout Builder gets a placeholder so the block can be found.
+ #}
+{% set office_hours__label = label %}
+{% set office_hours__in_builder = attributes.hasClass('js-layout-builder-block') %}
+
+{% if office_hours.days or office_hours.upcoming or office_hours__in_builder %}
+  {{ attach_library('atomic/office-hours') }}
+  {% embed "@atomic/block/layout-builder/_layout-builder-block-template.twig" with { label: null } %}
+    {% block content %}
+      {% include "@molecules/office-hours/yds-office-hours.twig" with {
+        office_hours__heading: office_hours__label,
+        office_hours__name: office_hours__label ?: office_hours.name,
+        office_hours__days: office_hours.days,
+        office_hours__upcoming: office_hours.upcoming,
+        office_hours__timezone: office_hours.timezone,
+        office_hours__empty_message: office_hours__in_builder ? 'Hours: no days filled in yet.'|t,
+      } %}
+    {% endblock %}
+  {% endembed %}
+{% endif %}
