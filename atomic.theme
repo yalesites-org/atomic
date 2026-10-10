@@ -648,13 +648,18 @@ function _atomic_office_hours_day(array $items): array {
     elseif ($item->starthours !== NULL && $item->starthours !== '') {
       $day['slots'][] = ['start' => (int) $item->starthours, 'end' => (int) $item->endhours];
     }
-    if (trim((string) $item->comment) !== '') {
-      $comments[] = trim((string) $item->comment);
+    // The editor's Closed control (ys_core js/office-hours-widget.js) stores
+    // this reserved value as the comment, because a day with no hours and no
+    // comment is not stored at all. It means "closed, no note", so the raw
+    // value is never printed.
+    $comment = trim((string) $item->comment);
+    if ($comment !== '' && $comment !== '__ys_office_hours_closed__') {
+      $comments[] = $comment;
     }
   }
   $day['closed'] = !$day['all_day'] && !$day['slots'];
-  // The editor's Closed control records a closed day as the comment "Closed".
-  // The Hours cell already says so, so it is not repeated as a note.
+  // On a closed day the Hours cell already says Closed, so an editor's own
+  // "Closed" note is not printed a second time. Display only: it stays stored.
   if ($day['closed']) {
     $comments = array_filter($comments, fn ($comment) => strcasecmp($comment, 'Closed') !== 0);
   }
