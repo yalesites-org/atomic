@@ -98,3 +98,8 @@ ys_embed:
 read-time:
   js:
     node_modules/@yalesites-org/component-library-twig/dist/js/02-molecules/read-time/yds-read-time.js: {}
+office-hours:
+  js:
+    node_modules/@yalesites-org/component-library-twig/dist/js/02-molecules/office-hours/yds-office-hours.js: {}
+  dependencies:
+    - core/drupal
