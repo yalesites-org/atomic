@@ -1,0 +1,38 @@
+{#
+ # SDC thin wrapper for Event Meta (Localist variant). Props-only: every value
+ # is forwarded to the CLT template, which is included with with_context = false.
+ # JS attaches via libraryOverrides (atomic/event-localist). directory is
+ # threaded for nested icon atoms. Create-only — no consumer repointed yet.
+ # See docs/sdc/recipe-convert-a-component-to-sdc.md.
+ #}
+{{ include('@molecules/meta/event-meta/yds-event-meta-localist.twig', {
+  event_title__heading: event_title__heading,
+  event_dates: event_dates,
+  ics_url: ics_url,
+  canonical_url: canonical_url,
+  ticket_url: ticket_url,
+  ticket_cost: ticket_cost,
+  place: place,
+  room: room,
+  event_types: event_types,
+  event_audience: event_audience,
+  event_topics: event_topics,
+  description: description,
+  event_meta__cta_primary__href: event_meta__cta_primary__href,
+  event_meta__cta_primary__content: event_meta__cta_primary__content,
+  event_experience: event_experience,
+  localist_image_url: localist_image_url,
+  localist_image_alt: localist_image_alt,
+  teaser_media: teaser_media,
+  has_register: has_register,
+  cost_button_text: cost_button_text,
+  localist_url: localist_url,
+  stream_url: stream_url,
+  stream_embed_code: stream_embed_code,
+  event_source: event_source,
+  event_id: event_id,
+  event_featured_date: event_featured_date,
+  event_featured_index: event_featured_index,
+  event_meta__with_calendar: event_meta__with_calendar,
+  directory: directory,
+}, with_context = false) }}

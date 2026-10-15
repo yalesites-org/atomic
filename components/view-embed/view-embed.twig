@@ -1,0 +1,14 @@
+{#
+ # SDC thin wrapper for a Views-driven listing block (post list, event list,
+ # directory).
+ #
+ # Renders the view through drupal_view(). The row markup stays in the view's
+ # own row templates (ys_views_basic -> @organisms/card-collection), so this
+ # shim wraps only the stable drupal_view() embed API, not the rows, and is
+ # unaffected by the Views Block Rework (#1161).
+ #
+ # `argument` is passed as the view's first contextual argument (historically
+ # the block heading text); it is null when the block has no heading, which
+ # matches the pre-SDC behavior of always passing the third positional arg.
+ #}
+{{ drupal_view(view_id, display_id, argument) }}

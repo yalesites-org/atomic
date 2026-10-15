@@ -1,0 +1,30 @@
+{#
+ # SDC thin wrapper for Facts and Figures. Props feed the CLT organism; the fact
+ # items and background image are injected into its group__items / group__image
+ # blocks (SDC slots renamed to avoid block-name collisions). bg_image is a prop
+ # because the CLT template reads it from context (the block template computes it
+ # from the media field). directory is threaded for nested atoms.
+ # See docs/sdc/recipe-convert-a-component-to-sdc.md.
+ #}
+{% set facts_items %}{{ block('facts__items')|raw }}{% endset %}
+{% set facts_image %}{{ block('facts__image')|raw }}{% endset %}
+{% embed '@organisms/facts-and-figures-group/yds-facts-and-figures-group.twig' with {
+  facts_and_figures__group__heading: facts_and_figures__group__heading,
+  facts_and_figures__group__content: facts_and_figures__group__content,
+  facts_and_figures__group__alignment: facts_and_figures__group__alignment,
+  facts_and_figures__group__grid_count: facts_and_figures__group__grid_count,
+  facts_and_figures__group__presentation_style: facts_and_figures__group__presentation_style,
+  facts_and_figures__group__width: facts_and_figures__group__width,
+  facts_and_figures__group__theme: facts_and_figures__group__theme,
+  facts_and_figures__group__bg_image: facts_and_figures__group__bg_image,
+  facts_items: facts_items,
+  facts_image: facts_image,
+  directory: directory,
+} only %}
+  {% block facts_and_figures__group__items %}{{ facts_items|raw }}{% endblock %}
+  {% block facts_and_figures__group__image %}{{ facts_image|raw }}{% endblock %}
+{% endembed %}
+{% if false %}
+  {% block facts__items %}{% endblock %}
+  {% block facts__image %}{% endblock %}
+{% endif %}

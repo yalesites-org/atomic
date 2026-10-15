@@ -1,0 +1,21 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Embed
+status: stable
+group: Molecules
+description: >
+  A wrapper for embedded content (iframe/form/audio). Thin SDC wrapper over
+  @molecules/embed/yds-embed.twig.
+props:
+  type: object
+  properties:
+    embed__width:
+      title: Width
+      type: string
+      default: site
+slots:
+  embed__content:
+    title: Embed content
+    required: true
+    description: >
+      The embedded content markup. Named embed__content (not embed__block) to
+      avoid a collision with the template's own embed__block block.

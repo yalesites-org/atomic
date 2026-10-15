@@ -1,0 +1,112 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Grand Hero
+status: stable
+group: Molecules
+description: >
+  A full-bleed hero banner with a background image or video, heading/snippet, up
+  to two links, and an optional overlay image that can replace the heading. Thin
+  SDC wrapper over @molecules/banner/grand-hero/yds-grand-hero.twig. The CLT
+  template was refactored to consume the overlay image via a slot + the
+  grand_hero__has_overlay_image flag (instead of reading the Drupal render array
+  directly). Dial enums are generated from ys_themes.component_overrides.yml
+  (grand_hero.field_style_*).
+props:
+  type: object
+  properties:
+    grand_hero__heading__level:
+      title: Heading level
+      type: string
+      default: "2"
+    grand_hero__link__content:
+      title: Link text
+      type:
+        - string
+        - "null"
+    grand_hero__link__url:
+      title: Link URL
+      type:
+        - string
+        - "null"
+    grand_hero__link__content_two:
+      title: Second link text
+      type:
+        - string
+        - "null"
+    grand_hero__link__url_two:
+      title: Second link URL
+      type:
+        - string
+        - "null"
+    grand_hero__content__background:
+      title: Background theme (dial - field_style_color)
+      type: string
+      enum:
+        - one
+        - two
+        - three
+        - four
+        - five
+      default: one
+    grand_hero__overlay_variation:
+      title: Overlay variation (dial - field_style_position)
+      type: string
+      enum:
+        - full
+        - contained
+        - contained-narrow
+      default: full
+    grand_hero__size:
+      title: Size (dial - field_style_variation)
+      type: string
+      enum:
+        - full
+        - reduced
+        - mini
+      default: full
+    grand_hero__width:
+      title: Width
+      type: string
+      default: site
+    grand_hero__replace_heading:
+      title: Replace heading with overlay image
+      type: string
+      enum:
+        - "Yes"
+        - "No"
+      default: "No"
+    grand_hero__video:
+      title: Is video
+      description: '"true" when the media is a video, else "false".'
+      type: string
+      enum:
+        - "true"
+        - "false"
+      default: "false"
+    grand_hero__has_overlay_image:
+      title: Has overlay image
+      description: True when an overlay image is provided (with replace_heading).
+      type: boolean
+      default: false
+slots:
+  heading:
+    title: Heading
+    required: false
+    description: The hero heading (from field_heading).
+  snippet:
+    title: Snippet
+    required: false
+    description: The hero body text (from field_text).
+  video:
+    title: Video
+    required: false
+    description: The background video (rendered when grand_hero__video is "true").
+  image:
+    title: Image
+    required: false
+    description: The background image (rendered when grand_hero__video is "false").
+  overlay_image:
+    title: Overlay image
+    required: false
+    description: >
+      Optional overlay image (from field_overlay_png) that replaces the heading
+      when replace_heading is "Yes".

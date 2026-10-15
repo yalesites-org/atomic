@@ -1,0 +1,64 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Quote Callout
+status: stable
+group: Molecules
+description: >
+  A pull-style quote callout with attribution and an optional image. Thin SDC
+  wrapper over @molecules/quote-callout/yds-quote-callout.twig. Dial enums are
+  generated from ys_themes.component_overrides.yml (quote_callout.field_style_*).
+props:
+  type: object
+  properties:
+    quote_callout__style:
+      title: Style (dial - field_style_variation)
+      type: string
+      enum:
+        - bar
+        - quote
+      default: bar
+    quote_callout__accent_theme:
+      title: Accent theme (dial)
+      type: string
+      enum:
+        - one
+        - two
+        - three
+        - four
+        - five
+      default: one
+    quote_callout__quote_alignment:
+      title: Quote alignment (dial)
+      type: string
+      enum:
+        - left
+        - right
+      default: left
+    quote_callout__alignment:
+      title: Component alignment
+      type: string
+      default: center
+    quote_callout__width:
+      title: Width
+      type: string
+      default: content
+    quote_callout__quote_image:
+      title: Quote image modifier
+      description: '"with-image" when an image is present; drives the layout.'
+      type:
+        - string
+        - "null"
+slots:
+  quote:
+    title: Quote
+    required: true
+    description: The quote text (from field_text).
+  attribution:
+    title: Attribution
+    required: false
+    description: The quote attribution (from field_caption).
+  image:
+    title: Image
+    required: false
+    description: >
+      Optional image (from field_media). Injected into the CLT
+      quote_callout__image block.
