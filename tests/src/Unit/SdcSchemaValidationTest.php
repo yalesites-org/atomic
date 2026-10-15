@@ -66,6 +66,19 @@ class SdcSchemaValidationTest extends UnitTestCase {
   }
 
   /**
+   * Divider: thickness is the field_style_thickness key, or null on blocks
+   * saved before the field existed.
+   */
+  public function testDividerThickness(): void {
+    $this->assertSame([], $this->validate('divider', [
+      'divider__thickness' => '4',
+    ]));
+    $this->assertSame([], $this->validate('divider', [
+      'divider__thickness' => NULL,
+    ]));
+  }
+
+  /**
    * Callout: a valid dial value passes.
    */
   public function testCalloutValidDial(): void {

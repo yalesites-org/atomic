@@ -14,6 +14,7 @@
     content_spotlight_portrait__theme: content.field_style_color.0['#markup']|default('default'),
     content_spotlight_portrait__vertical_align: content.field_style_alignment.0['#markup']|default('middle'),
   } %}
+    {% block overline %}{{ content.field_overline.0 }}{% endblock %}
     {% block heading %}{{ content.field_heading.0 }}{% endblock %}
     {% block subheading %}{{ content.field_subheading.0 }}{% endblock %}
     {% block text %}{{ content.field_text }}{% endblock %}

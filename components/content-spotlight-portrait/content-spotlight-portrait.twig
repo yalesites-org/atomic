@@ -1,16 +1,18 @@
 {#
  # SDC thin wrapper for Content Spotlight Portrait (sibling of text-with-image).
- # heading/subheading/text/caption are rendered field content captured as Markup
- # and passed as the CLT template's variables; the image is injected into the
- # content_spotlight_portrait__image block. directory is threaded for nested
- # atoms. See docs/sdc/recipe-convert-a-component-to-sdc.md.
+ # overline/heading/subheading/text/caption are rendered field content captured
+ # as Markup and passed as the CLT template's variables; the image is injected
+ # into the content_spotlight_portrait__image block. directory is threaded for
+ # nested atoms. See docs/sdc/recipe-convert-a-component-to-sdc.md.
  #}
+{% set csp_overline %}{{ block('overline')|raw }}{% endset %}
 {% set csp_heading %}{{ block('heading')|raw }}{% endset %}
 {% set csp_subheading %}{{ block('subheading')|raw }}{% endset %}
 {% set csp_text %}{{ block('text')|raw }}{% endset %}
 {% set csp_caption %}{{ block('caption')|raw }}{% endset %}
 {% set csp_image %}{{ block('image')|raw }}{% endset %}
 {% embed '@molecules/content-spotlight-portrait/yds-content-spotlight-portrait.twig' with {
+  content_spotlight_portrait__overline: csp_overline|trim,
   content_spotlight_portrait__heading: csp_heading|trim is empty ? '' : csp_heading,
   content_spotlight_portrait__subheading: csp_subheading|trim,
   content_spotlight_portrait__text: csp_text|trim,
@@ -30,6 +32,7 @@
   {% block content_spotlight_portrait__image %}{{ csp_image|raw }}{% endblock %}
 {% endembed %}
 {% if false %}
+  {% block overline %}{% endblock %}
   {% block heading %}{% endblock %}
   {% block subheading %}{% endblock %}
   {% block text %}{% endblock %}

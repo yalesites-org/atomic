@@ -69,6 +69,10 @@ props:
         - bottom
       default: middle
 slots:
+  overline:
+    title: Overline
+    required: false
+    description: Optional overline text (from field_overline).
   heading:
     title: Heading
     required: false

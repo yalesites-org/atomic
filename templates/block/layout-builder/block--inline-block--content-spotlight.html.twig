@@ -15,6 +15,7 @@
     text_with_image__theme: content.field_style_color.0['#markup'],
     text_with_image__vertical_align: content.field_style_alignment.0['#markup'],
   } %}
+    {% block text_with_image__overline %}{{ content.field_overline.0 }}{% endblock %}
     {% block text_with_image__heading %}{{ content.field_heading.0 }}{% endblock %}
     {% block text_with_image__subheading %}{{ content.field_subheading.0 }}{% endblock %}
     {% block text_with_image__text %}{{ content.field_text }}{% endblock %}

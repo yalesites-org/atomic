@@ -33,3 +33,12 @@ props:
         - Left
         - Center
       default: Center
+    divider__thickness:
+      title: Thickness
+      description: >
+        Line thickness, from the field_style_thickness key (1, 2, 4 or 8). Null
+        on blocks saved before the field existed, in which case the divider
+        uses the inherited --thickness-divider.
+      type:
+        - string
+        - "null"

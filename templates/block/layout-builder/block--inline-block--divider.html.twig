@@ -9,6 +9,7 @@
   {{ include('atomic:divider', {
     divider__position: content.field_style_position.0['#markup']|default('Center'),
     divider__width: content.field_style_width.0['#markup']|default('100'),
+    divider__thickness: content.field_style_thickness['#items'].0.value,
   }, with_context = false) }}
 
 {% endblock %}
