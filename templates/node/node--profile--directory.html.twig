@@ -5,6 +5,7 @@
 
 {% embed "@molecules/cards/directory-listing-card/yds-directory-listing-card.twig" with {
     directory_listing_card__heading: heading,
+    directory_listing_card__heading_level: node.card_heading_level|default('3'),
     directory_listing_card__url: url,
     directory_listing_card__overline: content.field_department,
     directory_listing_card__subheading: content.field_position,
