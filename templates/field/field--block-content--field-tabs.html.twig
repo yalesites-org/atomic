@@ -1,16 +1,25 @@
-{{ attach_library('atomic/tabs') }}
-
-{% embed "@molecules/tabs/yds-tabs.twig" %}
-  {% block tab__label %}
+{# Tabs render via this field template. tabs__id is generated here and shared
+   with the SDC and the label/content partials so aria-controls links to panel
+   ids (see the internal-state-coupled-slots note in the SDC recipe). JS attaches
+   via the SDC's libraryOverrides. #}
+{% set tabs__id = random() %}
+{% embed 'atomic:tabs' with { tabs__id: tabs__id } %}
+  {% block tab__label_slot %}
     {% for key, tab in items %}
       {% include "@molecules/tabs/_yds-tab-label.twig" with {
         tab__label: tab.content['#paragraph'].field_heading.value,
+        tabs__id: tabs__id,
+        tabs__base_class: 'tabs',
+        key: key,
       } %}
     {% endfor %}
   {% endblock %}
-  {% block tab__content__container %}
+  {% block tab__content_slot %}
     {% for key, tab in items %}
       {% embed "@molecules/tabs/_yds-tab-content.twig" with {
+        tabs__id: tabs__id,
+        tabs__base_class: 'tabs',
+        key: key,
       } %}
         {% block tab__content %}
           {{ tab.content }}

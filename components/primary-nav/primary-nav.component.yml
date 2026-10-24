@@ -1,0 +1,59 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Primary Navigation
+status: stable
+group: Organisms
+description: >
+  The site's primary navigation (global chrome, Wave 7 / #1362). Thin SDC wrapper
+  over @organisms/menu/primary-nav/yds-primary-nav.twig. The Drupal menu render
+  tree carries \Drupal\Core\Url objects that cannot cross the SDC prop boundary,
+  so the render-path adapter (menu--extras--main.html.twig) passes a flattened,
+  string-URL copy of the tree (atomic.theme _atomic_flatten_menu_items()) and this
+  wrapper renders it with menu__contextual: true.
+props:
+  type: object
+  required:
+    - primary_nav__items
+  properties:
+    primary_nav__items:
+      title: Menu items
+      description: >
+        The flattened primary-menu tree. Each item has a title, a string url,
+        an is_active flag, and a recursive `below`; mega-menu items may also
+        carry heading fields.
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+          url:
+            type:
+              - string
+              - "null"
+          is_active:
+            type: boolean
+          is_cas:
+            type: boolean
+          list__item__is_heading:
+            type: boolean
+          heading_cta:
+            type: string
+          node_title:
+            type: string
+          list__item__modifiers:
+            type: array
+          below:
+            type: array
+    menu__variation:
+      title: Menu variation
+      description: >
+        Display style (basic | mega | focus). Sourced from the header_variation
+        theme setting; nullable because getHeaderSetting can return NULL, in which
+        case the CLT template defaults to basic.
+      type:
+        - string
+        - "null"
+      default: basic
+libraryOverrides:
+  dependencies:
+    - atomic/primary-nav

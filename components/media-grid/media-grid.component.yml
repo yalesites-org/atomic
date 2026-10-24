@@ -1,0 +1,39 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Media Grid
+status: stable
+group: Organisms
+description: >
+  A grid of media (images/video). The "basic" variation is a static grid; the
+  "interactive" variation (used by the Gallery block) adds a lightbox modal. Thin
+  SDC wrapper over @organisms/galleries/media-grid/yds-media-grid.twig. Shared by
+  the media-grid and gallery editor blocks.
+props:
+  type: object
+  properties:
+    media_grid__variation:
+      title: Variation
+      type: string
+      enum:
+        - basic
+        - interactive
+      default: basic
+    media_grid__width:
+      title: Width
+      type: string
+      default: site
+slots:
+  heading:
+    title: Heading
+    required: false
+    description: Optional grid heading (from field_heading).
+  items:
+    title: Items
+    required: true
+    description: >
+      The media items. Injected into the CLT media_grid__items block.
+  modal:
+    title: Modal
+    required: false
+    description: >
+      The lightbox modal items (interactive variation only). Injected into the
+      CLT media_grid__modal block.
