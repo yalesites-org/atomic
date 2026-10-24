@@ -136,7 +136,7 @@ calendar:
     - core/once
 audio-player:
   js:
-    node_modules/@yalesites-org/component-library-twig/dist/js/components/01-atoms/audio/yds-audio-player.js: {}
+    node_modules/@yalesites-org/component-library-twig/dist/js/components/02-molecules/audio/yds-audio-player.js: {}
   dependencies:
     - core/once
 in-this-section:
