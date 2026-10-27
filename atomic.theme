@@ -242,7 +242,8 @@ function atomic_preprocess_node(&$variables) {
 
     /** @var \Drupal\media\Entity\Media $media */
     $referenced_entities = $fieldMedia?->referencedEntities() ?? [];
-    $media = reset($referenced_entities);
+    // reset() returns FALSE on an empty field, which ?-> does not guard.
+    $media = reset($referenced_entities) ?: NULL;
 
     // Skip building responsive_media_thumbnail for video Resources: the
     // video media's thumbnail is the auto-generated frame, which is rarely
