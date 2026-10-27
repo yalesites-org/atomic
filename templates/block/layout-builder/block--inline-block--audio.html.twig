@@ -7,6 +7,13 @@
    # the player as having a transcript and silence Editoria11y. #}
   {% set audio_embed__has_transcript = content.field_transcription['#items'].0.value|striptags|replace({'&nbsp;': ''})|trim is not empty %}
 
+  {# The transcript's show/hide button runs from the audio-player library,
+   # which the media field template only attaches when there is an audio
+   # file. Attach it for the transcript too, so the button always works. #}
+  {% if audio_embed__has_transcript %}
+    {{ attach_library('atomic/audio-player') }}
+  {% endif %}
+
   {% if parentNode == 'post' or parentNode == 'event' %}
     {% set audio_embed__width = "content" %}
     {% set audio_embed__alignment = "center" %}
