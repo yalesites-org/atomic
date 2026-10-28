@@ -1,0 +1,15 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Basic Meta
+status: stable
+group: Molecules
+description: >
+  Simple meta text (a thin wrapper over the text atom). Thin SDC wrapper over
+  @molecules/meta/basic-meta/yds-basic-meta.twig.
+props:
+  type: object
+  properties: {}
+slots:
+  basic_meta_content:
+    title: Meta content
+    required: true
+    description: The meta text/markup.

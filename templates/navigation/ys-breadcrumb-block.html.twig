@@ -1,3 +1,8 @@
-{{ attach_library('atomic/breadcrumbs' ) }}
+{{ attach_library('atomic/breadcrumbs') }}
 
-{% include '@organisms/menu/breadcrumbs/yds-breadcrumbs.twig' %}
+{# Render the breadcrumbs SDC. The trail (`items`, from the ys_breadcrumb_block
+   theme hook) is passed explicitly as breadcrumbs__items because the SDC does
+   not inherit Twig context. #}
+{{ include('atomic:breadcrumbs', {
+  breadcrumbs__items: items|default([]),
+}) }}

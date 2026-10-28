@@ -10,11 +10,13 @@
 {{ attach_library('atomic/secondary-nav') }}
 {{ attach_library('atomic/in-this-section') }}
 
-{% set secondary_nav__base_class = 'secondary-nav' %}
 {% set html__menu_bypass_id = html__menu_bypass_id|default('main-content-after-secondary-nav') %}
 
-{# Menu #}
-{% include "@organisms/site-in-this-section/yds-site-in-this-section.twig" with {
-  site_section_wrap__theme: getThemeSetting('book_navigation')
-} %}
+{# Menu — rendered through the SDC. Included WITH context so `directory` flows for
+   nested icon atoms; items are the flattened, string-URL copy of the book tree
+   (see atomic_preprocess_book_tree). #}
+{{ include('atomic:in-this-section', {
+  in_this_section__items: book__flattened_items,
+  site_section_wrap__theme: getThemeSetting('book_navigation'),
+}) }}
 <div id="{{ html__menu_bypass_id }}" class="visually-hidden"></div>

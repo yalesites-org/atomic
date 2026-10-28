@@ -1,0 +1,25 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Video Banner
+status: stable
+group: Molecules
+description: >
+  A full-width video banner. Thin SDC wrapper over
+  @molecules/banner/video/yds-video-banner.twig. Dial enum is generated from
+  ys_themes.component_overrides.yml (video_banner.field_style_width).
+props:
+  type: object
+  properties:
+    video_banner__width:
+      title: Width (dial - field_style_width)
+      type: string
+      enum:
+        - max
+        - full
+      default: max
+slots:
+  video:
+    title: Video
+    required: true
+    description: >
+      The video media (from field_media). Injected into the CLT
+      video_banner__video block.

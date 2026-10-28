@@ -1,0 +1,30 @@
+{#
+ # SDC thin wrapper for the Quick Links molecule. description feeds the text atom
+ # (|raw internally, |trim'd for its {% if %}). image and links are optional:
+ # each captured slot both gates the template's {% if %} (derived truthiness) and
+ # supplies content (injected into the matching CLT block). directory threaded.
+ #}
+{% set quick_links__description_slot = block('quick_links__description') %}
+{% set qlimg %}{{ block('quick_links__image_slot')|raw }}{% endset %}
+{% set qllnk %}{{ block('quick_links__links_slot')|raw }}{% endset %}
+{% embed '@molecules/quick-links/yds-quick-links.twig' with {
+  quick_links__variation: quick_links__variation,
+  quick_links__heading: quick_links__heading,
+  quick_links__background_color: quick_links__background_color,
+  quick_links__width: quick_links__width,
+  quick_links__alignment: quick_links__alignment,
+  quick_links__description: quick_links__description_slot|trim,
+  quick_links__image: qlimg|trim is empty ? '' : true,
+  quick_links__links: qllnk|trim is empty ? '' : true,
+  qlimg: qlimg,
+  qllnk: qllnk,
+  directory: directory,
+} only %}
+  {% block quick_links__image %}{{ qlimg|raw }}{% endblock %}
+  {% block quick_links__links %}{{ qllnk|raw }}{% endblock %}
+{% endembed %}
+{% if false %}
+  {% block quick_links__description %}{% endblock %}
+  {% block quick_links__image_slot %}{% endblock %}
+  {% block quick_links__links_slot %}{% endblock %}
+{% endif %}

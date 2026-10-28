@@ -4,6 +4,7 @@
   "description": "Atomic theme for YaleSites projects.",
   "files": [
     "components",
+    "tests",
     "templates",
     "atomic.info.yml",
     "atomic.libraries.yml",

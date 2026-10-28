@@ -1,0 +1,39 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Component Wrapper
+status: stable
+group: Organisms
+description: >
+  A structural wrapper that gives a nested component a consistent width,
+  alignment and optional label heading. Thin SDC wrapper over
+  @organisms/component-wrapper/yds-component-wrapper.twig. Create-only: this
+  wrapper is embedded by many block templates (view, button-link, tabs, etc.),
+  several Views-coupled, so its consumers are NOT repointed here (repointing is a
+  higher-blast follow-up). Matches the Wave 0 create-only precedent.
+props:
+  type: object
+  properties:
+    component_wrapper__width:
+      title: Width
+      type: string
+      default: site
+    component_wrapper__alignment:
+      title: Alignment
+      type: string
+      default: center
+    component_wrapper__label:
+      title: Label
+      description: Optional heading label above the wrapped component.
+      type:
+        - string
+        - "null"
+    component_wrapper__heading__level:
+      title: Label heading level
+      type: string
+      default: "2"
+slots:
+  inner:
+    title: Inner content
+    required: true
+    description: >
+      The wrapped component markup. Injected into the CLT component_wrapper_inner
+      block.

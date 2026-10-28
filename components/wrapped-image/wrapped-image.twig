@@ -1,0 +1,26 @@
+{#
+ # SDC thin wrapper for the Wrapped Image molecule. content -> text atom and
+ # caption -> image atom figure__caption both print with |raw internally, so a
+ # plain capture is safe (caption |trim'd so an empty caption stays falsy). The
+ # image markup is injected into the wrapped_image__image block. directory is
+ # threaded for nested asset paths.
+ #}
+{% set wrapped_image__content_slot = block('wrapped_image__content') %}
+{% set wrapped_image__caption_slot = block('wrapped_image__caption') %}
+{% set wrapped_image__image_slot %}{{ block('wrapped_image__image')|raw }}{% endset %}
+{% embed '@molecules/wrapped-image/yds-wrapped-image.twig' with {
+  wrapped_image__style: wrapped_image__style,
+  wrapped_image__alignment: wrapped_image__alignment,
+  wrapped_image__width: wrapped_image__width,
+  wrapped_image__content: wrapped_image__content_slot,
+  wrapped_image__caption: wrapped_image__caption_slot|trim,
+  wrapped_image__image_slot: wrapped_image__image_slot,
+  directory: directory,
+} only %}
+  {% block wrapped_image__image %}{{ wrapped_image__image_slot|raw }}{% endblock %}
+{% endembed %}
+{% if false %}
+  {% block wrapped_image__content %}{% endblock %}
+  {% block wrapped_image__caption %}{% endblock %}
+  {% block wrapped_image__image %}{% endblock %}
+{% endif %}
