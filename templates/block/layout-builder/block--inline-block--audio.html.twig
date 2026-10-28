@@ -10,7 +10,7 @@
     {% set audio_embed__alignment = "left" %}
   {% endif %}
 
-  {% embed "@atoms/audio/yds-audio.twig" with {
+  {% embed "@molecules/audio/yds-audio.twig" with {
     audio_embed__width: audio_embed__width,
     audio_embed__alignment: audio_embed__alignment,
     audio_embed__content: content.field_audio_label.0,
