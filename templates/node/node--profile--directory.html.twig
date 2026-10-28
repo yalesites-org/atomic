@@ -21,7 +21,7 @@
     {% elseif content.field_media[0] %}
       {{ content.field_media }}
     {% elseif getCoreSetting('image_fallback.teaser') %}
-      {{ drupal_entity('media', getCoreSetting('image_fallback.teaser'), 'profile_directory_card_1_1_') }}
+      {{ drupal_entity('media', getCoreSetting('image_fallback.teaser'), 'directory_card_1_1_') }}
     {% endif %}
   {% endblock %}
 
