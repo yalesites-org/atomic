@@ -163,6 +163,16 @@ function atomic_preprocess_node(&$variables) {
         $variables[$key] = trim((string) $node->get($field)->value);
       }
     }
+
+    // Listing cards show the person's name, never the teaser title
+    // (yalesites-org/YaleSites-Internal#1968).
+    $name_parts = [];
+    foreach (['field_first_name', 'field_last_name'] as $field) {
+      if ($node->hasField($field) && $node->get($field)->access('view')) {
+        $name_parts[] = trim((string) $node->get($field)->value);
+      }
+    }
+    $variables['profile_name'] = implode(' ', array_filter($name_parts, 'strlen')) ?: trim((string) $node->label());
   }
 
   // Handle resource thumbnail processing.
