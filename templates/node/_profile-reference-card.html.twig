@@ -20,6 +20,8 @@
  * Available variables:
  * - default_heading_level: the heading level to use when the author has not
  *   chosen one on the listing ('2' for cards, '3' for list items).
+ * - fallback_view_mode: the media view mode for the site-wide fallback image
+ *   (optional, defaults to 'profile_directory_card_1_1_').
  */
 #}
 {% set heading = profile_name %}
@@ -65,7 +67,7 @@
     {% elseif content.field_media[0] %}
       {{ content.field_media }}
     {% elseif getCoreSetting('image_fallback.teaser') %}
-      {{ drupal_entity('media', getCoreSetting('image_fallback.teaser'), 'profile_directory_card_1_1_') }}
+      {{ drupal_entity('media', getCoreSetting('image_fallback.teaser'), fallback_view_mode|default('profile_directory_card_1_1_')) }}
     {% endif %}
 
   {% endblock %}

@@ -1,6 +1,7 @@
-
 {# The card and list-item view modes render the same reference card and differ
-   only in heading level, so the markup lives in the shared partial (#1648). #}
+   only in heading level, so the markup lives in the shared partial (#1648).
+   The card is the profile grid, so its fallback image uses the grid size (#1780). #}
 {% include '@atomic/node/_profile-reference-card.html.twig' with {
   default_heading_level: '2',
+  fallback_view_mode: 'profile_grid_card_1_1_',
 } %}
