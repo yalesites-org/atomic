@@ -49,6 +49,13 @@ props:
         - "true"
         - "false"
       default: "false"
+    image_banner__video_playback:
+      title: Video playback (dial - field_style_video_playback)
+      description: Whether a background video loops or plays once.
+      type:
+        - string
+        - "null"
+      enum: [loop, once, null]
 slots:
   video:
     title: Video

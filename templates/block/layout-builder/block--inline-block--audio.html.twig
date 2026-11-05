@@ -2,6 +2,18 @@
 
 {% block content %}
 
+  {# Check the visible text, not the stored value: CKEditor saves an
+   # "empty" box as <p>&nbsp;</p>, which renders blank but would still mark
+   # the player as having a transcript and silence Editoria11y. #}
+  {% set audio_embed__has_transcript = content.field_transcription['#items'].0.value|striptags|replace({'&nbsp;': ''})|trim is not empty %}
+
+  {# The transcript's show/hide button runs from the audio-player library,
+   # which the media field template only attaches when there is an audio
+   # file. Attach it for the transcript too, so the button always works. #}
+  {% if audio_embed__has_transcript %}
+    {{ attach_library('atomic/audio-player') }}
+  {% endif %}
+
   {% if parentNode == 'post' or parentNode == 'event' %}
     {% set audio_embed__width = "content" %}
     {% set audio_embed__alignment = "center" %}
@@ -14,6 +26,7 @@
     audio_embed__width: audio_embed__width,
     audio_embed__alignment: audio_embed__alignment,
     audio_embed__content: content.field_audio_label.0,
+    audio_embed__transcript: audio_embed__has_transcript ? content.field_transcription,
   } %}
     {% block audio_embed__source %}
       {% if content.field_media.0['#media'].field_media_audio_file.entity.uri.value is not empty %}

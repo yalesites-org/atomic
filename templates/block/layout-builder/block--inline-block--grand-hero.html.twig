@@ -24,6 +24,7 @@
     grand_hero__replace_heading: content.field_replace_heading_with_image.0['#markup']|default('No'),
     grand_hero__video: gh_is_video ? 'true' : 'false',
     grand_hero__has_overlay_image: gh_has_overlay,
+    grand_hero__video_playback: content.field_style_video_playback.0['#markup'],
   } %}
     {% block heading %}{{ content.field_heading }}{% endblock %}
     {% block snippet %}{{ content.field_text.0 }}{% endblock %}

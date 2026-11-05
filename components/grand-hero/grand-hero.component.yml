@@ -82,6 +82,13 @@ props:
         - "true"
         - "false"
       default: "false"
+    grand_hero__video_playback:
+      title: Video playback (dial - field_style_video_playback)
+      description: Whether a background video loops or plays once.
+      type:
+        - string
+        - "null"
+      enum: [loop, once, null]
     grand_hero__has_overlay_image:
       title: Has overlay image
       description: True when an overlay image is provided (with replace_heading).

@@ -12,6 +12,7 @@
     image_banner__size: content.field_style_variation.0['#markup']|default('tall'),
     image_banner__width: image_banner__width,
     image_banner__video: image_banner__is_video ? 'true' : 'false',
+    image_banner__video_playback: content.field_style_video_playback.0['#markup'],
   } %}
     {% block video %}
       {% if image_banner__is_video %}

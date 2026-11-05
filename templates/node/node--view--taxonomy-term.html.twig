@@ -1,4 +1,5 @@
-{% set heading = content.field_teaser_title.0 ? content.field_teaser_title : label %}
+{% set is_profile = node.getType() == 'profile' %}
+{% set heading = is_profile ? profile_name : (content.field_teaser_title.0 ? content.field_teaser_title : label) %}
 {% set url = content.field_external_source[0]['#url']|render ? content.field_external_source[0]['#url']|render : url %}
 
 {# For posts, include date formatting #}
@@ -42,7 +43,7 @@
   reference_card__heading_level: '2',
   reference_card__url: url,
   reference_card__image: node.show_thumbnail ? 'true' : 'false',
-  reference_card__image_aria: heading[0]['#context'].value,
+  reference_card__image_aria: is_profile ? profile_name : heading[0]['#context'].value,
   reference_card__overlay: node.pin_label,
   show_categories: node.show_categories,
   show_tags: node.show_tags,

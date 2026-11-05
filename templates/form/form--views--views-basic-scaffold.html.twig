@@ -21,5 +21,7 @@
 %}
 
 <form{{ attributes.addClass(classes) }}>
+  {# Auto-submit is announced to assistive tech via a polite aria-live region
+     (see views-basic-filter-status.js); no persistent visible note is shown. #}
   {{ children }}
 </form>

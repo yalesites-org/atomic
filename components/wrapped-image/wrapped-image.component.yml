@@ -26,6 +26,13 @@ props:
       type:
         - string
         - "null"
+    wrapped_image__size:
+      title: Image size (dial - field_style_width)
+      description: Image size relative to the block width.
+      type:
+        - string
+        - "null"
+      enum: [large, small, null]
 slots:
   wrapped_image__content:
     title: Wrapping text
