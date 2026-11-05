@@ -17,6 +17,10 @@
 ((Drupal, drupalSettings, once) => {
   const recorded = {};
   const pagerClicked = {};
+  // Text inputs of exposed filter forms, with the value last rendered (so
+  // already submitted) for each.
+  const textFieldSelector = "input[type=text], input[type=search]";
+  const submittedValues = new WeakMap();
 
   // The listing a pager link belongs to, by view DOM id, when it is one of the
   // listings registered in ysViewsBasicFilter.
@@ -76,14 +80,41 @@
                 event.target.closest("form.views-exposed-form");
               const domId =
                 form && form.getAttribute("data-drupal-target-view");
-              if (domId) {
-                delete pagerClicked[domId];
+              if (!domId) {
+                return;
               }
+              // Clicking a pager link blurs the search box, and the browser
+              // then fires a change event for text the typing debounce already
+              // submitted. Better Exposed Filters would submit it a second
+              // time, racing the pager request. Stop that duplicate here,
+              // before BEF's handler on the form sees it.
+              if (
+                type === "change" &&
+                event.target.matches(textFieldSelector)
+              ) {
+                if (submittedValues.get(event.target) === event.target.value) {
+                  event.stopImmediatePropagation();
+                  return;
+                }
+                submittedValues.set(event.target, event.target.value);
+              }
+              delete pagerClicked[domId];
             },
             true
           );
         });
       });
+
+      // A freshly rendered exposed form carries the value that was submitted.
+      document
+        .querySelectorAll(
+          "form.views-exposed-form input[type=text], form.views-exposed-form input[type=search]"
+        )
+        .forEach((input) => {
+          if (!submittedValues.has(input)) {
+            submittedValues.set(input, input.value);
+          }
+        });
 
       const counts = drupalSettings.ysViewsBasicFilter || {};
       Object.keys(counts).forEach((domId) => {
