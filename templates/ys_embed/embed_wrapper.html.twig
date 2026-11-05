@@ -3,6 +3,10 @@
 {% set embed_wrapper__height = displayAttributes['height']|default('100%') %}
 {% set embed_wrapper__allowfullscreen = displayAttributes['allowfullscreen'] == TRUE ? 'true' : 'false' %}
 
+{# Consent contract: klaroService is the Klaro service (app) ID that must be
+ # consented to before this embed may load, or NULL when the source is not
+ # gated. yds-embed.twig turns it into data-src/data-name so the third-party
+ # request is held until consent. #}
 {% if displayAttributes['isIframe'] %}
     <div data-embedded-components>
         {% embed "@molecules/embed/yds-embed.twig" with {
@@ -11,6 +15,7 @@
             embed__width: embed_wrapper__width,
             embed__type: embed_wrapper__embed_type,
 	    embed__allowfullscreen: embed_wrapper__allowfullscreen,
+            embed__klaro_service: klaroService,
         } %}
         {% endembed %}
     </div>

@@ -7,8 +7,10 @@ global:
       css/admin-theme.css: {}
       css/localist.css: {}
       css/views-empty-state.css: {}
+      css/klaro.css: {}
       node_modules/@yalesites-org/component-library-twig/dist/css/link-treatment.css: {}
   js:
+    js/klaro-a11y.js: {}
     node_modules/@yalesites-org/component-library-twig/dist/js/components/02-molecules/menu/menu-toggle/yds-menu-toggle.js: {}
     node_modules/@yalesites-org/component-library-twig/dist/js/components/00-tokens/layout/yds-layout.js: {}
     node_modules/@yalesites-org/component-library-twig/dist/js/components/01-atoms/tables/table.js: {}
