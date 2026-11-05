@@ -1,0 +1,18 @@
+{#
+ # SDC thin wrapper for the "In This Section" secondary navigation (global
+ # chrome, Wave 7 / #1362).
+ #
+ # Delegates to @organisms/site-in-this-section/yds-site-in-this-section.twig,
+ # which wraps the secondary-nav organism (both drive the shared @molecules/menu
+ # engine). Items are passed as the ambient `items` the wrapped secondary-nav
+ # falls back to. menu__contextual: true tells the engine the item urls are
+ # already plain strings (the adapter flattens the book tree via atomic.theme
+ # _atomic_flatten_menu_items()). `directory` is threaded so nested icon atoms
+ # (the expand/collapse chevrons) resolve their sprite path.
+ #}
+{{ include('@organisms/site-in-this-section/yds-site-in-this-section.twig', {
+  items: in_this_section__items,
+  menu__contextual: true,
+  site_section_wrap__theme: site_section_wrap__theme,
+  directory: directory,
+}, with_context = false) }}

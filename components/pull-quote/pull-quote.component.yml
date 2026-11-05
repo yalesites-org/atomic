@@ -1,0 +1,39 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Pull Quote
+status: stable
+group: Molecules
+description: >
+  A pull quote with optional attribution. Thin SDC wrapper over
+  @molecules/pull-quote/yds-pull-quote.twig.
+props:
+  type: object
+  properties:
+    pull_quote__style:
+      title: Style (dial)
+      description: >
+        Enum from ys_themes.component_overrides.yml (pull_quote.field_style_variation,
+        list_key formatter).
+      type: string
+      enum: [bar-left, bar-right, quote-left]
+      default: bar-left
+    pull_quote__width:
+      title: Width
+      description: Content width; computed by the block template from the parent node type.
+      type:
+        - string
+        - "null"
+    pull_quote__alignment:
+      title: Alignment
+      description: Content alignment; computed by the block template from the parent node type.
+      type:
+        - string
+        - "null"
+slots:
+  pull_quote__quote:
+    title: Quote
+    required: true
+    description: The quote (rich text).
+  pull_quote__attribution:
+    title: Attribution
+    required: false
+    description: Optional attribution (plain text).

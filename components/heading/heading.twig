@@ -1,0 +1,16 @@
+{#
+ # SDC thin wrapper for the Heading atom. The CLT template consumes `heading` as
+ # a variable (both printed directly and passed to the text-link atom), so the
+ # captured slot is passed through as `heading`. `directory` is threaded so the
+ # optional prefix icon resolves its sprite path.
+ # See docs/sdc/recipe-convert-a-component-to-sdc.md.
+ #}
+{% set heading_slot = block('heading') %}
+{{ include('@atoms/typography/headings/yds-heading.twig', {
+  heading__level: heading__level,
+  heading: heading_slot|trim,
+  heading__url: heading__url,
+  heading__prefix__icon: heading__prefix__icon,
+  directory: directory,
+}, with_context = false) }}
+{% if false %}{% block heading %}{% endblock %}{% endif %}

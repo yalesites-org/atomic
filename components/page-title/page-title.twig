@@ -1,0 +1,46 @@
+{#
+ # SDC thin wrapper for Page Title. Scalar props feed the CLT template; the
+ # overline / extra / image / meta-extra / social-links regions are exposed as
+ # slots (renamed to avoid block-name collisions) and injected into the matching
+ # CLT blocks. page_title__meta stays a prop (its block form is used only by
+ # internal CLT embeds). Each overridden block falls back to the CLT default
+ # (parent()) when its slot is empty, so props-only rendering matches the source
+ # exactly. directory is threaded for the prefix icon. Create-only.
+ # See docs/sdc/recipe-convert-a-component-to-sdc.md.
+ #}
+{% set pt_overline = block('page_title__overline_slot') %}
+{% set pt_extra = block('page_title__extra_slot') %}
+{% set pt_image %}{{ block('page_title__image_slot')|raw }}{% endset %}
+{% set pt_meta_extra = block('page_title__meta_extra_slot') %}
+{% set pt_social = block('page_title__social_links_slot') %}
+{% embed '@molecules/page-title/yds-page-title.twig' with {
+  page_title__heading: page_title__heading,
+  page_title__prefix: page_title__prefix,
+  page_title__meta: page_title__meta,
+  page_title__display: page_title__display,
+  page_title__width: page_title__width,
+  page_title__variation: page_title__variation,
+  page_title__blockname: page_title__blockname,
+  page_title__base_class: page_title__base_class,
+  page_title__additional_classes: page_title__additional_classes,
+  page_title__show_social_media_sharing_links: page_title__show_social_media_sharing_links,
+  pt_overline: pt_overline,
+  pt_extra: pt_extra,
+  pt_image: pt_image,
+  pt_meta_extra: pt_meta_extra,
+  pt_social: pt_social,
+  directory: directory,
+} only %}
+  {% block page_title__overline %}{% if pt_overline|trim %}{{ pt_overline }}{% else %}{{ parent() }}{% endif %}{% endblock %}
+  {% block page_title__extra %}{% if pt_extra|trim %}{{ pt_extra }}{% else %}{{ parent() }}{% endif %}{% endblock %}
+  {% block page_title__image %}{% if pt_image|trim %}{{ pt_image|raw }}{% else %}{{ parent() }}{% endif %}{% endblock %}
+  {% block page_title__meta__extra %}{% if pt_meta_extra|trim %}{{ pt_meta_extra }}{% else %}{{ parent() }}{% endif %}{% endblock %}
+  {% block page_title__social_links %}{% if pt_social|trim %}{{ pt_social }}{% else %}{{ parent() }}{% endif %}{% endblock %}
+{% endembed %}
+{% if false %}
+  {% block page_title__overline_slot %}{% endblock %}
+  {% block page_title__extra_slot %}{% endblock %}
+  {% block page_title__image_slot %}{% endblock %}
+  {% block page_title__meta_extra_slot %}{% endblock %}
+  {% block page_title__social_links_slot %}{% endblock %}
+{% endif %}

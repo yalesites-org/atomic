@@ -8,14 +8,10 @@
     {% set embed__width = "site" %}
   {% endif %}
 
-  {% embed "@molecules/embed/yds-embed.twig" with {
+  {% embed 'atomic:embed' with {
     embed__width: embed__width,
-  }%}
-
-    {% block embed__block %}
-      {{ content }}
-    {% endblock %}
-
+  } %}
+    {% block embed__content %}{{ content }}{% endblock %}
   {% endembed %}
 
 {% endblock %}

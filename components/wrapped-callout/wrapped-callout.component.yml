@@ -1,0 +1,37 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Wrapped Callout
+status: stable
+group: Molecules
+description: >
+  A callout text wrapped alongside body text. Thin SDC wrapper over
+  @molecules/wrapped-callout/yds-wrapped-callout.twig.
+props:
+  type: object
+  properties:
+    wrapped_callout__theme:
+      title: Theme (dial)
+      description: field_style_color (list_key).
+      type: string
+      enum: [one, two, three, four, five]
+      default: one
+    wrapped_callout__alignment:
+      title: Alignment (dial)
+      description: field_style_position (list_key).
+      type: string
+      enum: [left, right]
+      default: left
+    wrapped_callout__width:
+      title: Width
+      description: Content width; computed by the block template from the parent node type.
+      type:
+        - string
+        - "null"
+slots:
+  wrapped_callout__callout:
+    title: Callout text
+    required: false
+    description: The emphasized callout text (rendered via the text atom).
+  wrapped_callout__content:
+    title: Body text
+    required: false
+    description: The body text (rendered via the text atom).

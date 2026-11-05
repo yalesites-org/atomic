@@ -1,0 +1,34 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Video
+status: stable
+group: Molecules
+description: >
+  A video with optional heading/text. Thin SDC wrapper over
+  @molecules/video/yds-video.twig.
+props:
+  type: object
+  properties:
+    video__width:
+      title: Width
+      type:
+        - string
+        - "null"
+    video__alignment:
+      title: Alignment (dial)
+      description: field_style_alignment (list_key).
+      type: string
+      enum: [left, center]
+      default: left
+slots:
+  video__heading:
+    title: Heading
+    required: false
+    description: Optional heading.
+  video__text:
+    title: Text
+    required: false
+    description: Optional supporting text (rendered via the text atom).
+  video__video:
+    title: Video markup
+    required: true
+    description: The video/media markup.

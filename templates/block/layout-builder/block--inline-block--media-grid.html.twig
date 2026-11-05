@@ -7,11 +7,12 @@
     {% set media_grid__width = "site" %}
   {% endif %}
 
-  {% embed "@organisms/galleries/media-grid/yds-media-grid.twig" with {
-    media_grid__heading: content.field_heading.0,
+  {% embed 'atomic:media-grid' with {
+    media_grid__variation: 'basic',
     media_grid__width: media_grid__width,
   } %}
-    {% block media_grid__items %}
+    {% block heading %}{{ content.field_heading.0 }}{% endblock %}
+    {% block items %}
       {% for item in content.field_media_grid_items['#items'] %}
         {% embed "@organisms/galleries/media-grid/_yds-media-grid-item.twig" %}
           {% block media_grid_item__media %}
@@ -20,7 +21,5 @@
         {% endembed %}
       {% endfor %}
     {% endblock %}
-
   {% endembed %}
-
 {% endblock %}

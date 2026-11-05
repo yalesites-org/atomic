@@ -1,0 +1,7 @@
+{#
+ # SDC thin wrapper for Read Time. Props-only; the minutes value is filled in by
+ # the component JS (attached via libraryOverrides).
+ #}
+{{ include('@molecules/read-time/yds-read-time.twig', {
+  read_time__label: read_time__label,
+}, with_context = false) }}

@@ -1,18 +1,22 @@
 {% extends "@atomic/block/layout-builder/_layout-builder-block-template.twig" %}
 
 {% block content %}
-    {% if parentNode == 'post' or parentNode == 'event' %}
-      {% set pull_quote__width = "content" %}
-      {% set pull_quote__alignment = "center" %}
-    {% else %}
-      {% set pull_quote__width = "site" %}
-      {% set pull_quote__alignment = "left" %}
+  {# width/alignment are derived from the parent node type (as in the pre-SDC
+     template, where they reached the component via include context). #}
+  {% if parentNode == 'post' or parentNode == 'event' %}
+    {% set pull_quote__width = "content" %}
+    {% set pull_quote__alignment = "center" %}
+  {% else %}
+    {% set pull_quote__width = "site" %}
+    {% set pull_quote__alignment = "left" %}
   {% endif %}
 
-  {% include "@molecules/pull-quote/yds-pull-quote.twig" with {
-    pull_quote__quote: content.field_text,
-    pull_quote__attribution: content.field_caption.0,
-    pull_quote__style: content.field_style_variation.0['#markup'],
+  {% embed 'atomic:pull-quote' with {
+    pull_quote__style: content.field_style_variation.0['#markup']|default('bar-left'),
+    pull_quote__width: pull_quote__width,
+    pull_quote__alignment: pull_quote__alignment,
   } %}
-
+    {% block pull_quote__quote %}{{ content.field_text }}{% endblock %}
+    {% block pull_quote__attribution %}{{ content.field_caption.0 }}{% endblock %}
+  {% endembed %}
 {% endblock %}

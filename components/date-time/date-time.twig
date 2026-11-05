@@ -1,0 +1,11 @@
+{#
+ # SDC thin wrapper for the Date Time atom. Props-only (no slots); the date
+ # formatting logic stays in the component library template.
+ #}
+{{ include('@atoms/date-time/yds-date-time.twig', {
+  date_time__start: date_time__start,
+  date_time__end: date_time__end,
+  date_time__all_day: date_time__all_day,
+  date_time__format: date_time__format,
+  date_time__format_override: date_time__format_override,
+}, with_context = false) }}

@@ -1,0 +1,29 @@
+{#
+ # SDC thin wrapper for Publication Meta (resource detail). Props-only: every
+ # value is forwarded to the CLT template, which is included with
+ # with_context = false. The text-copy-button JS attaches via libraryOverrides.
+ # directory is threaded for nested atoms. Create-only — no consumer repointed
+ # yet. See docs/sdc/recipe-convert-a-component-to-sdc.md.
+ #}
+{{ include('@molecules/meta/publication-meta/yds-publication-detail.twig', {
+  publication_detail__heading: publication_detail__heading,
+  publication_detail__category: publication_detail__category,
+  publication_detail__publish_date: publication_detail__publish_date,
+  publication_detail__authors: publication_detail__authors,
+  publication_detail__journal_publication_name: publication_detail__journal_publication_name,
+  publication_detail__journal_publication_issue: publication_detail__journal_publication_issue,
+  publication_detail__citation: publication_detail__citation,
+  publication_detail__abstract: publication_detail__abstract,
+  publication_detail__external_source: publication_detail__external_source,
+  publication_detail__download_url: publication_detail__download_url,
+  publication_detail__download_label: publication_detail__download_label,
+  publication_detail__download_aria_label: publication_detail__download_aria_label,
+  publication_detail__resource_type: publication_detail__resource_type,
+  publication_detail__media_id: publication_detail__media_id,
+  publication_detail__document_image: publication_detail__document_image,
+  publication_detail__metadata: publication_detail__metadata,
+  publication_detail__description: publication_detail__description,
+  publication_detail__width: publication_detail__width,
+  video_embed__content__1: video_embed__content__1,
+  directory: directory,
+}, with_context = false) }}

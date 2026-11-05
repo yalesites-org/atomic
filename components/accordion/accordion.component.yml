@@ -1,0 +1,63 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Accordion
+status: stable
+group: Molecules
+description: >
+  An expand/collapse accordion with a theme "dial" and JavaScript behavior. Thin
+  SDC wrapper over @molecules/accordion/yds-accordion.twig; the real markup, SCSS
+  and JS stay in component-library-twig. The component JS is attached via
+  libraryOverrides (the atomic/accordion library), because include/embed bypass
+  the Render API's #attached.
+libraryOverrides:
+  dependencies:
+    - atomic/accordion
+props:
+  type: object
+  properties:
+    accordion__theme:
+      title: Theme (dial)
+      description: >
+        Component color theme. Enum is generated from
+        ys_themes.component_overrides.yml (accordion.field_style_color,
+        list_key formatter), so the Drupal allowed values and this schema cannot
+        drift.
+      type: string
+      enum:
+        - default
+        - one
+        - two
+        - three
+        - four
+        - five
+      default: default
+    accordion__alignment:
+      title: Alignment
+      description: >
+        Content alignment. Computed by the block template from the parent node
+        type (not a dial): left for standard pages, center for post/event.
+      type: string
+      enum:
+        - left
+        - center
+      default: left
+    accordion__width:
+      title: Width
+      description: >
+        Content width. Computed by the block template from the parent node type
+        (not a dial): site for standard pages, content for post/event.
+      type: string
+      enum:
+        - site
+        - content
+      default: content
+slots:
+  accordion__heading:
+    title: Group heading
+    required: false
+    description: Optional heading displayed above all accordion items.
+  accordion__content:
+    title: Accordion items
+    required: true
+    description: >
+      The accordion item(s). Populated from the field_accordion_items field in
+      the Layout Builder block template.

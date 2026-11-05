@@ -33,6 +33,22 @@ Pull requests are the best way to propose changes to the codebase (we use [Githu
 
 People *love* thorough bug reports.
 
+## Single Directory Components (SDC)
+
+YaleSites components are being migrated to Drupal [Single Directory Components](https://www.drupal.org/docs/develop/theming-drupal/using-single-directory-components) (epic [#1351](https://github.com/yalesites-org/YaleSites-Internal/issues/1351)). Because Drupal only discovers SDCs in an installed extension's own `components/` directory (never in `node_modules/`), the SDC wrappers live here in `atomic`, while the canonical Twig, SCSS, and JS stay in `component-library-twig` and keep driving Storybook and Percy.
+
+Each migrated component is a thin wrapper:
+
+```
+atomic/components/<name>/
+  <name>.component.yml   # the schema: typed props + slots
+  <name>.twig            # a shim that include/embeds @atoms|@molecules|@organisms/<name>/...
+```
+
+The component's `dist/` CSS/JS is attached through the SDC's `libraryOverrides` (pointing at the existing `atomic/<name>` libraries — nothing is moved or duplicated), and the Layout Builder block template (`templates/block/layout-builder/block--inline-block--<name>.html.twig`) is repointed to render the SDC.
+
+Two rules bite if ignored: SDC prop validation is **assertion-gated** (invalid props throw in dev/test but render silently in a `--no-dev` production build), and SDC does **not** inherit Twig context (only declared props and slots are in scope — thread `directory` explicitly for icon sprite paths). The full documentation set — conversion recipe, a guide to building a new block as an SDC, and the testing recipe — lives in the component library at [`component-library-twig/docs/sdc/`](_yale-packages/component-library-twig/docs/sdc/README.md).
+
 ## Use a Consistent Coding Style
 We have linters and formatters running against the codebase. You can run these manually, or try to commit, and if they fail, your commit will be prohibited.
 

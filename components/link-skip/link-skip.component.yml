@@ -1,0 +1,28 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Skip Link
+status: stable
+group: Atoms
+description: >
+  A skip-to-content link (accessibility). Thin SDC wrapper over
+  @molecules/link-skip/yds-link-skip.twig.
+props:
+  type: object
+  properties:
+    link_skip__url:
+      title: Target URL
+      description: The in-page target the skip link jumps to (e.g. #main-content).
+      type:
+        - string
+        - "null"
+    link_skip__extra_class:
+      title: Extra class
+      type:
+        - string
+        - "null"
+slots:
+  link_skip__content_slot:
+    title: Link content
+    required: true
+    description: >
+      The link text. Named link_skip__content_slot (not link_skip__content) to
+      avoid a collision with the template's own link_skip__content block.

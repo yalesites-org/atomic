@@ -1,0 +1,20 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Read Time
+status: stable
+group: Atoms
+description: >
+  An estimated read-time indicator (the minutes value is computed client-side by
+  the component JS). Thin SDC wrapper over @molecules/read-time/yds-read-time.twig;
+  JS attaches via libraryOverrides (atomic/read-time).
+libraryOverrides:
+  dependencies:
+    - atomic/read-time
+props:
+  type: object
+  properties:
+    read_time__label:
+      title: Label
+      description: The label shown before the computed time (defaults to "Estimated read time").
+      type:
+        - string
+        - "null"

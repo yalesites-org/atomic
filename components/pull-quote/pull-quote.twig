@@ -1,0 +1,23 @@
+{#
+ # SDC thin wrapper for the Pull Quote molecule. Both the quote and the
+ # attribution are rendered field content (rich markup) feeding {{ ... }}
+ # (auto-escaping) sinks, so they are captured as Markup via
+ # {% set %}{{ block()|raw }}{% endset %} to preserve markup without double-
+ # escaping. The attribution is emptied when blank so the template's
+ # `{% if attribution %}` stays falsy (no stray figcaption).
+ # See docs/sdc/recipe-convert-a-component-to-sdc.md.
+ #}
+{% set pull_quote__quote %}{{ block('pull_quote__quote')|raw }}{% endset %}
+{% set pull_quote__attribution_captured %}{{ block('pull_quote__attribution')|raw }}{% endset %}
+{% set pull_quote__attribution = pull_quote__attribution_captured|trim is empty ? '' : pull_quote__attribution_captured %}
+{{ include('@molecules/pull-quote/yds-pull-quote.twig', {
+  pull_quote__style: pull_quote__style,
+  pull_quote__width: pull_quote__width,
+  pull_quote__alignment: pull_quote__alignment,
+  pull_quote__quote: pull_quote__quote,
+  pull_quote__attribution: pull_quote__attribution,
+}, with_context = false) }}
+{% if false %}
+  {% block pull_quote__quote %}{% endblock %}
+  {% block pull_quote__attribution %}{% endblock %}
+{% endif %}
