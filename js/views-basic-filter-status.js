@@ -105,15 +105,16 @@
         });
       });
 
-      // A freshly rendered exposed form carries the value that was submitted.
+      // Each AJAX response (and the first attach) means the field's current
+      // value is what was last submitted. The exposed form is often not
+      // replaced, so the same focused input must be re-recorded every time,
+      // or the blur change event after a pager click looks like new text.
       document
         .querySelectorAll(
           "form.views-exposed-form input[type=text], form.views-exposed-form input[type=search]"
         )
         .forEach((input) => {
-          if (!submittedValues.has(input)) {
-            submittedValues.set(input, input.value);
-          }
+          submittedValues.set(input, input.value);
         });
 
       const counts = drupalSettings.ysViewsBasicFilter || {};
