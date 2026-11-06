@@ -356,8 +356,8 @@ function atomic_theme_suggestions_field_alter(array &$suggestions, array $variab
 function atomic_preprocess_views_view(&$variables) {
   $view = $variables['view'];
 
-  // Only process views_basic_scaffold and views_basic_scaffold_events views.
-  if (!in_array($view->id(), ['views_basic_scaffold', 'views_basic_scaffold_events'])) {
+  // Only process views_basic_scaffold, _events and _resources views.
+  if (!in_array($view->id(), ['views_basic_scaffold', 'views_basic_scaffold_events', 'views_basic_scaffold_resources'])) {
     return;
   }
 
@@ -367,6 +367,7 @@ function atomic_preprocess_views_view(&$variables) {
     'event' => 'Events',
     'page' => 'Pages',
     'profile' => 'Profiles',
+    'resource' => 'Resources',
   ];
 
   // Default aria-label.
