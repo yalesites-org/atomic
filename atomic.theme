@@ -697,7 +697,6 @@ function atomic_preprocess_block__inline_block__office_hours(array &$variables):
   }
 
   $variables['office_hours'] = [
-    'name' => ($variables['content']['#block_content'] ?? NULL)?->label(),
     'days' => $week,
     'upcoming' => $upcoming,
     'timezone' => \Drupal::config('system.date')->get('timezone.default'),
