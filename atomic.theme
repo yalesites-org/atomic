@@ -164,15 +164,20 @@ function atomic_preprocess_node(&$variables) {
       }
     }
 
-    // Listing cards show the person's name, never the teaser title
-    // (yalesites-org/YaleSites-Internal#1968).
+    // Cards show the Display Name (the node title) when it is filled in, so
+    // they match the profile page heading. They fall back to first and last
+    // name, and never use the teaser title
+    // (yalesites-org/YaleSites-Internal#1968, #2193).
+    $display_name = trim((string) $variables['node']->label());
     $name_parts = [];
-    foreach (['field_first_name', 'field_last_name'] as $field) {
-      if ($node->hasField($field) && $node->get($field)->access('view')) {
-        $name_parts[] = trim((string) $node->get($field)->value);
+    if ($display_name === '') {
+      foreach (['field_first_name', 'field_last_name'] as $field) {
+        if ($node->hasField($field) && $node->get($field)->access('view')) {
+          $name_parts[] = trim((string) $node->get($field)->value);
+        }
       }
     }
-    $variables['profile_name'] = implode(' ', array_filter($name_parts, 'strlen')) ?: trim((string) $node->label());
+    $variables['profile_name'] = $display_name !== '' ? $display_name : implode(' ', array_filter($name_parts, 'strlen'));
   }
 
   // Handle resource thumbnail processing.
