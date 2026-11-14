@@ -1,0 +1,11 @@
+{#
+ # SDC thin wrapper for the Video Background atom. The canonical template,
+ # SCSS and JS live in the component library
+ # (@atoms/videos/video-background/yds-video-background.twig). This shim only
+ # maps SDC props onto the template's variables.
+ #}
+{{ include('@atoms/videos/video-background/yds-video-background.twig', {
+  video_background__content: video_background__content,
+  video_background__playback: video_background__playback,
+  video_background__button__background_color: video_background__button__background_color,
+}, with_context = false) }}

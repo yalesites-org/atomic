@@ -296,6 +296,39 @@ class SdcSchemaValidationTest extends UnitTestCase {
   }
 
   /**
+   * Video Embed atom (Wave 1): no props, so an empty prop set is valid.
+   */
+  public function testVideoEmbed(): void {
+    $this->assertSame([], $this->validate('video-embed', []));
+  }
+
+  /**
+   * Video Background atom (Wave 1): valid data passes; bad data fails.
+   */
+  public function testVideoBackground(): void {
+    $this->assertSame([], $this->validate('video-background', [
+      'video_background__content' => 'https://example.com/clip.mp4',
+      'video_background__playback' => 'once',
+      'video_background__button__background_color' => 'two',
+    ]));
+    $this->assertSame([], $this->validate('video-background', [
+      'video_background__content' => 'https://example.com/clip.mp4',
+      'video_background__playback' => NULL,
+    ]));
+  }
+
+  /**
+   * Video Background atom: a missing source or unknown playback fails.
+   */
+  public function testVideoBackgroundInvalidFails(): void {
+    $this->assertNotEmpty($this->validate('video-background', []));
+    $this->assertNotEmpty($this->validate('video-background', [
+      'video_background__content' => 'https://example.com/clip.mp4',
+      'video_background__playback' => 'bounce',
+    ]));
+  }
+
+  /**
    * Tabs (Wave 3): valid data passes.
    */
   public function testTabs(): void {
