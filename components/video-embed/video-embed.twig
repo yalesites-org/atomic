@@ -1,0 +1,11 @@
+{#
+ # SDC thin wrapper for the Video Embed atom. The canonical template and SCSS
+ # live in the component library (@atoms/videos/video-embed/yds-video-embed.twig).
+ # The embed markup is captured as Markup and handed to the template's
+ # video_embed__content variable, which the template outputs with |raw.
+ #}
+{% set video_embed__content_markup %}{{ block('video_embed__content')|raw }}{% endset %}
+{{ include('@atoms/videos/video-embed/yds-video-embed.twig', {
+  video_embed__content: video_embed__content_markup,
+}, with_context = false) }}
+{% if false %}{% block video_embed__content %}{% endblock %}{% endif %}

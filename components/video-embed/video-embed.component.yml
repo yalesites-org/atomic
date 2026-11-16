@@ -1,0 +1,18 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Video Embed
+status: stable
+group: Atoms
+description: >
+  A responsive frame for an embedded video (typically an iframe). Thin SDC
+  wrapper over the component library's @atoms/videos/video-embed/yds-video-embed.twig
+  template; the real markup and SCSS stay in component-library-twig.
+props:
+  type: object
+  properties: {}
+slots:
+  video_embed__content:
+    title: Video embed content
+    required: true
+    description: >
+      The embed markup, usually an iframe. Rendered unescaped, as the
+      underlying template does.
