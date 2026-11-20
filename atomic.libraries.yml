@@ -34,6 +34,14 @@ views-basic-filter-scroll:
     - core/drupal
     - core/drupal.ajax
     - core/drupalSettings
+views-basic-filter-retry:
+  js:
+    js/views-basic-filter-retry.js: {}
+  dependencies:
+    - core/drupal
+    - core/drupal.ajax
+    - core/drupalSettings
+    - core/jquery
 accordion:
   js:
     node_modules/@yalesites-org/component-library-twig/dist/js/components/02-molecules/accordion/yds-accordion.js: {}
