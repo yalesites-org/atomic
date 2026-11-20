@@ -1,0 +1,41 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Utility Navigation
+status: stable
+group: Organisms
+description: >
+  The utility navigation menu (global chrome, Wave 7 / #1362). Thin SDC wrapper
+  over @organisms/menu/utility-nav/_utility-nav--menu.twig, i.e. the utility
+  menu rendered by the utility_navigation block. Like primary-nav, the Drupal
+  menu tree carries \Drupal\Core\Url objects that cannot cross the SDC prop
+  boundary, so the render-path adapter (menu--extras--utility-navigation.html.twig)
+  passes a flattened, string-URL copy of the tree (atomic.theme
+  _atomic_flatten_menu_items()) and this wrapper renders it with
+  menu__contextual: true. CSS loads from the global stylesheet, so no
+  libraryOverrides are needed.
+props:
+  type: object
+  required:
+    - utility_nav__items
+  properties:
+    utility_nav__items:
+      title: Menu items
+      description: >
+        The flattened utility-menu tree. Each item has a title, a string url, an
+        is_active flag, an optional is_cas flag (set by ys_node_access for CAS
+        links), and a recursive `below`.
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+          url:
+            type:
+              - string
+              - "null"
+          is_active:
+            type: boolean
+          is_cas:
+            type: boolean
+          below:
+            type: array

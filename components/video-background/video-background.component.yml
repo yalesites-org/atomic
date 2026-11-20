@@ -1,0 +1,35 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Video Background
+status: stable
+group: Atoms
+description: >
+  A muted, autoplaying background video with play and pause controls. Thin SDC
+  wrapper over the component library's
+  @atoms/videos/video-background/yds-video-background.twig template; the real
+  markup, SCSS and JS stay in component-library-twig.
+props:
+  type: object
+  required:
+    - video_background__content
+  properties:
+    video_background__content:
+      title: Video file URL
+      description: URL of the MP4 file used as the video source.
+      type: string
+    video_background__playback:
+      title: Playback
+      description: >
+        "loop" (the template default when empty) repeats the video; "once"
+        plays it one time and holds the last frame.
+      type:
+        - string
+        - "null"
+      enum:
+        - loop
+        - once
+        - null
+    video_background__button__background_color:
+      title: Control button color (dial)
+      description: Component theme dial for the play and pause buttons.
+      type: string
+      default: one

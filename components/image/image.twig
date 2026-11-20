@@ -1,0 +1,13 @@
+{#
+ # SDC thin wrapper for the Image atom. The image markup is injected into the
+ # template's image__image block; figure__caption is passed as a variable.
+ # See docs/sdc/recipe-convert-a-component-to-sdc.md.
+ #}
+{% set image__content = block('image__content') %}
+{% embed '@atoms/images/image/yds-image.twig' with {
+  figure__caption: figure__caption,
+  image__content: image__content,
+} only %}
+  {% block image__image %}{{ image__content|raw }}{% endblock %}
+{% endembed %}
+{% if false %}{% block image__content %}{% endblock %}{% endif %}

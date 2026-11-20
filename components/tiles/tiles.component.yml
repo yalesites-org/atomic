@@ -1,0 +1,38 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Tiles
+status: stable
+group: Organisms
+description: >
+  A grid of tile items. Thin SDC wrapper over @organisms/tiles/yds-tiles.twig.
+  (The pre-SDC block attached atomic/spotlights, but that library does not exist
+  and tiles has no behavior JS, so it was a dead reference — dropped.)
+props:
+  type: object
+  properties:
+    tiles__alignment:
+      title: Alignment (dial)
+      type: string
+      enum: [left, center, right]
+      default: left
+    tiles__grid_count:
+      title: Columns (dial)
+      type: string
+      enum: [two, three, four]
+      default: four
+    tiles__vertical_alignment:
+      title: Vertical alignment (dial)
+      type: string
+      enum: [top, bottom]
+      default: bottom
+    tiles__with__animation:
+      title: Animation
+      type:
+        - string
+        - "null"
+slots:
+  tiles__content:
+    title: Tile items
+    required: true
+    description: >
+      The tile items. Named tiles__content (not tiles__items) to avoid a
+      collision with the template's own tiles__items block.

@@ -1,0 +1,161 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Event Meta
+status: stable
+group: Molecules
+description: >
+  Event page meta — dates, location, ticketing, taxonomy (types/audience/topics),
+  Localist details and an optional add-to-calendar control. Thin SDC wrapper over
+  @molecules/meta/event-meta/yds-event-meta-localist.twig (the Localist variant;
+  the non-localist yds-event-meta.twig is unused). Props-only. Create-only: the
+  ys_layouts event_meta_block still includes the CLT template directly. The
+  component JS is attached via libraryOverrides (atomic/event-localist) because
+  include/embed bypass the Render API's #attached. Render-array/markup props
+  (description, teaser_media, stream_embed_code) are typed permissively.
+libraryOverrides:
+  dependencies:
+    - atomic/event-localist
+props:
+  type: object
+  properties:
+    event_title__heading:
+      title: Event title
+      type:
+        - string
+        - "null"
+    event_dates:
+      title: Event dates
+      description: Array of date objects (start/end, all-day, past flags).
+      type: array
+    ics_url:
+      title: ICS URL
+      type:
+        - string
+        - "null"
+    canonical_url:
+      title: Canonical URL
+      type:
+        - string
+        - "null"
+    ticket_url:
+      title: Ticket URL
+      type:
+        - string
+        - "null"
+    ticket_cost:
+      title: Ticket cost
+      type:
+        - string
+        - array
+        - "null"
+    place:
+      title: Place
+      description: Location object (name/address/city/state/postal/lat/long).
+      type:
+        - object
+        - array
+    room:
+      title: Room
+      type:
+        - string
+        - "null"
+    event_types:
+      title: Event types
+      type: array
+    event_audience:
+      title: Event audience
+      type: array
+    event_topics:
+      title: Event topics
+      type: array
+    description:
+      title: Description
+      type:
+        - string
+        - object
+        - "null"
+    event_meta__cta_primary__href:
+      title: Primary CTA href
+      type:
+        - string
+        - "null"
+    event_meta__cta_primary__content:
+      title: Primary CTA content
+      type:
+        - string
+        - "null"
+    event_experience:
+      title: Event experience
+      description: In-person / Virtual (drives the format display).
+      type:
+        - array
+        - string
+        - "null"
+    localist_image_url:
+      title: Localist image URL
+      type:
+        - string
+        - "null"
+    localist_image_alt:
+      title: Localist image alt
+      type:
+        - string
+        - "null"
+    teaser_media:
+      title: Teaser media
+      type:
+        - object
+        - array
+        - "null"
+    has_register:
+      title: Has register
+      type:
+        - boolean
+        - "null"
+    cost_button_text:
+      title: Cost button text
+      type: string
+      default: Register
+    localist_url:
+      title: Localist URL
+      type:
+        - string
+        - "null"
+    stream_url:
+      title: Stream URL
+      type:
+        - string
+        - "null"
+    stream_embed_code:
+      title: Stream embed code
+      type:
+        - string
+        - object
+        - "null"
+    event_source:
+      title: Event source
+      type:
+        - string
+        - "null"
+    event_id:
+      title: Event ID
+      type:
+        - string
+        - integer
+        - "null"
+    event_featured_date:
+      title: Featured date
+      type:
+        - object
+        - "null"
+    event_featured_index:
+      title: Featured index
+      type:
+        - integer
+        - "null"
+    event_meta__with_calendar:
+      title: With calendar
+      description: Whether to show the add-to-calendar control (defaults true).
+      type: boolean
+      default: true
+  required:
+    - event_title__heading

@@ -1,0 +1,32 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Text With Image
+status: stable
+group: Molecules
+description: >
+  Text alongside an image (the Content Spotlight layout). Thin SDC wrapper over
+  @molecules/text-with-image/yds-text-with-image.twig. The style/position/etc.
+  props are typed as nullable strings rather than strict enums because this
+  component is shared across bundles (content_spotlight, and potentially the
+  portrait variant) whose field_style_* dials differ; the allowed values are
+  still enforced Drupal-side by ys_themes.component_overrides.yml.
+props:
+  type: object
+  properties:
+    text_with_image__position: { title: Image position, type: [string, "null"] }
+    text_with_image__width: { title: Width, type: [string, "null"] }
+    text_with_image__style: { title: Image style, type: [string, "null"] }
+    text_with_image__theme: { title: Theme, type: [string, "null"] }
+    text_with_image__vertical_align: { title: Vertical align, type: [string, "null"] }
+    text_with_image__focus: { title: Focus, type: [string, "null"] }
+    text_with_image__heading_level: { title: Heading level, type: [string, "null"] }
+    text_with_image__link__content: { title: Link 1 text, type: [string, "null"] }
+    text_with_image__link__url: { title: Link 1 URL, type: [string, "null"] }
+    text_with_image__link_two__content: { title: Link 2 text, type: [string, "null"] }
+    text_with_image__link_two__url: { title: Link 2 URL, type: [string, "null"] }
+slots:
+  text_with_image__overline: { title: Overline, required: false, description: Optional overline text. }
+  text_with_image__heading: { title: Heading, required: false, description: Optional heading. }
+  text_with_image__subheading: { title: Subheading, required: false, description: Optional subheading. }
+  text_with_image__text: { title: Body text, required: false, description: Body text. }
+  text_with_image__caption: { title: Image caption, required: false, description: Optional caption. }
+  text_with_image__image: { title: Image markup, required: true, description: The image markup. }

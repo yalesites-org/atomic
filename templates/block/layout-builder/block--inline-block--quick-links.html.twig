@@ -10,23 +10,15 @@
     {% set quick_links__alignment = "left" %}
   {% endif %}
 
-  {% embed "@molecules/quick-links/yds-quick-links.twig" with {
+  {% embed 'atomic:quick-links' with {
     quick_links__variation: 'promotional',
     quick_links__heading: content.field_heading.0['#text'],
-    quick_links__description: content.field_text.0,
-    quick_links__image: content.field_media.0,
-    quick_links__links: content.field_links.0,
+    quick_links__width: quick_links__width,
     quick_links__alignment: quick_links__alignment,
   } %}
-
-    {% block quick_links__links %}
-      {{ content.field_links }}
-    {% endblock %}
-
-    {% block quick_links__image %}
-      {{ content.field_media }}
-    {% endblock %}
-
+    {% block quick_links__description %}{{ content.field_text.0 }}{% endblock %}
+    {% block quick_links__image_slot %}{{ content.field_media }}{% endblock %}
+    {% block quick_links__links_slot %}{{ content.field_links }}{% endblock %}
   {% endembed %}
 
 {% endblock %}

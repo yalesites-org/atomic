@@ -1,0 +1,68 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Profile Meta
+status: stable
+group: Molecules
+description: >
+  Profile page meta — name, title/subtitle line, department, pronouns, and a
+  portrait/landscape image. Thin SDC wrapper over
+  @molecules/meta/profile-meta/yds-profile-meta.twig; the real markup and SCSS
+  stay in component-library-twig. Create-only: the ys_layouts profile_meta_block
+  still renders the CLT template directly (this SDC is not yet repointed),
+  matching the Wave 0 precedent (basic-meta, heading).
+props:
+  type: object
+  properties:
+    profile_meta__heading:
+      title: Name
+      description: The profile's name.
+      type: string
+    profile_meta__title_line:
+      title: Title line
+      type:
+        - string
+        - "null"
+    profile_meta__subtitle_line:
+      title: Subtitle line
+      type:
+        - string
+        - "null"
+    profile_meta__department:
+      title: Department
+      type:
+        - string
+        - "null"
+    profile_meta__pronouns:
+      title: Pronouns
+      type:
+        - string
+        - "null"
+    profile_meta__image_orientation:
+      title: Image orientation
+      type: string
+      enum:
+        - landscape
+        - portrait
+      default: landscape
+    profile_meta__image_style:
+      title: Image style
+      type: string
+      enum:
+        - inline
+        - outdent
+      default: inline
+    profile_meta__image_alignment:
+      title: Image alignment
+      type: string
+      enum:
+        - left
+        - right
+      default: left
+  required:
+    - profile_meta__heading
+slots:
+  profile_image:
+    title: Profile image
+    required: false
+    description: >
+      The profile image markup (a media render). Injected into the CLT
+      template's profile__image block (slot renamed to avoid a block collision).

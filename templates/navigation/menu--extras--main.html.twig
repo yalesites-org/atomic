@@ -1,6 +1,9 @@
 {# Note: After enabling menu_item_extras module, this file was renamed from menu--main.html.twig #}
 {{ attach_library('atomic/primary-nav') }}
 
-{% include "@organisms/menu/primary-nav/yds-primary-nav.twig"  with {
+{# Included WITH context (no with_context=false) so `directory` flows into the SDC
+   and nested icon atoms resolve the versioned sprite path (getAssetPath). #}
+{{ include('atomic:primary-nav', {
+  primary_nav__items: menu__flattened_items,
   menu__variation: getHeaderSetting('header_variation'),
-}%}
+}) }}
