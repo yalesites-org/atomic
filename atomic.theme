@@ -164,15 +164,20 @@ function atomic_preprocess_node(&$variables) {
       }
     }
 
-    // Listing cards show the person's name, never the teaser title
-    // (yalesites-org/YaleSites-Internal#1968).
+    // Cards show the Display Name (the node title) when it is filled in, so
+    // they match the profile page heading. They fall back to first and last
+    // name, and never use the teaser title
+    // (yalesites-org/YaleSites-Internal#1968, #2193).
+    $display_name = trim((string) $variables['node']->label());
     $name_parts = [];
-    foreach (['field_first_name', 'field_last_name'] as $field) {
-      if ($node->hasField($field) && $node->get($field)->access('view')) {
-        $name_parts[] = trim((string) $node->get($field)->value);
+    if ($display_name === '') {
+      foreach (['field_first_name', 'field_last_name'] as $field) {
+        if ($node->hasField($field) && $node->get($field)->access('view')) {
+          $name_parts[] = trim((string) $node->get($field)->value);
+        }
       }
     }
-    $variables['profile_name'] = implode(' ', array_filter($name_parts, 'strlen')) ?: trim((string) $node->label());
+    $variables['profile_name'] = $display_name !== '' ? $display_name : implode(' ', array_filter($name_parts, 'strlen'));
   }
 
   // Handle resource thumbnail processing.
@@ -399,6 +404,10 @@ function atomic_preprocess_views_view(&$variables) {
   // Keep the page from scrolling to the results on every filter auto-submit;
   // the scroll-to-top is only wanted on pager clicks. (#1299 QA)
   $variables['#attached']['library'][] = 'atomic/views-basic-filter-scroll';
+
+  // Re-run a filter submit that Drupal AJAX dropped because the previous
+  // request was still loading (e.g. Enter right after clearing the search box).
+  $variables['#attached']['library'][] = 'atomic/views-basic-filter-retry';
 }
 
 /**
@@ -697,7 +706,6 @@ function atomic_preprocess_block__inline_block__office_hours(array &$variables):
   }
 
   $variables['office_hours'] = [
-    'name' => ($variables['content']['#block_content'] ?? NULL)?->label(),
     'days' => $week,
     'upcoming' => $upcoming,
     'timezone' => \Drupal::config('system.date')->get('timezone.default'),

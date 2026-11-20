@@ -31,7 +31,7 @@
     ]
   },
   "dependencies": {
-    "@yalesites-org/component-library-twig": "1.89.0"
+    "@yalesites-org/component-library-twig": "1.89.1"
   },
   "bundleDependencies": [
     "@yalesites-org/component-library-twig"
