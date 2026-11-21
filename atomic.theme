@@ -6,6 +6,7 @@
  */
 
 use Drupal\node\Entity\Node;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Render\Element;
@@ -710,6 +711,13 @@ function atomic_preprocess_block__inline_block__office_hours(array &$variables):
     'upcoming' => $upcoming,
     'timezone' => \Drupal::config('system.date')->get('timezone.default'),
   ];
+
+  // The week order and time zone above come from system.date, so a change
+  // there has to clear this block from the render cache.
+  $variables['#cache']['tags'] = Cache::mergeTags(
+    $variables['#cache']['tags'] ?? [],
+    ['config:system.date']
+  );
 }
 
 /**
