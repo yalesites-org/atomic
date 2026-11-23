@@ -4,18 +4,25 @@
   {% set delta = elements['#delta'] %}
 {% endif %}
 
-{% set event_has_passed = content.field_event_date[delta].end_time['#markup']|date("U") < "now"|date("U") %}
+{# Smart Date's plain formatter prints an event that starts and ends at the
+ # same moment as one date, with no start_time or end_time, and Twig's date
+ # filter reads a missing date as "now". Fall back to that one date. #}
+{% set event_date = content.field_event_date[delta] %}
+{% set event_start = event_date.start_time['#markup']|default(event_date['#markup']) %}
+{% set event_end = event_date.end_time['#markup']|default(event_start) %}
+
+{% set event_has_passed = event_end|date("U") < "now"|date("U") %}
 
 {# Use event_dates array to print any event dates - look inside array for formatted options #}
 {# Used to test if we're ouputting for the same day or multiple days #}
-{% set start_date = content.field_event_date[delta].start_time['#markup']|date('Y-m-d') %}
-{% set end_date = content.field_event_date[delta].end_time['#markup']|date('Y-m-d') %}
+{% set start_date = event_start|date('Y-m-d') %}
+{% set end_date = event_end|date('Y-m-d') %}
 
 {% set same_day = start_date == end_date %}
 
 {# Check if this is an all-day event (starts at 00:00 and ends at 23:59) #}
-{% set start_time = content.field_event_date[delta].start_time['#markup']|date('H:i') %}
-{% set end_time = content.field_event_date[delta].end_time['#markup']|date('H:i') %}
+{% set start_time = event_start|date('H:i') %}
+{% set end_time = event_end|date('H:i') %}
 {% set is_all_day = (start_time == '00:00' and end_time == '23:59') %}
 
 {# Determine the date format based on whether the event starts and ends on the same day #}
@@ -31,8 +38,8 @@
 
 {% set date__formatted %}
   {% include "@atoms/date-time/yds-date-time.twig" with {
-    date_time__start: content.field_event_date[delta].start_time['#markup'],
-    date_time__end: content.field_event_date[delta].end_time['#markup'],
+    date_time__start: event_start,
+    date_time__end: event_end,
     date_time__format: date_time__format,
     date_time__all_day: is_all_day,
   } %}
