@@ -16,7 +16,7 @@
     {% block content %}
       {% include "@molecules/office-hours/yds-office-hours.twig" with {
         office_hours__heading: office_hours__label,
-        office_hours__name: office_hours__label ?: office_hours.name,
+        office_hours__name: office_hours__label,
         office_hours__days: office_hours.days,
         office_hours__upcoming: office_hours.upcoming,
         office_hours__timezone: office_hours.timezone,

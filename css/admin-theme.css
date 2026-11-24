@@ -409,8 +409,13 @@ label.form-required::after, label.js-form-required::after {
  *
  * These address using our custom pager with layout builder in certain cases like
  * media library and layout builder itself.
+ *
+ * Scoped to those two contexts: this file also loads on public pages, where an
+ * unscoped rule would override the component library's section-aware
+ * current-page color on colored sections.
  */
-.pager__link.is-active {
+.layout-builder .pager__link.is-active,
+.media-library-widget-modal .pager__link.is-active {
   color: var(--color-basic-brown-gray);
   border-color: var(--color-basic-brown-gray);
 }

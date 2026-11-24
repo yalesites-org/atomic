@@ -18,6 +18,11 @@
       } %}
   {% endif %}
 
+  {# Keep the embedded wrapper at the outer width on posts and events. Component
+     width now resolves to the nearest data-component-width, so the wrapper
+     must not fall back to its 'site' default there. #}
+  {% set component_wrapper__width = (parentNode == 'post' or parentNode == 'event') ? 'content' : 'site' %}
+
   <div {{ add_attributes(view__attibutes) }}>
     {% embed "@organisms/component-wrapper/yds-component-wrapper.twig" with {
       component_wrapper__width: component_wrapper__width|default('site'),

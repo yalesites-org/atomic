@@ -1,4 +1,5 @@
-{% set heading = content.field_teaser_title.0 ? content.field_teaser_title : label %}
+{% set is_profile = node.getType() == 'profile' %}
+{% set heading = is_profile ? profile_name : (content.field_teaser_title.0 ? content.field_teaser_title : label) %}
 {% set url = content.field_external_source[0]['#url']|render ? content.field_external_source[0]['#url']|render : url %}
 
 {# For posts, include date formatting #}
@@ -19,11 +20,18 @@
     {% set delta = elements['#delta'] %}
   {% endif %}
 
-  {% set event_has_passed = content.field_event_date[delta].end_time['#markup']|date("U") < "now"|date("U") %}
+  {# Smart Date's plain formatter prints an event that starts and ends at the
+   # same moment as one date, with no start_time or end_time, and Twig's date
+   # filter reads a missing date as "now". Fall back to that one date. #}
+  {% set event_date = content.field_event_date[delta] %}
+  {% set event_start = event_date.start_time['#markup']|default(event_date['#markup']) %}
+  {% set event_end = event_date.end_time['#markup']|default(event_start) %}
+
+  {% set event_has_passed = event_end|date("U") < "now"|date("U") %}
 
   {% set date__formatted %}
     {% include "@atoms/date-time/yds-date-time.twig" with {
-      date_time__start: content.field_event_date[delta].start_time['#markup'],
+      date_time__start: event_start,
     } %}
   {% endset %}
 
@@ -42,7 +50,7 @@
   reference_card__heading_level: '2',
   reference_card__url: url,
   reference_card__image: node.show_thumbnail ? 'true' : 'false',
-  reference_card__image_aria: heading[0]['#context'].value,
+  reference_card__image_aria: is_profile ? profile_name : heading[0]['#context'].value,
   reference_card__overlay: node.pin_label,
   show_categories: node.show_categories,
   show_tags: node.show_tags,

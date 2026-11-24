@@ -5,8 +5,16 @@
  # whenever items are reordered. An unsaved paragraph has no id and is
  # rendered without one.
  #}
+{#
+ # `content.field_text` is a render array carrying `#cache`, so it is never
+ # `empty` in Twig even when the field has no text. Passing it straight through
+ # made every item emit the caption wrapper, which the component library styles
+ # as a dark band. Hand it over only when the field holds visible text, so an
+ # uncaptioned photo gets no wrapper and no band.
+ #}
+{% set has_caption_text = paragraph.field_text.value|default('')|striptags|trim is not empty %}
 {% include "@organisms/galleries/media-grid/_yds-media-grid-modal-item--content.twig" with {
   modal_item__heading: content.field_heading.0,
-  modal_item__content: content.field_text,
+  modal_item__content: has_caption_text ? content.field_text : null,
   modal_item__id: paragraph.id() ? 'gallery-item-' ~ paragraph.id() : '',
 } %}
