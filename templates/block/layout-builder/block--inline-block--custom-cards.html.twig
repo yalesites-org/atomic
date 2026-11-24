@@ -4,6 +4,7 @@
 
   {% embed "@organisms/custom-card-collection/yds-custom-card-collection.twig" with {
     custom_card_collection__heading: content.field_heading.0['#text'],
+    custom_card_collection__card_size: content.field_style_width.0['#markup'],
     custom_card_collection__width: 'site',
   } %}
     {% block custom_card_collection__cards %}

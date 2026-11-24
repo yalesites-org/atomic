@@ -20,11 +20,18 @@
     {% set delta = elements['#delta'] %}
   {% endif %}
 
-  {% set event_has_passed = content.field_event_date[delta].end_time['#markup']|date("U") < "now"|date("U") %}
+  {# Smart Date's plain formatter prints an event that starts and ends at the
+   # same moment as one date, with no start_time or end_time, and Twig's date
+   # filter reads a missing date as "now". Fall back to that one date. #}
+  {% set event_date = content.field_event_date[delta] %}
+  {% set event_start = event_date.start_time['#markup']|default(event_date['#markup']) %}
+  {% set event_end = event_date.end_time['#markup']|default(event_start) %}
+
+  {% set event_has_passed = event_end|date("U") < "now"|date("U") %}
 
   {% set date__formatted %}
     {% include "@atoms/date-time/yds-date-time.twig" with {
-      date_time__start: content.field_event_date[delta].start_time['#markup'],
+      date_time__start: event_start,
     } %}
   {% endset %}
 

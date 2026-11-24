@@ -26,15 +26,28 @@
   --color-slot-one: var(--global-themes-four-colors-slot-one);
 }
 
-body[data-font-pairing='yalenew'] .view-empty-wrapper h2,
-body:not([data-font-pairing]) .view-empty-wrapper h2 {
-  font: var(--font-style-heading-h5-yale-new);
-  font-variant-numeric: oldstyle-nums;
+.view-empty-wrapper h2 {
   margin: 0 0 var(--size-spacing-2) 0;
   color: var(--color-slot-one);
 }
 
-.view-empty-wrapper p.inline-message__text {
+body[data-heading-font='yalenew'] .view-empty-wrapper h2,
+body:not([data-heading-font]) .view-empty-wrapper h2 {
+  font: var(--font-style-heading-h5-yale-new);
+}
+
+body[data-heading-font='mallory'] .view-empty-wrapper h2 {
+  font: var(--font-style-heading-h5-mallory-compact-book);
+}
+
+body:not([data-heading-numerals='lining']) .view-empty-wrapper h2 {
+  font-variant-numeric: oldstyle-nums;
+}
+
+/* Targets the bare `p`: the basic_html filter strips the `inline-message__text`
+   class from the area text, so a class selector never matches the rendered
+   markup and the line inherits the section foreground (white on dark sections). */
+.view-empty-wrapper p {
   font-family: var(--font-families-mallory);
   font-size: var(--font-size-text-s);
   font-weight: var(--font-weights-mallory-book);
