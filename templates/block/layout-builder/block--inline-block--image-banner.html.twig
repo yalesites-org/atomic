@@ -5,6 +5,7 @@
 {% set image_banner__width = content.field_style_width.0['#markup']|default('site') %}
 
 {% block content %}
+  {{ attach_library('atomic/image-banner') }}
   {% embed "@molecules/banner/image/yds-image-banner.twig" with {
     image_banner__overlay_variation: 'full',
     image_banner__size: content.field_style_variation.0['#markup'],
@@ -22,6 +23,7 @@
       {% if paragraph.field_media.entity.field_media_video_file.entity.uri.value is empty %}
         {% embed "@atoms/images/image/yds-image.twig" with {
           figure__caption: content.field_text.0,
+          figure__caption__label: 'Banner caption',
         } %}
           {% block image__image %}
             {{ content.field_media }}
